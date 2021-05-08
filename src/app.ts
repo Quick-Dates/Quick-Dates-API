@@ -4,10 +4,10 @@ import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 
-import routes from './routes';
-import AppError from './errors/AppError';
+import routes from './shared/routes';
+import AppError from './shared/errors/AppError';
 
-import createConnection from './database';
+import createConnection from './shared/database';
 
 createConnection();
 const app = express();
