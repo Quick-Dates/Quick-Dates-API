@@ -17,7 +17,7 @@ tasksRouter.delete('/:id', async (request, response) => {
   // TODO
 });
 
-tasksRouter.post('/import', async (request, response) => {
+tasksRouter.put('/', async (request, response) => {
   // TODO
 });
 

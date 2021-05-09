@@ -2,12 +2,12 @@ import 'reflect-metadata';
 import 'dotenv/config';
 
 import express, { Request, Response, NextFunction } from 'express';
+import { createConnection } from 'typeorm';
 import 'express-async-errors';
 
 import routes from './shared/routes';
 import AppError from './shared/errors/AppError';
 
-import createConnection from './shared/database';
 
 createConnection();
 const app = express();
