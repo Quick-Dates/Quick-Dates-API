@@ -6,5 +6,5 @@ export const noCache = (req: Request, res: Response, next: NextFunction ): void 
   res.set('surrogate-control', 'no-store')
   res.set('expires', '0')
   res.set('surrogate-control', 'no-store')
-
+  next()
 }
