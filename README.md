@@ -40,8 +40,9 @@ $ cd Quick-Dates-API && yarn install
 ### Executar Aplicação
 $ yarn dev:server
 
-### Deu probrema? abaixo o link com o passo a passo mais detalhado
-<a href="https://www.notion.so/Ambiente-Back-end-20fdcf2697fc4066b96ab5ced3b581ed">
+<a href="https://www.notion.so/Ambiente-Back-end-20fdcf2697fc4066b96ab5ced3b581ed"> 
+  Deu probrema? clique aqui para acessar o passo a passo mais detalhado
+</a>
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](##tecnologias)
 
