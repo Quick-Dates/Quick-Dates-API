@@ -1,24 +1,24 @@
 import { Router } from 'express';
-import CreateTaskService from '../services/CreateStudentService'
+import AuthService from '../services/AuthService';
+import SuapService from '../services/SuapService';
 
 const studentsRouter = Router();
 
-studentsRouter.get('/', async (request, response) => {
-  // TODO
-});
+studentsRouter.post('/signin', async (request, response) => {
+  const { username, password } = request.body;
+  try {
+    const suapService = new SuapService();
+    const authService = new AuthService();
 
-studentsRouter.post('/', async (request, response) => {
-  const createTaskService = new CreateTaskService();
-  const tasks = await createTaskService.execute()
-  response.json(tasks)
-});
+    const tokenSuap = await suapService.signin({username, password});
+    const dataStudent = await suapService.indexMyData(tokenSuap);
+    const token = await authService.execute({tokenSuap: tokenSuap.token, dataStudent, password});
 
-studentsRouter.delete('/:id', async (request, response) => {
-  // TODO
-});
-
-studentsRouter.post('/import', async (request, response) => {
-  // TODO
+    return response.json(token);
+  } catch (error) {
+    console.error(error.message);
+    return response.status(400).send(error.message)
+  }
 });
 
 export default studentsRouter;
