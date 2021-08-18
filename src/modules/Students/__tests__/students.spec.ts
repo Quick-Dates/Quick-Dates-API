@@ -11,8 +11,10 @@ describe('Student', () => {
         .post('/students/signin')
         .send({username: process.env.STUDENT_USERNAME, password:  process.env.STUDENT_PASSWORD})
         .expect('Content-Type', /json/)
-        .expect('Content-Length', '632')
-        .expect(200);
+        .expect(200)
+        .then(res => {
+          expect(res.body.token).toBeDefined();
+        })
     }, 50000);
     it('should 401 student credencials incorrect', async () => {
       await request(app)
