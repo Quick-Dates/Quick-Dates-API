@@ -17,7 +17,7 @@ export const studentsPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/task'
+              $ref: '#/schemas/studentSigninResponse'
             }
           }
         }

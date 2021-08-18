@@ -9,3 +9,11 @@ export const studentSigninSchema = {
     },
   }
 }
+export const studentSigninResponseSchema = {
+  type: 'object',
+  properties: {
+    token: {
+      type: 'string',
+    },
+  }
+}

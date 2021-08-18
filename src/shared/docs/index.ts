@@ -1,6 +1,6 @@
 import { studentsPath } from './paths/students-path';
 import { tasksPath, tasksPathWithId } from './paths/tasks-path';
-import { studentSigninSchema } from './schemas/student-schema';
+import { studentSigninResponseSchema, studentSigninSchema } from './schemas/student-schema';
 import { taskSchema, taskParamsSchema, tasksSchema } from './schemas/task-schema'
 export default {
   openapi: '3.0.0',
@@ -30,5 +30,6 @@ export default {
     taskParams: taskParamsSchema,
     tasks: tasksSchema,
     studentSignin: studentSigninSchema,
+    studentSigninResponse: studentSigninResponseSchema,
   }
 }
