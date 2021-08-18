@@ -1,4 +1,4 @@
-import { GenderEnum } from "../models/Students";
+import { GenderEnum } from "../enum/GenderEnum";
 
 export interface IParamsSignin {
   username: string;

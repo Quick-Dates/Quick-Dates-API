@@ -32,6 +32,7 @@ class AuthService {
     const keysStudent = [
       {student: 'registration', suap: 'matricula'},
       {student: 'name', suap: 'nome_usual'},
+      {student: 'full_name', suap: 'vinculo', suap2: 'nome'},
       {student: 'email', suap: 'email'},
       {student: 'birth_date', suap: 'data_nascimento'},
       {student: 'situation', suap: 'vinculo', suap2: 'situacao'},
@@ -63,6 +64,7 @@ class AuthService {
     }
 
     if(hasChange) {
+      console.log('Atualizando student...');
       await studentRepository.save({...student});
     }
 

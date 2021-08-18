@@ -20,6 +20,9 @@ class Students {
   name: string;
 
   @Column()
+  full_name: string;
+
+  @Column()
   email: string;
 
   @Column()

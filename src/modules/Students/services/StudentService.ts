@@ -12,6 +12,7 @@ class StudentService {
     const student = studentRepository.create({
       registration: matricula,
       name: nome_usual,
+      full_name: vinculo.nome,
       password: hashedPassword,
       email,
       birth_date: data_nascimento,
