@@ -75,7 +75,7 @@ class AuthService {
         name: student.name,
         profile: 'STUDENT',
       }, process.env.AUTH_SECRET as string, {
-        expiresIn: process.env.EXPIRES_IN
+        expiresIn: '1d'
       });
 
       return {token};
