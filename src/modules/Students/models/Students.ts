@@ -1,9 +1,5 @@
 import { Column, Entity } from "typeorm";
-
-export enum GenderEnum {
-  M = "M",
-  F = "F"
-}
+import { GenderEnum } from "../enum/GenderEnum";
 
 @Entity('students')
 class Students {

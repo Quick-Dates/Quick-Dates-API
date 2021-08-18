@@ -16,8 +16,10 @@ studentsRouter.post('/signin', async (request, response) => {
 
     return response.json(token);
   } catch (error) {
-    console.error(error.message);
-    return response.status(400).send(error.message)
+    const status = error.response && error.response.status || 400;
+    const message = error.response && error.response.data.detail || error.message;
+    console.error(message);
+    return response.status(status).json({message})
   }
 });
 
