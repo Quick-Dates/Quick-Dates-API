@@ -12,14 +12,14 @@ class StudentService {
     const student = studentRepository.create({
       registration: matricula,
       name: nome_usual,
-      full_name: vinculo.nome,
+      fullName: vinculo.nome,
       password: hashedPassword,
       email,
-      birth_date: data_nascimento,
+      birthDate: data_nascimento,
       situation: vinculo.situacao,
-      systematic_situation: vinculo.situacao_sistemica,
+      systematicSituation: vinculo.situacao_sistemica,
       gender: sexo,
-      suap_id: id
+      suapId: id
     });
     await studentRepository.save(student)
 

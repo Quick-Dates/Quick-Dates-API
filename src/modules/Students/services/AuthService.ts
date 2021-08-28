@@ -20,7 +20,7 @@ class AuthService {
     const studentRepository = getRepository(Students);
 
     let student: any = await studentRepository.findOne({
-      where: {suap_id: dataStudent.id}
+      where: {suapId: dataStudent.id}
     })
 
     if (!student) {
@@ -32,13 +32,13 @@ class AuthService {
     const keysStudent = [
       {student: 'registration', suap: 'matricula'},
       {student: 'name', suap: 'nome_usual'},
-      {student: 'full_name', suap: 'vinculo', suap2: 'nome'},
+      {student: 'fullName', suap: 'vinculo', suap2: 'nome'},
       {student: 'email', suap: 'email'},
-      {student: 'birth_date', suap: 'data_nascimento'},
+      {student: 'birthDate', suap: 'data_nascimento'},
       {student: 'situation', suap: 'vinculo', suap2: 'situacao'},
-      {student: 'systematic_situation', suap: 'vinculo' , suap2: 'situacao_sistemica'},
+      {student: 'systematicSituation', suap: 'vinculo' , suap2: 'situacao_sistemica'},
       {student: 'gender', suap: 'sexo'},
-      {student: 'suap_id', suap: 'id'},
+      {student: 'suapId', suap: 'id'},
     ];
 
     let hasChange = false;

@@ -20,19 +20,19 @@ class Students {
   name: string;
 
   @Column()
-  full_name: string;
+  fullName: string;
 
   @Column()
   email: string;
 
   @Column()
-  birth_date: string;
+  birthDate: string;
 
   @Column()
   situation: string;
 
   @Column()
-  systematic_situation: string;
+  systematicSituation: string;
 
   @Column({
     type: 'enum',
@@ -41,7 +41,7 @@ class Students {
   gender: GenderEnum;
 
   @Column()
-  suap_id: number;
+  suapId: number;
 }
 
 export default Students;
