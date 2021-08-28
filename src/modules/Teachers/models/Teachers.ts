@@ -1,8 +1,8 @@
 import { Column, Entity } from "typeorm";
 import { GenderEnum } from "../../../shared/enum/GenderEnum";
 
-@Entity('students')
-class Students {
+@Entity('teachers')
+class Teachers {
   @Column('uuid', {
     primary: true,
     name: 'id',
@@ -11,7 +11,7 @@ class Students {
   id: string;
 
   @Column()
-  registration: number;
+  siap: string;
 
   @Column()
   password?: string;
@@ -44,4 +44,4 @@ class Students {
   suapId: number;
 }
 
-export default Students;
+export default Teachers;

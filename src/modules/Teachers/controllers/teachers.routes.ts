@@ -2,17 +2,17 @@ import { Router } from 'express';
 import AuthService from '../services/AuthService';
 import SuapService from '../../../shared/services/SuapService';
 
-const studentsRouter = Router();
+const teachersRouter = Router();
 
-studentsRouter.post('/signin', async (request, response) => {
+teachersRouter.post('/signin', async (request, response) => {
   const { username, password } = request.body;
   try {
     const suapService = new SuapService();
     const authService = new AuthService();
 
     const tokenSuap = await suapService.signin({username, password});
-    const dataStudent = await suapService.indexMyData(tokenSuap);
-    const token = await authService.execute({tokenSuap: tokenSuap.token, dataStudent, password});
+    const dataTeacher = await suapService.indexMyData(tokenSuap);
+    const token = await authService.execute({tokenSuap: tokenSuap.token, dataTeacher, password});
 
     return response.json(token);
   } catch (error) {
@@ -23,4 +23,4 @@ studentsRouter.post('/signin', async (request, response) => {
   }
 });
 
-export default studentsRouter;
+export default teachersRouter;

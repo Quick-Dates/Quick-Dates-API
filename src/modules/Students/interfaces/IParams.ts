@@ -1,4 +1,4 @@
-import { GenderEnum } from "../enum/GenderEnum";
+import { GenderEnum } from "../../../shared/enum/GenderEnum";
 
 export interface IParamsSignin {
   username: string;

@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { IResponseMyData, IResponseSignin } from '../interfaces/IResponse';
+import { IResponseSignin } from '../interfaces/IResponse';
 import Students from '../models/Students';
 import { sign } from 'jsonwebtoken';
 import StudentService from './StudentService';

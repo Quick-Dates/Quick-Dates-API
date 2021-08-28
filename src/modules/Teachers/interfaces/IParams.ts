@@ -1,12 +1,24 @@
 import { GenderEnum } from "../../../shared/enum/GenderEnum";
 
-export interface IResponseSignin {
+export interface IParamsSignin {
+  username: string;
+  password: string;
+}
+
+export interface IParamsMyData{
   token: string;
 }
 
-export interface IResponseMyData {
+export interface IParamsAuth {
+  tokenSuap: string;
+  dataTeacher: any;
+  password: string;
+}
+
+export interface IParamsCreateTeacher {
   id: number;
-  matricula: number;
+  matricula: string;
+  password: string;
   nome_usual: string;
   cpf: string;
   rg: string;
@@ -34,3 +46,5 @@ export interface IResponseMyData {
   }
   sexo: GenderEnum;
 }
+
+
