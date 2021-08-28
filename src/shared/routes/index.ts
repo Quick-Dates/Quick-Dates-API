@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import tasksRouter from '../../modules/Tasks/routes/tasks.routes';
-import studentsRouter from '../../modules/Students/routes/students.routes';
+import studentsRouter from '../../modules/Students/controllers/students.routes';
 
 const routes = Router();
 
