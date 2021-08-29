@@ -3,7 +3,7 @@ import cors from 'cors'
 
 export default (app: Express): void => {
   app.use(cors(
-    {origin: 'https://quickdates.tech'}
+    {origin: ['https://quickdates.tech', 'http://localhost:3000']}
   ));
   app.use(json());
 }
