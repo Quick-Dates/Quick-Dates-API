@@ -1,12 +1,12 @@
-export const studentsPath = {
+export const teachersPath = {
   post: {
-    tags: ['Students'],
-    summary: 'Aluno se autenticar no Quick Dates',
+    tags: ['Teachers'],
+    summary: 'Professor se autenticar no Quick Dates',
     requestBody: {
       content: {
         'application/json': {
           schema: {
-            $ref: '#/schemas/studentSignin'
+            $ref: '#/schemas/teacherSignin'
           }
         }
       }
@@ -17,7 +17,7 @@ export const studentsPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/studentSigninResponse'
+              $ref: '#/schemas/teacherSigninResponse'
             }
           }
         }

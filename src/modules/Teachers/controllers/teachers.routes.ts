@@ -6,6 +6,7 @@ const teachersRouter = Router();
 
 teachersRouter.post('/signin', async (request, response) => {
   const { username, password } = request.body;
+  console.log(username, password);
   try {
     const suapService = new SuapService();
     const authService = new AuthService();
