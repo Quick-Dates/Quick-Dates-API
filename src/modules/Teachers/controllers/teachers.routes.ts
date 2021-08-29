@@ -12,7 +12,9 @@ teachersRouter.post('/signin', async (request, response) => {
     const authService = new AuthService();
 
     const tokenSuap = await suapService.signin({username, password});
+    console.log(tokenSuap);
     const dataTeacher = await suapService.indexMyData(tokenSuap);
+    console.log(dataTeacher);
     const token = await authService.execute({tokenSuap: tokenSuap.token, dataTeacher, password});
 
     return response.json(token);
