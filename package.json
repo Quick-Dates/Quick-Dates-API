@@ -7,7 +7,7 @@
     "build": "yarn prestart && yarn start",
     "dev:server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "prestart": "npx typeorm migration:run ",
-    "start": "node dist/src/server.js",
+    "start": "node dist/server.js",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "test": "cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand --watch"
   },
