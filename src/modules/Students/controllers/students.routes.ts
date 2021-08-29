@@ -6,7 +6,7 @@ const studentsRouter = Router();
 
 studentsRouter.post('/signin', async (request, response) => {
   const { username, password } = request.body;
-  console.log('signin student....');
+  console.log('signin student...');
   try {
     const suapService = new SuapService();
     const authService = new AuthService();
