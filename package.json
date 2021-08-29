@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn prestart && yarn start",
+    "build": "yarn prestart",
     "dev:server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "prestart": "npx typeorm migration:run ",
     "start": "node dist/server.js",
