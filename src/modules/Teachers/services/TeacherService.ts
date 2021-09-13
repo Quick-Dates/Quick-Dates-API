@@ -10,14 +10,12 @@ class Teacherservice {
     const hashedPassword = await hash(password, 10);
 
     const teacher = teacherRepository.create({
-      siap: matricula,
+      registration: matricula,
       name: nome_usual,
       fullName: vinculo.nome,
       password: hashedPassword,
       email,
       birthDate: data_nascimento,
-      situation: vinculo.situacao,
-      systematicSituation: vinculo.situacao_sistemica,
       gender: sexo,
       suapId: id
     });

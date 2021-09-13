@@ -8,8 +8,8 @@ import TeacherService from './TeacherService';
 import { IParamsAuth } from '../interfaces/IParams';
 
 class AuthService {
-  async execute({tokenSuap, dataTeacher, password}: IParamsAuth): Promise<IResponseSignin | undefined> {
-    if(dataTeacher.tipo_vinculo !== 'Professor') {
+  async execute({tokenSuap, dataTeacher}: IParamsAuth): Promise<IResponseSignin | undefined> {
+    if(dataTeacher.tipo_vinculo !== 'Servidor' && dataTeacher.vinculo.categoria !== 'docente') {
       throw new AppError('Perfil de usuário inválido');
     }
     const teacherRepository = getRepository(Teachers);
@@ -21,41 +21,40 @@ class AuthService {
     if (!teacher) {
       const teacherService = new TeacherService();
 
-      teacher = await teacherService.create({...dataTeacher, password});
+      teacher = await teacherService.create(dataTeacher);
     }
 
     const keysTeacher = [
-      {teacher: 'siap', suap: 'matricula'},
+      {teacher: 'registration', suap: 'matricula'},
       {teacher: 'name', suap: 'nome_usual'},
       {teacher: 'fullName', suap: 'vinculo', suap2: 'nome'},
       {teacher: 'email', suap: 'email'},
       {teacher: 'birthDate', suap: 'data_nascimento'},
-      {teacher: 'situation', suap: 'vinculo', suap2: 'situacao'},
-      {teacher: 'systematicSituation', suap: 'vinculo' , suap2: 'situacao_sistemica'},
       {teacher: 'gender', suap: 'sexo'},
       {teacher: 'suapId', suap: 'id'},
     ];
 
     let hasChange = false;
+    const myDataTeacher = dataTeacher as any;
 
     for(const keyTeacher of keysTeacher) {
       if(keyTeacher.suap2) {
-        if(teacher[keyTeacher.teacher] != dataTeacher[keyTeacher.suap][keyTeacher.suap2 as string]) {
+        if(teacher[keyTeacher.teacher] != myDataTeacher[keyTeacher.suap][keyTeacher.suap2 as string]) {
           hasChange = true;
-          teacher[keyTeacher.teacher] = dataTeacher[keyTeacher.suap][keyTeacher.suap2 as string];
+          teacher[keyTeacher.teacher] = myDataTeacher[keyTeacher.suap][keyTeacher.suap2 as string];
         }
       } else {
-        if(teacher[keyTeacher.teacher] != dataTeacher[keyTeacher.suap]) {
+        if(teacher[keyTeacher.teacher] != myDataTeacher[keyTeacher.suap]) {
           hasChange = true;
-          teacher[keyTeacher.teacher] = dataTeacher[keyTeacher.suap];
+          teacher[keyTeacher.teacher] = myDataTeacher[keyTeacher.suap];
         }
       }
     }
-    const passwordMatched = await compare(password, teacher.password as string)
+    const passwordMatched = await compare(dataTeacher.password, teacher.password as string)
 
     if(!passwordMatched) {
       hasChange = true;
-      teacher.password = await hash(password, 10);
+      teacher.password = await hash(dataTeacher.password, 10);
     }
 
     if(hasChange) {

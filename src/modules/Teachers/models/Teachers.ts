@@ -11,7 +11,7 @@ class Teachers {
   id: string;
 
   @Column()
-  siap: string;
+  registration: string;
 
   @Column()
   password?: string;
@@ -27,12 +27,6 @@ class Teachers {
 
   @Column()
   birthDate: string;
-
-  @Column()
-  situation: string;
-
-  @Column()
-  systematicSituation: string;
 
   @Column({
     type: 'enum',

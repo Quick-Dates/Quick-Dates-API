@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import AuthService from '../services/AuthService';
 import SuapService from '../../../shared/services/SuapService';
+import { IResponseMyData } from '../../Students/interfaces/IResponse';
 
 const teachersRouter = Router();
 
@@ -12,13 +13,11 @@ teachersRouter.post('/signin', async (request, response) => {
     const authService = new AuthService();
 
     const tokenSuap = await suapService.signin({username, password});
-    console.log(tokenSuap);
     const dataTeacher = await suapService.indexMyData(tokenSuap);
-    console.log(dataTeacher);
-    const token = await authService.execute({tokenSuap: tokenSuap.token, dataTeacher, password});
+    const token = await authService.execute({tokenSuap: tokenSuap.token, dataTeacher: {...dataTeacher, password} as IResponseMyData});
 
     return response.json(token);
-  } catch (error) {
+  } catch (error: any) {
     const status = error.response && error.response.status || 400;
     const message = error.response && error.response.data.detail || error.message;
     console.error(message);

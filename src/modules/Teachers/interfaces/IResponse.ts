@@ -6,11 +6,11 @@ export interface IResponseSignin {
 
 export interface IResponseMyData {
   id: number;
-  matricula: number;
+  matricula: string;
   nome_usual: string;
   cpf: string;
   rg: string;
-  filiacao: Array<any>;
+  filiacao: Array<string>;
   data_nascimento: string;
   naturalidade: string;
   tipo_sanguineo: string;
@@ -21,16 +21,18 @@ export interface IResponseMyData {
   vinculo: {
     matricula: string;
     nome: string;
-    curso: string;
+    cargo: string;
+    setor_suap: string;
+    setor_siape: string;
+    jornada_trabalho: string;
+    funcao: Array<string>;
     campus: string;
-    situacao: string;
-    cota_sistec: any;
-    cota_mec: any;
-    situacao_sistemica: string;
-    matricula_regular: boolean;
-    linha_pesquisa: any;
+    email: string;
+    telefones_institucionais: Array<string>;
+    categoria: string;
+    displina_ingresso: string;
+    url_foto_75x100: string;
     curriculo_lattes: string;
-    email_academico: string;
   }
   sexo: GenderEnum;
 }

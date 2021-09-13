@@ -1,4 +1,5 @@
 import { GenderEnum } from "../../../shared/enum/GenderEnum";
+import { IResponseMyData } from "../../Students/interfaces/IResponse";
 
 export interface IParamsSignin {
   username: string;
@@ -12,37 +13,38 @@ export interface IParamsMyData{
 export interface IParamsAuth {
   tokenSuap: string;
   dataTeacher: any;
-  password: string;
 }
 
 export interface IParamsCreateTeacher {
   id: number;
   matricula: string;
-  password: string;
   nome_usual: string;
   cpf: string;
   rg: string;
-  filiacao: Array<any>;
+  filiacao: Array<string>;
   data_nascimento: string;
   naturalidade: string;
   tipo_sanguineo: string;
   email: string;
+  password: string;
   url_foto_75x100: string;
   url_foto_150x200: string;
   tipo_vinculo: string;
   vinculo: {
     matricula: string;
     nome: string;
-    curso: string;
+    cargo: string;
+    setor_suap: string;
+    setor_siape: string;
+    jornada_trabalho: string;
+    funcao: Array<string>;
     campus: string;
-    situacao: string;
-    cota_sistec: any;
-    cota_mec: any;
-    situacao_sistemica: string;
-    matricula_regular: boolean;
-    linha_pesquisa: any;
+    email: string;
+    telefones_institucionais: Array<string>;
+    categoria: string;
+    displina_ingresso: string;
+    url_foto_75x100: string;
     curriculo_lattes: string;
-    email_academico: string;
   }
   sexo: GenderEnum;
 }

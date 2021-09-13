@@ -60,13 +60,13 @@ var AuthService = /** @class */ (function () {
     function AuthService() {
     }
     AuthService.prototype.execute = function (_a) {
-        var tokenSuap = _a.tokenSuap, dataTeacher = _a.dataTeacher, password = _a.password;
+        var tokenSuap = _a.tokenSuap, dataTeacher = _a.dataTeacher;
         return __awaiter(this, void 0, void 0, function () {
-            var teacherRepository, teacher, teacherService, keysTeacher, hasChange, _i, keysTeacher_1, keyTeacher, passwordMatched, _b, token;
+            var teacherRepository, teacher, teacherService, keysTeacher, hasChange, myDataTeacher, _i, keysTeacher_1, keyTeacher, passwordMatched, _b, token;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        if (dataTeacher.tipo_vinculo !== 'Professor') {
+                        if (dataTeacher.tipo_vinculo !== 'Servidor' && dataTeacher.vinculo.categoria !== 'docente') {
                             throw new AppError_1.default('Perfil de usuário inválido');
                         }
                         teacherRepository = typeorm_1.getRepository(Teachers_1.default);
@@ -77,45 +77,44 @@ var AuthService = /** @class */ (function () {
                         teacher = _c.sent();
                         if (!!teacher) return [3 /*break*/, 3];
                         teacherService = new TeacherService_1.default();
-                        return [4 /*yield*/, teacherService.create(__assign(__assign({}, dataTeacher), { password: password }))];
+                        return [4 /*yield*/, teacherService.create(dataTeacher)];
                     case 2:
                         teacher = _c.sent();
                         _c.label = 3;
                     case 3:
                         keysTeacher = [
-                            { teacher: 'siap', suap: 'matricula' },
+                            { teacher: 'registration', suap: 'matricula' },
                             { teacher: 'name', suap: 'nome_usual' },
                             { teacher: 'fullName', suap: 'vinculo', suap2: 'nome' },
                             { teacher: 'email', suap: 'email' },
                             { teacher: 'birthDate', suap: 'data_nascimento' },
-                            { teacher: 'situation', suap: 'vinculo', suap2: 'situacao' },
-                            { teacher: 'systematicSituation', suap: 'vinculo', suap2: 'situacao_sistemica' },
                             { teacher: 'gender', suap: 'sexo' },
                             { teacher: 'suapId', suap: 'id' },
                         ];
                         hasChange = false;
+                        myDataTeacher = dataTeacher;
                         for (_i = 0, keysTeacher_1 = keysTeacher; _i < keysTeacher_1.length; _i++) {
                             keyTeacher = keysTeacher_1[_i];
                             if (keyTeacher.suap2) {
-                                if (teacher[keyTeacher.teacher] != dataTeacher[keyTeacher.suap][keyTeacher.suap2]) {
+                                if (teacher[keyTeacher.teacher] != myDataTeacher[keyTeacher.suap][keyTeacher.suap2]) {
                                     hasChange = true;
-                                    teacher[keyTeacher.teacher] = dataTeacher[keyTeacher.suap][keyTeacher.suap2];
+                                    teacher[keyTeacher.teacher] = myDataTeacher[keyTeacher.suap][keyTeacher.suap2];
                                 }
                             }
                             else {
-                                if (teacher[keyTeacher.teacher] != dataTeacher[keyTeacher.suap]) {
+                                if (teacher[keyTeacher.teacher] != myDataTeacher[keyTeacher.suap]) {
                                     hasChange = true;
-                                    teacher[keyTeacher.teacher] = dataTeacher[keyTeacher.suap];
+                                    teacher[keyTeacher.teacher] = myDataTeacher[keyTeacher.suap];
                                 }
                             }
                         }
-                        return [4 /*yield*/, bcryptjs_1.compare(password, teacher.password)];
+                        return [4 /*yield*/, bcryptjs_1.compare(dataTeacher.password, teacher.password)];
                     case 4:
                         passwordMatched = _c.sent();
                         if (!!passwordMatched) return [3 /*break*/, 6];
                         hasChange = true;
                         _b = teacher;
-                        return [4 /*yield*/, bcryptjs_1.hash(password, 10)];
+                        return [4 /*yield*/, bcryptjs_1.hash(dataTeacher.password, 10)];
                     case 5:
                         _b.password = _c.sent();
                         _c.label = 6;
@@ -146,4 +145,4 @@ var AuthService = /** @class */ (function () {
     return AuthService;
 }());
 exports.default = AuthService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXV0aFNlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFjaGVycy9zZXJ2aWNlcy9BdXRoU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQXdDO0FBRXhDLDZDQUFvQztBQUNwQyw2RUFBdUQ7QUFDdkQscUNBQXlDO0FBQ3pDLGdFQUEwQztBQUMxQyxvRUFBOEM7QUFHOUM7SUFBQTtJQXNFQSxDQUFDO0lBckVPLDZCQUFPLEdBQWIsVUFBYyxFQUErQztZQUE5QyxTQUFTLGVBQUEsRUFBRSxXQUFXLGlCQUFBLEVBQUUsUUFBUSxjQUFBOzs7Ozs7d0JBQzdDLElBQUcsV0FBVyxDQUFDLFlBQVksS0FBSyxXQUFXLEVBQUU7NEJBQzNDLE1BQU0sSUFBSSxrQkFBUSxDQUFDLDRCQUE0QixDQUFDLENBQUM7eUJBQ2xEO3dCQUNLLGlCQUFpQixHQUFHLHVCQUFhLENBQUMsa0JBQVEsQ0FBQyxDQUFDO3dCQUUvQixxQkFBTSxpQkFBaUIsQ0FBQyxPQUFPLENBQUM7Z0NBQ2pELEtBQUssRUFBRSxFQUFDLE1BQU0sRUFBRSxXQUFXLENBQUMsRUFBRSxFQUFDOzZCQUNoQyxDQUFDLEVBQUE7O3dCQUZFLE9BQU8sR0FBUSxTQUVqQjs2QkFFRSxDQUFDLE9BQU8sRUFBUix3QkFBUTt3QkFDSixjQUFjLEdBQUcsSUFBSSx3QkFBYyxFQUFFLENBQUM7d0JBRWxDLHFCQUFNLGNBQWMsQ0FBQyxNQUFNLHVCQUFLLFdBQVcsS0FBRSxRQUFRLFVBQUEsSUFBRSxFQUFBOzt3QkFBakUsT0FBTyxHQUFHLFNBQXVELENBQUM7Ozt3QkFHOUQsV0FBVyxHQUFHOzRCQUNsQixFQUFDLE9BQU8sRUFBRSxNQUFNLEVBQUUsSUFBSSxFQUFFLFdBQVcsRUFBQzs0QkFDcEMsRUFBQyxPQUFPLEVBQUUsTUFBTSxFQUFFLElBQUksRUFBRSxZQUFZLEVBQUM7NEJBQ3JDLEVBQUMsT0FBTyxFQUFFLFVBQVUsRUFBRSxJQUFJLEVBQUUsU0FBUyxFQUFFLEtBQUssRUFBRSxNQUFNLEVBQUM7NEJBQ3JELEVBQUMsT0FBTyxFQUFFLE9BQU8sRUFBRSxJQUFJLEVBQUUsT0FBTyxFQUFDOzRCQUNqQyxFQUFDLE9BQU8sRUFBRSxXQUFXLEVBQUUsSUFBSSxFQUFFLGlCQUFpQixFQUFDOzRCQUMvQyxFQUFDLE9BQU8sRUFBRSxXQUFXLEVBQUUsSUFBSSxFQUFFLFNBQVMsRUFBRSxLQUFLLEVBQUUsVUFBVSxFQUFDOzRCQUMxRCxFQUFDLE9BQU8sRUFBRSxxQkFBcUIsRUFBRSxJQUFJLEVBQUUsU0FBUyxFQUFHLEtBQUssRUFBRSxvQkFBb0IsRUFBQzs0QkFDL0UsRUFBQyxPQUFPLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRSxNQUFNLEVBQUM7NEJBQ2pDLEVBQUMsT0FBTyxFQUFFLFFBQVEsRUFBRSxJQUFJLEVBQUUsSUFBSSxFQUFDO3lCQUNoQyxDQUFDO3dCQUVFLFNBQVMsR0FBRyxLQUFLLENBQUM7d0JBRXRCLFdBQW1DLEVBQVgsMkJBQVcsRUFBWCx5QkFBVyxFQUFYLElBQVcsRUFBRTs0QkFBM0IsVUFBVTs0QkFDbEIsSUFBRyxVQUFVLENBQUMsS0FBSyxFQUFFO2dDQUNuQixJQUFHLE9BQU8sQ0FBQyxVQUFVLENBQUMsT0FBTyxDQUFDLElBQUksV0FBVyxDQUFDLFVBQVUsQ0FBQyxJQUFJLENBQUMsQ0FBQyxVQUFVLENBQUMsS0FBZSxDQUFDLEVBQUU7b0NBQzFGLFNBQVMsR0FBRyxJQUFJLENBQUM7b0NBQ2pCLE9BQU8sQ0FBQyxVQUFVLENBQUMsT0FBTyxDQUFDLEdBQUcsV0FBVyxDQUFDLFVBQVUsQ0FBQyxJQUFJLENBQUMsQ0FBQyxVQUFVLENBQUMsS0FBZSxDQUFDLENBQUM7aUNBQ3hGOzZCQUNGO2lDQUFNO2dDQUNMLElBQUcsT0FBTyxDQUFDLFVBQVUsQ0FBQyxPQUFPLENBQUMsSUFBSSxXQUFXLENBQUMsVUFBVSxDQUFDLElBQUksQ0FBQyxFQUFFO29DQUM5RCxTQUFTLEdBQUcsSUFBSSxDQUFDO29DQUNqQixPQUFPLENBQUMsVUFBVSxDQUFDLE9BQU8sQ0FBQyxHQUFHLFdBQVcsQ0FBQyxVQUFVLENBQUMsSUFBSSxDQUFDLENBQUM7aUNBQzVEOzZCQUNGO3lCQUNGO3dCQUN1QixxQkFBTSxrQkFBTyxDQUFDLFFBQVEsRUFBRSxPQUFPLENBQUMsUUFBa0IsQ0FBQyxFQUFBOzt3QkFBckUsZUFBZSxHQUFHLFNBQW1EOzZCQUV4RSxDQUFDLGVBQWUsRUFBaEIsd0JBQWdCO3dCQUNqQixTQUFTLEdBQUcsSUFBSSxDQUFDO3dCQUNqQixLQUFBLE9BQU8sQ0FBQTt3QkFBWSxxQkFBTSxlQUFJLENBQUMsUUFBUSxFQUFFLEVBQUUsQ0FBQyxFQUFBOzt3QkFBM0MsR0FBUSxRQUFRLEdBQUcsU0FBd0IsQ0FBQzs7OzZCQUczQyxTQUFTLEVBQVQsd0JBQVM7d0JBQ1YsT0FBTyxDQUFDLEdBQUcsQ0FBQyx3QkFBd0IsQ0FBQyxDQUFDO3dCQUN0QyxxQkFBTSxpQkFBaUIsQ0FBQyxJQUFJLGNBQUssT0FBTyxFQUFFLEVBQUE7O3dCQUExQyxTQUEwQyxDQUFDOzs7d0JBRzdDLElBQUcsT0FBTyxFQUFFOzRCQUNKLEtBQUssR0FBRyxtQkFBSSxDQUFDO2dDQUNqQixTQUFTLFdBQUE7Z0NBQ1QsRUFBRSxFQUFFLE9BQU8sQ0FBQyxFQUFFO2dDQUNkLElBQUksRUFBRSxPQUFPLENBQUMsSUFBSTtnQ0FDbEIsT0FBTyxFQUFFLFNBQVM7NkJBQ25CLEVBQUUsT0FBTyxDQUFDLEdBQUcsQ0FBQyxXQUFxQixFQUFFO2dDQUNwQyxTQUFTLEVBQUUsSUFBSTs2QkFDaEIsQ0FBQyxDQUFDOzRCQUVILHNCQUFPLEVBQUMsS0FBSyxPQUFBLEVBQUMsRUFBQzt5QkFDaEI7Ozs7O0tBRUY7SUFDSCxrQkFBQztBQUFELENBQUMsQUF0RUQsSUFzRUM7QUFFRCxrQkFBZSxXQUFXLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQXV0aFNlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFjaGVycy9zZXJ2aWNlcy9BdXRoU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQXdDO0FBRXhDLDZDQUFvQztBQUNwQyw2RUFBdUQ7QUFDdkQscUNBQXlDO0FBQ3pDLGdFQUEwQztBQUMxQyxvRUFBOEM7QUFHOUM7SUFBQTtJQXFFQSxDQUFDO0lBcEVPLDZCQUFPLEdBQWIsVUFBYyxFQUFxQztZQUFwQyxTQUFTLGVBQUEsRUFBRSxXQUFXLGlCQUFBOzs7Ozs7d0JBQ25DLElBQUcsV0FBVyxDQUFDLFlBQVksS0FBSyxVQUFVLElBQUksV0FBVyxDQUFDLE9BQU8sQ0FBQyxTQUFTLEtBQUssU0FBUyxFQUFFOzRCQUN6RixNQUFNLElBQUksa0JBQVEsQ0FBQyw0QkFBNEIsQ0FBQyxDQUFDO3lCQUNsRDt3QkFDSyxpQkFBaUIsR0FBRyx1QkFBYSxDQUFDLGtCQUFRLENBQUMsQ0FBQzt3QkFFL0IscUJBQU0saUJBQWlCLENBQUMsT0FBTyxDQUFDO2dDQUNqRCxLQUFLLEVBQUUsRUFBQyxNQUFNLEVBQUUsV0FBVyxDQUFDLEVBQUUsRUFBQzs2QkFDaEMsQ0FBQyxFQUFBOzt3QkFGRSxPQUFPLEdBQVEsU0FFakI7NkJBRUUsQ0FBQyxPQUFPLEVBQVIsd0JBQVE7d0JBQ0osY0FBYyxHQUFHLElBQUksd0JBQWMsRUFBRSxDQUFDO3dCQUVsQyxxQkFBTSxjQUFjLENBQUMsTUFBTSxDQUFDLFdBQVcsQ0FBQyxFQUFBOzt3QkFBbEQsT0FBTyxHQUFHLFNBQXdDLENBQUM7Ozt3QkFHL0MsV0FBVyxHQUFHOzRCQUNsQixFQUFDLE9BQU8sRUFBRSxjQUFjLEVBQUUsSUFBSSxFQUFFLFdBQVcsRUFBQzs0QkFDNUMsRUFBQyxPQUFPLEVB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

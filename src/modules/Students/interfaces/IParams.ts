@@ -11,7 +11,7 @@ export interface IParamsMyData{
 
 export interface IParamsCreateStudent {
   id: number;
-  matricula: number;
+  matricula: string;
   password: string;
   nome_usual: string;
   cpf: string;
