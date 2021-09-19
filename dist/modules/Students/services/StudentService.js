@@ -90,7 +90,7 @@ var StudentService = /** @class */ (function () {
                     case 1:
                         student = _a.sent();
                         if (!student) {
-                            throw new AppError_1.default('Turma não encontrada', 404);
+                            throw new AppError_1.default('Aluno não encontrado', 404);
                         }
                         return [4 /*yield*/, teamService.indexById(student.id_team)];
                     case 2:
