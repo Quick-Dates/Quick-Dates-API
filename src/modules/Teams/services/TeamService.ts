@@ -75,19 +75,24 @@ class TeamService {
     return teams
   }
 
-  async indexByCourse(id_course: number): Promise<Teams[]> {
+  async getTeamsByCourse(id_course: number): Promise<Teams[]> {
     const teamRepository = getRepository(Teams);
 
     const yearCurrent = new Date().getFullYear();
 
     const teams: Teams[] = await teamRepository.createQueryBuilder()
-      .select("teams")
+      .select("*")
       .from(Teams, "teams")
-      .where("teams.yearCreation <= :yearCurrent AND teams.yearCreation => :yearCurrent - 3", { yearCurrent })
+      .where("teams.yearCreation <= :yearCurrent AND teams.yearCreation >= :yearCurrent - 3", { yearCurrent })
       .andWhere("teams.id_course = :id_course", { id_course })
       .execute();
 
-    return teams
+    return teams.map(team => {
+      return {
+        ...team,
+        name: `${(yearCurrent - team.yearCreation) + 1}° ano`
+      }
+    })
   }
 
   async indexById(id: number): Promise<Teams | undefined> {

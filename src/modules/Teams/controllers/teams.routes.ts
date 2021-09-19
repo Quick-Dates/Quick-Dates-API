@@ -18,4 +18,18 @@ teamsRouter.put('/student/:id', async (request, response) => {
   }
 });
 
+teamsRouter.get('/:idCurso', async (request, response) => {
+  const { idCurso } = request.params;
+  try {
+   const teamService = new TeamService();
+   const teams = await teamService.getTeamsByCourse(+idCurso);
+   return response.json(teams);
+  } catch (error: any) {
+    const status = error.response && error.response.status || 400;
+    const message = error.response && error.response.data.detail || error.message;
+    console.error(message);
+    return response.status(status).json({message})
+  }
+});
+
 export default teamsRouter;
