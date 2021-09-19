@@ -1,5 +1,8 @@
 import { hash } from 'bcryptjs';
 import { getRepository } from 'typeorm';
+import AppError from '../../../shared/errors/AppError';
+import Teams from '../../Teams/models/Teams';
+import TeamService from '../../Teams/services/TeamService';
 import { IParamsCreateStudent } from '../interfaces/IParams';
 import Students from '../models/Students';
 
@@ -24,6 +27,26 @@ class StudentService {
     await studentRepository.save(student)
 
     return student
+  }
+
+  async indexById(id: string): Promise<Students> {
+    const studentRepository = getRepository(Students);
+    const teamService = new TeamService();
+
+
+    const student = await studentRepository.findOne({ where: { id } });
+    if (!student) {
+      throw new AppError('Turma não encontrada', 404);
+    }
+
+    const team = await teamService.indexById(student.id_team as number);
+    student.team = team;
+
+    delete student.password;
+    delete student.suapId;
+    delete student.id_team;
+
+    return student;
   }
 }
 

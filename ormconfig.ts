@@ -6,6 +6,7 @@ module.exports = {
   "cli": {
     "migrationsDir": "./src/shared/database/migrations"
   },
+  "logging": false,
   "extra": process.env.NODE_ENV === 'production' ? {
     "ssl": {
         "rejectUnauthorized": false

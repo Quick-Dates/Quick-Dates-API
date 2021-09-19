@@ -42,13 +42,13 @@ class Students {
   gender: GenderEnum;
 
   @Column()
-  suapId: number;
+  suapId?: number;
 
   @Column()
-  id_team: number;
+  id_team?: number;
 
   @ManyToOne(() => Teams)
-  @JoinColumn({name: 'id_team'})
+  @JoinColumn({name: 'id_team', referencedColumnName: 'id'})
   team: Teams;
 }
 

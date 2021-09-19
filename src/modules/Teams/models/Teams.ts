@@ -10,11 +10,13 @@ class Teams {
   @Column()
   yearCreation: number;
 
+  name?: string;
+
   @Column()
   id_course: number;
 
   @ManyToOne(() => Courses)
-  @JoinColumn({ name: 'id_course' })
+  @JoinColumn({ name: 'id_course', referencedColumnName: 'id' })
   course: Courses;
 
   @OneToMany(() => Students, (students) => students.team)
