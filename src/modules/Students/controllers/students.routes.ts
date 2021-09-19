@@ -23,6 +23,7 @@ studentsRouter.post('/signin', async (request, response) => {
     return response.status(status).json({message})
   }
 });
+
 studentsRouter.get('/:id', async (request, response) => {
   const { id } = request.params;
   try {

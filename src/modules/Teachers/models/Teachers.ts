@@ -35,7 +35,7 @@ class Teachers {
   gender: GenderEnum;
 
   @Column()
-  suapId: number;
+  suapId?: number;
 }
 
 export default Teachers;

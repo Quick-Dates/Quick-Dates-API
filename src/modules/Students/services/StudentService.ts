@@ -36,7 +36,7 @@ class StudentService {
 
     const student = await studentRepository.findOne({ where: { id } });
     if (!student) {
-      throw new AppError('Turma não encontrada', 404);
+      throw new AppError('Aluno não encontrado', 404);
     }
 
     const team = await teamService.indexById(student.id_team as number);
