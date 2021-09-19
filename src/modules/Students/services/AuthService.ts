@@ -5,6 +5,7 @@ import { sign } from 'jsonwebtoken';
 import StudentService from './StudentService';
 import AppError from '../../../shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
+import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
 
 interface IParamsAuth {
   tokenSuap: string;
@@ -72,7 +73,7 @@ class AuthService {
         tokenSuap,
         id: student.id,
         name: student.name,
-        profile: 'STUDENT',
+        profile: ProfileEnum.STUDENT,
       }, process.env.AUTH_SECRET as string, {
         expiresIn: '1d'
       });

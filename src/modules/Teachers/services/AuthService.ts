@@ -6,6 +6,7 @@ import { compare, hash } from 'bcryptjs';
 import Teachers from '../models/Teachers';
 import TeacherService from './TeacherService';
 import { IParamsAuth } from '../interfaces/IParams';
+import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
 
 class AuthService {
   async execute({tokenSuap, dataTeacher}: IParamsAuth): Promise<IResponseSignin | undefined> {
@@ -66,7 +67,7 @@ class AuthService {
         tokenSuap,
         id: teacher.id,
         name: teacher.name,
-        profile: 'TEACHER',
+        profile: ProfileEnum.TEACHER,
       }, process.env.AUTH_SECRET as string, {
         expiresIn: '1d'
       });

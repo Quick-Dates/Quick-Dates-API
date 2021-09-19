@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { GenderEnum } from "../../../shared/enum/GenderEnum";
+import StatusTasks from "../../Tasks/models/StatusTasks";
 import Teams from "../../Teams/models/Teams";
 
 @Entity('students')
@@ -50,6 +51,9 @@ class Students {
   @ManyToOne(() => Teams)
   @JoinColumn({name: 'id_team', referencedColumnName: 'id'})
   team: Teams;
+
+  @OneToMany(() => StatusTasks, (statusTask) => statusTask.task)
+  statusTasks: StatusTasks[];
 }
 
 export default Students;

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import AuthService from '../services/AuthService';
 import SuapService from '../../../shared/services/SuapService';
 import StudentService from '../services/StudentService';
+import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated';
 
 const studentsRouter = Router();
 
@@ -24,7 +25,7 @@ studentsRouter.post('/signin', async (request, response) => {
   }
 });
 
-studentsRouter.get('/:id', async (request, response) => {
+studentsRouter.get('/:id', ensureAuthenticated, async (request, response) => {
   const { id } = request.params;
   try {
     const studentService = new StudentService();
