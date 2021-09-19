@@ -40,39 +40,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
-var AuthService_1 = __importDefault(require("../services/AuthService"));
-var SuapService_1 = __importDefault(require("../../../shared/services/SuapService"));
-var studentsRouter = express_1.Router();
-studentsRouter.post('/signin', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, username, password, suapService, authService, tokenSuap, dataStudent, token, error_1, status_1, message;
+var TeamService_1 = __importDefault(require("../services/TeamService"));
+var teamsRouter = express_1.Router();
+teamsRouter.put('/student/:id', function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, _a, yearCreation, courseName, level, teamService, error_1, status_1, message;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _a = request.body, username = _a.username, password = _a.password;
+                id = request.params.id;
+                _a = request.body, yearCreation = _a.yearCreation, courseName = _a.courseName, level = _a.level;
                 _b.label = 1;
             case 1:
-                _b.trys.push([1, 5, , 6]);
-                suapService = new SuapService_1.default();
-                authService = new AuthService_1.default();
-                return [4 /*yield*/, suapService.signin({ username: username, password: password })];
+                _b.trys.push([1, 3, , 4]);
+                teamService = new TeamService_1.default();
+                return [4 /*yield*/, teamService.addStudentToTeam(id, yearCreation, courseName, level)];
             case 2:
-                tokenSuap = _b.sent();
-                return [4 /*yield*/, suapService.indexMyData(tokenSuap)];
+                _b.sent();
+                return [2 /*return*/, response.status(201).send()];
             case 3:
-                dataStudent = _b.sent();
-                return [4 /*yield*/, authService.execute({ tokenSuap: tokenSuap.token, dataStudent: dataStudent, password: password })];
-            case 4:
-                token = _b.sent();
-                return [2 /*return*/, response.json(token)];
-            case 5:
                 error_1 = _b.sent();
                 status_1 = error_1.response && error_1.response.status || 400;
                 message = error_1.response && error_1.response.data.detail || error_1.message;
                 console.error(message);
                 return [2 /*return*/, response.status(status_1).json({ message: message })];
-            case 6: return [2 /*return*/];
+            case 4: return [2 /*return*/];
         }
     });
 }); });
-exports.default = studentsRouter;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic3R1ZGVudHMucm91dGVzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL21vZHVsZXMvU3R1ZGVudHMvY29udHJvbGxlcnMvc3R1ZGVudHMucm91dGVzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQWlDO0FBQ2pDLHdFQUFrRDtBQUNsRCxxRkFBK0Q7QUFFL0QsSUFBTSxjQUFjLEdBQUcsZ0JBQU0sRUFBRSxDQUFDO0FBRWhDLGNBQWMsQ0FBQyxJQUFJLENBQUMsU0FBUyxFQUFFLFVBQU8sT0FBTyxFQUFFLFFBQVE7Ozs7O2dCQUMvQyxLQUF5QixPQUFPLENBQUMsSUFBSSxFQUFuQyxRQUFRLGNBQUEsRUFBRSxRQUFRLGNBQUEsQ0FBa0I7Ozs7Z0JBRXBDLFdBQVcsR0FBRyxJQUFJLHFCQUFXLEVBQUUsQ0FBQztnQkFDaEMsV0FBVyxHQUFHLElBQUkscUJBQVcsRUFBRSxDQUFDO2dCQUVwQixxQkFBTSxXQUFXLENBQUMsTUFBTSxDQUFDLEVBQUMsUUFBUSxVQUFBLEVBQUUsUUFBUSxVQUFBLEVBQUMsQ0FBQyxFQUFBOztnQkFBMUQsU0FBUyxHQUFHLFNBQThDO2dCQUM1QyxxQkFBTSxXQUFXLENBQUMsV0FBVyxDQUFDLFNBQVMsQ0FBQyxFQUFBOztnQkFBdEQsV0FBVyxHQUFHLFNBQXdDO2dCQUM5QyxxQkFBTSxXQUFXLENBQUMsT0FBTyxDQUFDLEVBQUMsU0FBUyxFQUFFLFNBQVMsQ0FBQyxLQUFLLEVBQUUsV0FBVyxhQUFBLEVBQUUsUUFBUSxVQUFBLEVBQUMsQ0FBQyxFQUFBOztnQkFBdEYsS0FBSyxHQUFHLFNBQThFO2dCQUU1RixzQkFBTyxRQUFRLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxFQUFDOzs7Z0JBRXRCLFdBQVMsT0FBSyxDQUFDLFFBQVEsSUFBSSxPQUFLLENBQUMsUUFBUSxDQUFDLE1BQU0sSUFBSSxHQUFHLENBQUM7Z0JBQ3hELE9BQU8sR0FBRyxPQUFLLENBQUMsUUFBUSxJQUFJLE9BQUssQ0FBQyxRQUFRLENBQUMsSUFBSSxDQUFDLE1BQU0sSUFBSSxPQUFLLENBQUMsT0FBTyxDQUFDO2dCQUM5RSxPQUFPLENBQUMsS0FBSyxDQUFDLE9BQU8sQ0FBQyxDQUFDO2dCQUN2QixzQkFBTyxRQUFRLENBQUMsTUFBTSxDQUFDLFFBQU0sQ0FBQyxDQUFDLElBQUksQ0FBQyxFQUFDLE9BQU8sU0FBQSxFQUFDLENBQUMsRUFBQTs7OztLQUVqRCxDQUFDLENBQUM7QUFFSCxrQkFBZSxjQUFjLENBQUMifQ==
+exports.default = teamsRouter;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGVhbXMucm91dGVzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL21vZHVsZXMvVGVhbXMvY29udHJvbGxlcnMvdGVhbXMucm91dGVzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQWlDO0FBQ2pDLHdFQUFrRDtBQUVsRCxJQUFNLFdBQVcsR0FBRyxnQkFBTSxFQUFFLENBQUM7QUFFN0IsV0FBVyxDQUFDLEdBQUcsQ0FBQyxjQUFjLEVBQUUsVUFBTyxPQUFPLEVBQUUsUUFBUTs7Ozs7Z0JBQzlDLEVBQUUsR0FBSyxPQUFPLENBQUMsTUFBTSxHQUFuQixDQUFvQjtnQkFDeEIsS0FBc0MsT0FBTyxDQUFDLElBQUksRUFBaEQsWUFBWSxrQkFBQSxFQUFFLFVBQVUsZ0JBQUEsRUFBRSxLQUFLLFdBQUEsQ0FBa0I7Ozs7Z0JBRWxELFdBQVcsR0FBRyxJQUFJLHFCQUFXLEVBQUUsQ0FBQztnQkFDdEMscUJBQU0sV0FBVyxDQUFDLGdCQUFnQixDQUFDLEVBQUUsRUFBRSxZQUFZLEVBQUUsVUFBVSxFQUFFLEtBQUssQ0FBQyxFQUFBOztnQkFBdkUsU0FBdUUsQ0FBQztnQkFDeEUsc0JBQU8sUUFBUSxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLEVBQUUsRUFBQzs7O2dCQUU1QixXQUFTLE9BQUssQ0FBQyxRQUFRLElBQUksT0FBSyxDQUFDLFFBQVEsQ0FBQyxNQUFNLElBQUksR0FBRyxDQUFDO2dCQUN4RCxPQUFPLEdBQUcsT0FBSyxDQUFDLFFBQVEsSUFBSSxPQUFLLENBQUMsUUFBUSxDQUFDLElBQUksQ0FBQyxNQUFNLElBQUksT0FBSyxDQUFDLE9BQU8sQ0FBQztnQkFDOUUsT0FBTyxDQUFDLEtBQUssQ0FBQyxPQUFPLENBQUMsQ0FBQztnQkFDdkIsc0JBQU8sUUFBUSxDQUFDLE1BQU0sQ0FBQyxRQUFNLENBQUMsQ0FBQyxJQUFJLENBQUMsRUFBQyxPQUFPLFNBQUEsRUFBQyxDQUFDLEVBQUE7Ozs7S0FFakQsQ0FBQyxDQUFDO0FBRUgsa0JBQWUsV0FBVyxDQUFDIn0=

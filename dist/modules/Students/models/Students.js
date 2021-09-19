@@ -8,9 +8,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var GenderEnum_1 = require("../../../shared/enum/GenderEnum");
+var Teams_1 = __importDefault(require("../../Teams/models/Teams"));
 var Students = /** @class */ (function () {
     function Students() {
     }
@@ -65,10 +69,19 @@ var Students = /** @class */ (function () {
         typeorm_1.Column(),
         __metadata("design:type", Number)
     ], Students.prototype, "suapId", void 0);
+    __decorate([
+        typeorm_1.Column(),
+        __metadata("design:type", Number)
+    ], Students.prototype, "id_team", void 0);
+    __decorate([
+        typeorm_1.ManyToOne(function () { return Teams_1.default; }),
+        typeorm_1.JoinColumn({ name: 'id_team' }),
+        __metadata("design:type", Teams_1.default)
+    ], Students.prototype, "team", void 0);
     Students = __decorate([
         typeorm_1.Entity('students')
     ], Students);
     return Students;
 }());
 exports.default = Students;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3R1ZGVudHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9TdHVkZW50cy9tb2RlbHMvU3R1ZGVudHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBeUM7QUFDekMsOERBQTZEO0FBRzdEO0lBQUE7SUF3Q0EsQ0FBQztJQWxDQztRQUxDLGdCQUFNLENBQUMsTUFBTSxFQUFFO1lBQ2QsT0FBTyxFQUFFLElBQUk7WUFDYixJQUFJLEVBQUUsSUFBSTtZQUNWLE9BQU8sRUFBRSxjQUFNLE9BQUEsb0JBQW9CLEVBQXBCLENBQW9CO1NBQ3BDLENBQUM7O3dDQUNTO0lBR1g7UUFEQyxnQkFBTSxFQUFFOztrREFDWTtJQUdyQjtRQURDLGdCQUFNLEVBQUU7OzhDQUNTO0lBR2xCO1FBREMsZ0JBQU0sRUFBRTs7MENBQ0k7SUFHYjtRQURDLGdCQUFNLEVBQUU7OzhDQUNRO0lBR2pCO1FBREMsZ0JBQU0sRUFBRTs7MkNBQ0s7SUFHZDtRQURDLGdCQUFNLEVBQUU7OytDQUNTO0lBR2xCO1FBREMsZ0JBQU0sRUFBRTs7K0NBQ1M7SUFHbEI7UUFEQyxnQkFBTSxFQUFFOzt5REFDbUI7SUFNNUI7UUFKQyxnQkFBTSxDQUFDO1lBQ04sSUFBSSxFQUFFLE1BQU07WUFDWixJQUFJLEVBQUUsQ0FBQyxHQUFHLEVBQUUsR0FBRyxDQUFDO1NBQ2pCLENBQUM7OzRDQUNpQjtJQUduQjtRQURDLGdCQUFNLEVBQUU7OzRDQUNNO0lBdkNYLFFBQVE7UUFEYixnQkFBTSxDQUFDLFVBQVUsQ0FBQztPQUNiLFFBQVEsQ0F3Q2I7SUFBRCxlQUFDO0NBQUEsQUF4Q0QsSUF3Q0M7QUFFRCxrQkFBZSxRQUFRLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3R1ZGVudHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9TdHVkZW50cy9tb2RlbHMvU3R1ZGVudHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBZ0U7QUFDaEUsOERBQTZEO0FBQzdELG1FQUE2QztBQUc3QztJQUFBO0lBK0NBLENBQUM7SUF6Q0M7UUFMQyxnQkFBTSxDQUFDLE1BQU0sRUFBRTtZQUNkLE9BQU8sRUFBRSxJQUFJO1lBQ2IsSUFBSSxFQUFFLElBQUk7WUFDVixPQUFPLEVBQUUsY0FBTSxPQUFBLG9CQUFvQixFQUFwQixDQUFvQjtTQUNwQyxDQUFDOzt3Q0FDUztJQUdYO1FBREMsZ0JBQU0sRUFBRTs7a0RBQ1k7SUFHckI7UUFEQyxnQkFBTSxFQUFFOzs4Q0FDUztJQUdsQjtRQURDLGdCQUFNLEVBQUU7OzBDQUNJO0lBR2I7UUFEQyxnQkFBTSxFQUFFOzs4Q0FDUTtJQUdqQjtRQURDLGdCQUFNLEVBQUU7OzJDQUNLO0lBR2Q7UUFEQyxnQkFBTSxFQUFFOzsrQ0FDUztJQUdsQjtRQURDLGdCQUFNLEVBQUU7OytDQUNTO0lBR2xCO1FBREMsZ0JBQU0sRUFBRTs7eURBQ21CO0lBTTVCO1FBSkMsZ0JBQU0sQ0FBQztZQUNOLElBQUksRUFBRSxNQUFNO1lBQ1osSUFBSSxFQUFFLENBQUMsR0FBRyxFQUFFLEdBQUcsQ0FBQztTQUNqQixDQUFDOzs0Q0FDaUI7SUFHbkI7UUFEQyxnQkFBTSxFQUFFOzs0Q0FDTTtJQUdmO1FBREMsZ0JBQU0sRUFBRTs7NkNBQ087SUFJaEI7UUFGQyxtQkFBUyxDQUFDLGNBQU0sT0FBQSxlQUFLLEVBQUwsQ0FBSyxDQUFDO1FBQ3RCLG9CQUFVLENBQUMsRUFBQyxJQUFJLEVBQUUsU0FBUyxFQUFDLENBQUM7a0NBQ3hCLGVBQUs7MENBQUM7SUE5Q1IsUUFBUTtRQURiLGdCQUFNLENBQUMsVUFBVSxDQUFDO09BQ2IsUUFBUSxDQStDYjtJQUFELGVBQUM7Q0FBQSxBQS9DRCxJQStDQztBQUVELGtCQUFlLFFBQVEsQ0FBQyJ9

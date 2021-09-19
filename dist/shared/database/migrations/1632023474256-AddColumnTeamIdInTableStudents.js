@@ -36,23 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var CreateTaskService = /** @class */ (function () {
-    function CreateTaskService() {
+exports.AddColumnTeamIdInTableStudents1632023474256 = void 0;
+var AddColumnTeamIdInTableStudents1632023474256 = /** @class */ (function () {
+    function AddColumnTeamIdInTableStudents1632023474256() {
     }
-    CreateTaskService.prototype.execute = function () {
+    AddColumnTeamIdInTableStudents1632023474256.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, {
-                            id: 'id_tarefa',
-                            nome: 'Prova de matemática'
-                        }];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"students\" ADD COLUMN \"id_team\" integer;\n      ALTER TABLE \"students\" ADD CONSTRAINT teamfk FOREIGN KEY (id_team) REFERENCES teams (id);\n      ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CreateTaskService;
+    AddColumnTeamIdInTableStudents1632023474256.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"students\" DROP CONSTRAINT teamfk;\n      ALTER TABLE \"students\" DROP COLUMN \"id_team\";\n      ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return AddColumnTeamIdInTableStudents1632023474256;
 }());
-exports.default = CreateTaskService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ3JlYXRlVGFza1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UYXNrcy9zZXJ2aWNlcy9DcmVhdGVUYXNrU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUVBO0lBQUE7SUFPQSxDQUFDO0lBTk8sbUNBQU8sR0FBYjs7Ozs0QkFDUyxxQkFBTTs0QkFDWCxFQUFFLEVBQUUsV0FBVzs0QkFDZixJQUFJLEVBQUUscUJBQXFCO3lCQUM1QixFQUFBOzRCQUhELHNCQUFPLFNBR04sRUFBQTs7OztLQUNGO0lBQ0gsd0JBQUM7QUFBRCxDQUFDLEFBUEQsSUFPQztBQUVELGtCQUFlLGlCQUFpQixDQUFDIn0=
+exports.AddColumnTeamIdInTableStudents1632023474256 = AddColumnTeamIdInTableStudents1632023474256;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMjAyMzQ3NDI1Ni1BZGRDb2x1bW5UZWFtSWRJblRhYmxlU3R1ZGVudHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvc2hhcmVkL2RhdGFiYXNlL21pZ3JhdGlvbnMvMTYzMjAyMzQ3NDI1Ni1BZGRDb2x1bW5UZWFtSWRJblRhYmxlU3R1ZGVudHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBRUE7SUFBQTtJQWNBLENBQUM7SUFaZ0Isd0RBQUUsR0FBZixVQUFnQixXQUF3Qjs7Ozs0QkFDdEMscUJBQU0sV0FBVyxDQUFDLEtBQUssQ0FBQyxxS0FFdkIsQ0FBQyxFQUFBOzt3QkFGRixTQUVFLENBQUM7Ozs7O0tBQ0o7SUFFWSwwREFBSSxHQUFqQixVQUFrQixXQUF3Qjs7Ozs0QkFDeEMscUJBQU0sV0FBVyxDQUFDLEtBQUssQ0FBQyxtSEFFdkIsQ0FBQyxFQUFBOzt3QkFGRixTQUVFLENBQUM7Ozs7O0tBQ0o7SUFFTCxrREFBQztBQUFELENBQUMsQUFkRCxJQWNDO0FBZFksa0dBQTJDIn0=

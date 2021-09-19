@@ -64,7 +64,6 @@ class AuthService {
     }
 
     if(hasChange) {
-      console.log('Atualizando student...');
       await studentRepository.update(student.id, {...student});
     }
 

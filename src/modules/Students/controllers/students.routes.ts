@@ -6,7 +6,6 @@ const studentsRouter = Router();
 
 studentsRouter.post('/signin', async (request, response) => {
   const { username, password } = request.body;
-  console.log('signin student...');
   try {
     const suapService = new SuapService();
     const authService = new AuthService();
@@ -16,7 +15,7 @@ studentsRouter.post('/signin', async (request, response) => {
     const token = await authService.execute({tokenSuap: tokenSuap.token, dataStudent, password});
 
     return response.json(token);
-  } catch (error) {
+  } catch (error: any) {
     const status = error.response && error.response.status || 400;
     const message = error.response && error.response.data.detail || error.message;
     console.error(message);

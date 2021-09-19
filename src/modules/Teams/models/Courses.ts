@@ -1,8 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { LevelCourseEnum } from "../enum/LevelCourseEnum";
 import { TypeCourseEnum } from "../enum/TypeCourseEnum";
+import Teams from "./Teams";
 
-@Entity('cousers')
+@Entity('courses')
 class Courses {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,6 +19,9 @@ class Courses {
     enum: ['EMI', 'TADS']
   })
   level: LevelCourseEnum;
+
+  @OneToMany(() => Teams, (teams) => teams.course)
+  teams: Teams[];
 }
 
 export default Courses;

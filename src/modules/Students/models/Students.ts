@@ -1,5 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { GenderEnum } from "../../../shared/enum/GenderEnum";
+import Teams from "../../Teams/models/Teams";
 
 @Entity('students')
 class Students {
@@ -42,6 +43,13 @@ class Students {
 
   @Column()
   suapId: number;
+
+  @Column()
+  id_team: number;
+
+  @ManyToOne(() => Teams)
+  @JoinColumn({name: 'id_team'})
+  team: Teams;
 }
 
 export default Students;

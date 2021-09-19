@@ -36,23 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var CreateTaskService = /** @class */ (function () {
-    function CreateTaskService() {
+exports.CreateCourses1631572659533 = void 0;
+var CreateCourses1631572659533 = /** @class */ (function () {
+    function CreateCourses1631572659533() {
     }
-    CreateTaskService.prototype.execute = function () {
+    CreateCourses1631572659533.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, {
-                            id: 'id_tarefa',
-                            nome: 'Prova de matemática'
-                        }];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4 /*yield*/, queryRunner.query("\n      CREATE TYPE \"name_course_enum\" AS ENUM ('INFORMATICA', 'ALIMENTOS', 'SECRETARIADO' , 'QUIMICA');\n      CREATE TYPE \"level_course_enum\" AS ENUM ('EMI', 'TADS');\n      CREATE TABLE courses (\n        \"id\" SERIAL NOT NULL PRIMARY KEY,\n        \"name\" \"name_course_enum\" NOT NULL UNIQUE,\n        \"level\" \"level_course_enum\" NOT NULL\n      );")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CreateTaskService;
+    CreateCourses1631572659533.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("DROP TABLE IF EXISTS \"courses\";\n      DROP TYPE IF EXISTS \"name_course_enum\";\n      DROP TYPE IF EXISTS \"level_course_enum\";")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return CreateCourses1631572659533;
 }());
-exports.default = CreateTaskService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ3JlYXRlVGFza1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UYXNrcy9zZXJ2aWNlcy9DcmVhdGVUYXNrU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUVBO0lBQUE7SUFPQSxDQUFDO0lBTk8sbUNBQU8sR0FBYjs7Ozs0QkFDUyxxQkFBTTs0QkFDWCxFQUFFLEVBQUUsV0FBVzs0QkFDZixJQUFJLEVBQUUscUJBQXFCO3lCQUM1QixFQUFBOzRCQUhELHNCQUFPLFNBR04sRUFBQTs7OztLQUNGO0lBQ0gsd0JBQUM7QUFBRCxDQUFDLEFBUEQsSUFPQztBQUVELGtCQUFlLGlCQUFpQixDQUFDIn0=
+exports.CreateCourses1631572659533 = CreateCourses1631572659533;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMTU3MjY1OTUzMy1DcmVhdGVDb3Vyc2VzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL3NoYXJlZC9kYXRhYmFzZS9taWdyYXRpb25zLzE2MzE1NzI2NTk1MzMtQ3JlYXRlQ291cnNlcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTtJQUFBO0lBbUJBLENBQUM7SUFqQmdCLHVDQUFFLEdBQWYsVUFBZ0IsV0FBd0I7Ozs7NEJBQ3RDLHFCQUFNLFdBQVcsQ0FBQyxLQUFLLENBQUMsNldBT3JCLENBQUMsRUFBQTs7d0JBUEosU0FPSSxDQUFDOzs7OztLQUNOO0lBRVkseUNBQUksR0FBakIsVUFBa0IsV0FBd0I7Ozs7NEJBQ3hDLHFCQUFNLFdBQVcsQ0FBQyxLQUFLLENBQUMsc0lBRWlCLENBQUMsRUFBQTs7d0JBRjFDLFNBRTBDLENBQUM7Ozs7O0tBQzVDO0lBRUwsaUNBQUM7QUFBRCxDQUFDLEFBbkJELElBbUJDO0FBbkJZLGdFQUEwQiJ9

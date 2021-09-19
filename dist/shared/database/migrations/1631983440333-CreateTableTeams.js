@@ -36,23 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var CreateTaskService = /** @class */ (function () {
-    function CreateTaskService() {
+exports.CreateTableTeams1631983440333 = void 0;
+var CreateTableTeams1631983440333 = /** @class */ (function () {
+    function CreateTableTeams1631983440333() {
     }
-    CreateTaskService.prototype.execute = function () {
+    CreateTableTeams1631983440333.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, {
-                            id: 'id_tarefa',
-                            nome: 'Prova de matemática'
-                        }];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4 /*yield*/, queryRunner.query("CREATE TABLE \"teams\" (\n        \"id\" SERIAL NOT NULL PRIMARY KEY,\n        \"yearCreation\" INTEGER NOT NULL,\n        \"id_course\" integer NOT NULL,\n        FOREIGN KEY (\"id_course\") REFERENCES \"courses\" (\"id\")\n        );")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CreateTaskService;
+    CreateTableTeams1631983440333.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("DROP TABLE \"teams\";")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return CreateTableTeams1631983440333;
 }());
-exports.default = CreateTaskService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ3JlYXRlVGFza1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UYXNrcy9zZXJ2aWNlcy9DcmVhdGVUYXNrU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUVBO0lBQUE7SUFPQSxDQUFDO0lBTk8sbUNBQU8sR0FBYjs7Ozs0QkFDUyxxQkFBTTs0QkFDWCxFQUFFLEVBQUUsV0FBVzs0QkFDZixJQUFJLEVBQUUscUJBQXFCO3lCQUM1QixFQUFBOzRCQUhELHNCQUFPLFNBR04sRUFBQTs7OztLQUNGO0lBQ0gsd0JBQUM7QUFBRCxDQUFDLEFBUEQsSUFPQztBQUVELGtCQUFlLGlCQUFpQixDQUFDIn0=
+exports.CreateTableTeams1631983440333 = CreateTableTeams1631983440333;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMTk4MzQ0MDMzMy1DcmVhdGVUYWJsZVRlYW1zLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL3NoYXJlZC9kYXRhYmFzZS9taWdyYXRpb25zLzE2MzE5ODM0NDAzMzMtQ3JlYXRlVGFibGVUZWFtcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTtJQUFBO0lBZUEsQ0FBQztJQWJnQiwwQ0FBRSxHQUFmLFVBQWdCLFdBQXdCOzs7OzRCQUN0QyxxQkFBTSxXQUFXLENBQUMsS0FBSyxDQUFDLDZPQUtuQixDQUFDLEVBQUE7O3dCQUxOLFNBS00sQ0FBQzs7Ozs7S0FDUjtJQUVZLDRDQUFJLEdBQWpCLFVBQWtCLFdBQXdCOzs7OzRCQUN4QyxxQkFBTSxXQUFXLENBQUMsS0FBSyxDQUFDLHVCQUFxQixDQUFDLEVBQUE7O3dCQUE5QyxTQUE4QyxDQUFDOzs7OztLQUNoRDtJQUVMLG9DQUFDO0FBQUQsQ0FBQyxBQWZELElBZUM7QUFmWSxzRUFBNkIifQ==

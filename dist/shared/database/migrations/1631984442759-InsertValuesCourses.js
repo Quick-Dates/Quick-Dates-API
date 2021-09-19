@@ -36,23 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var CreateTaskService = /** @class */ (function () {
-    function CreateTaskService() {
+exports.InsertValuesCourses1631984442759 = void 0;
+var InsertValuesCourses1631984442759 = /** @class */ (function () {
+    function InsertValuesCourses1631984442759() {
     }
-    CreateTaskService.prototype.execute = function () {
+    InsertValuesCourses1631984442759.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, {
-                            id: 'id_tarefa',
-                            nome: 'Prova de matemática'
-                        }];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4 /*yield*/, queryRunner.query("\n       INSERT INTO \"courses\" (\"name\", \"level\") VALUES ('INFORMATICA', 'EMI');\n       INSERT INTO \"courses\" (\"name\", \"level\") VALUES ('ALIMENTOS', 'EMI');\n       INSERT INTO \"courses\" (\"name\", \"level\") VALUES ('SECRETARIADO', 'EMI');\n       INSERT INTO \"courses\" (\"name\", \"level\") VALUES ('QUIMICA', 'EMI');\n       ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return CreateTaskService;
+    InsertValuesCourses1631984442759.prototype.down = function (queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, queryRunner.query("\n      DELETE FROM \"courses\" WHERE \"name\" IN ('INFORMATICA', 'ALIMENTOS', 'SECRETARIADO', 'QUIMICA');\n      ")];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return InsertValuesCourses1631984442759;
 }());
-exports.default = CreateTaskService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ3JlYXRlVGFza1NlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UYXNrcy9zZXJ2aWNlcy9DcmVhdGVUYXNrU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUVBO0lBQUE7SUFPQSxDQUFDO0lBTk8sbUNBQU8sR0FBYjs7Ozs0QkFDUyxxQkFBTTs0QkFDWCxFQUFFLEVBQUUsV0FBVzs0QkFDZixJQUFJLEVBQUUscUJBQXFCO3lCQUM1QixFQUFBOzRCQUhELHNCQUFPLFNBR04sRUFBQTs7OztLQUNGO0lBQ0gsd0JBQUM7QUFBRCxDQUFDLEFBUEQsSUFPQztBQUVELGtCQUFlLGlCQUFpQixDQUFDIn0=
+exports.InsertValuesCourses1631984442759 = InsertValuesCourses1631984442759;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMTk4NDQ0Mjc1OS1JbnNlcnRWYWx1ZXNDb3Vyc2VzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL3NoYXJlZC9kYXRhYmFzZS9taWdyYXRpb25zLzE2MzE5ODQ0NDI3NTktSW5zZXJ0VmFsdWVzQ291cnNlcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTtJQUFBO0lBbUJBLENBQUM7SUFqQmdCLDZDQUFFLEdBQWYsVUFBZ0IsV0FBd0I7Ozs7NEJBQ3RDLHFCQUFNLFdBQVcsQ0FBQyxLQUFLLENBQUMsMFZBS3RCLENBRUQsRUFBQTs7d0JBUEQsU0FPQyxDQUFDOzs7OztLQUNIO0lBRVksK0NBQUksR0FBakIsVUFBa0IsV0FBd0I7Ozs7NEJBQ3hDLHFCQUFNLFdBQVcsQ0FBQyxLQUFLLENBQUMsb0hBRXZCLENBQUMsRUFBQTs7d0JBRkYsU0FFRSxDQUFDOzs7OztLQUNKO0lBRUwsdUNBQUM7QUFBRCxDQUFDLEFBbkJELElBbUJDO0FBbkJZLDRFQUFnQyJ9

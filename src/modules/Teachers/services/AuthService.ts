@@ -58,7 +58,6 @@ class AuthService {
     }
 
     if(hasChange) {
-      console.log('Atualizando teacher...');
       await teacherRepository.save({...teacher});
     }
 

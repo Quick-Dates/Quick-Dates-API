@@ -1,4 +1,3 @@
-import { hash } from 'bcryptjs';
 import { getRepository } from 'typeorm';
 import { ICourse } from '../interfaces/ICourse';
 import Courses from '../models/Courses';
@@ -7,10 +6,9 @@ class CourseService {
   async create({name, level}: ICourse): Promise<Courses> {
     const courseRepository = getRepository(Courses);
 
-
     const course = courseRepository.create({
       level,
-      name
+      name,
     });
 
     await courseRepository.save(course)
