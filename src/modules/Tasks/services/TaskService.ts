@@ -162,6 +162,29 @@ class TaskService {
     return task;
   }
 
+  async indexByIdWithTeacher(idTask: number, idTeacher: number): Promise<Tasks> {
+    const teacherRepository = getRepository(Teachers);
+    const taskRepository = getRepository(Tasks);
+
+    const teacher = await teacherRepository.findOne({ where: { id: idTeacher } });
+
+    if (!teacher) {
+      throw new AppError("Professor não encontrado", 404);
+    }
+
+    let task = await taskRepository.findOne({ where: { id: idTask, id_teacher: idTeacher } });
+
+    if (!task) {
+      throw new AppError("Tarefa não encontrada", 404);
+    }
+
+    if(teacher.id !== task.id_teacher) {
+      throw new AppError("Você não tem permissão para visualizar essa tarefa", 401);
+    }
+
+    return task;
+  }
+
 }
 
 export default TaskService;
