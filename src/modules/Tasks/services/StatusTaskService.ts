@@ -18,7 +18,7 @@ class StatusTaskService {
     return statusTask;
   }
 
-  async indexByStudent(id_student: number): Promise<StatusTasks[]> {
+  async indexTasksByStudent(id_student: number): Promise<StatusTasks[]> {
     const statusTaskRepository = getRepository(StatusTasks);
     const studentRepository = getRepository(Students);
     const taskRepository = getRepository(StatusTasks);
@@ -42,6 +42,33 @@ class StatusTaskService {
     })
 
     return statusTasks;
+  }
+
+  async indexTaskByStudentAndTask(id_task: number, id_student: number): Promise<StatusTasks> {
+    const statusTaskRepository = getRepository(StatusTasks);
+    const studentRepository = getRepository(Students);
+    const taskRepository = getRepository(StatusTasks);
+
+    const student = await studentRepository.findOne({ where: { id: id_student } });
+
+    if (!student) {
+      throw new AppError("Aluno não encontrado", 404);
+    }
+
+    const task = await taskRepository.findOne({ where: { id: id_task } });
+
+    if(!task) {
+      throw new AppError("Tarefa não encontrada", 404);
+    }
+
+    let statusTask: any = await statusTaskRepository.findOne({
+      where: { id_student, id_task },
+    });
+
+    return {
+      task,
+      ...statusTask
+    };
   }
 }
 

@@ -122,7 +122,6 @@ class TaskService {
 
   async indexTasksByTeam(idStudent: number, idTeam: number): Promise<Tasks[]> {
     const studentRepository = getRepository(Students);
-    const teamRepository = getRepository(Teams);
 
     const student = await studentRepository.findOne({ where: { id: idStudent } });
 
@@ -130,28 +129,38 @@ class TaskService {
       throw new AppError("Aluno não encontrado", 404);
     }
 
-    const team = await teamRepository.findOne({ where: { id: idTeam } });
-
-    if (!team) {
-      throw new AppError("Turma não encontrada", 404);
-    }
-
-    if (student.id_team !== team.id) {
-      throw new AppError("Aluno não pertence a turma", 401);
-    }
-
     const statusTaskService = new StatusTaskService();
-    const tasks = await statusTaskService.indexByStudent(idStudent) as any;
+    const tasks = await statusTaskService.indexTasksByStudent(idStudent) as any;
 
     return tasks;
   }
 
-  // async indexById(id: number): Promise<Teams> {
-  //   // get by id
-  // }
+  async indexByIdWithStudent(idTask: number, idStudent: number): Promise<Tasks> {
+    const studentRepository = getRepository(Students);
+    const taskRepository = getRepository(Tasks);
 
+    const student = await studentRepository.findOne({ where: { id: idStudent } });
 
+    if (!student) {
+      throw new AppError("Aluno não encontrado", 404);
+    }
 
+    let task = await taskRepository.findOne({ where: { id: idTask } });
+
+    if (!task) {
+      throw new AppError("Tarefa não encontrada", 404);
+    }
+
+    const statusTaskService = new StatusTaskService();
+
+    task = await statusTaskService.indexTaskByStudentAndTask(idTask , idStudent) as any;
+
+    if (!task) {
+      throw new AppError("Tarefa não encontrada", 404);
+    }
+
+    return task;
+  }
 
 }
 
