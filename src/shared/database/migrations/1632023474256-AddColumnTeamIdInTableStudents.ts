@@ -9,7 +9,7 @@ export class AddColumnTeamIdInTableStudents1632023474256 implements MigrationInt
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query(`ALTER TABLE "students" DROP CONSTRAINT teamfk;
+      await queryRunner.query(`
       ALTER TABLE "students" DROP COLUMN "id_team";
       `);
     }

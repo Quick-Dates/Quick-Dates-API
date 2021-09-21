@@ -1,5 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { GenderEnum } from "../../../shared/enum/GenderEnum";
+import Tasks from "../../Tasks/models/Tasks";
 
 @Entity('teachers')
 class Teachers {
@@ -36,6 +37,9 @@ class Teachers {
 
   @Column()
   suapId?: number;
+
+  @OneToMany(() => Tasks, (tasks) => tasks.teacher)
+  tasks: Tasks[];
 }
 
 export default Teachers;

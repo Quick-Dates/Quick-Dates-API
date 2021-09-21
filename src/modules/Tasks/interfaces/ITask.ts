@@ -7,4 +7,5 @@ export interface ITask {
   startTime: string;
   finalTime: string;
   subject: string;
+  id_teacher: string;
 }

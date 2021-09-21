@@ -1,4 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import Teachers from "../../Teachers/models/Teachers";
 import StatusTasks from "./StatusTasks";
 
 @Entity('tasks')
@@ -29,6 +30,13 @@ class Tasks {
 
   @Column()
   subject: string;
+
+  @Column()
+  id_teacher: string;
+
+  @ManyToOne(() => Teachers)
+  @JoinColumn({name: 'id_teacher', referencedColumnName: 'id'})
+  teacher: Teachers;
 
   @OneToMany(() => StatusTasks, (statusTask) => statusTask.task)
   statusTasks: StatusTasks[];
