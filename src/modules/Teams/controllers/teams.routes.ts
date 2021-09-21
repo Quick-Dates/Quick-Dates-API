@@ -1,9 +1,13 @@
 import { Router } from 'express';
+import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated';
+import student from '../../../shared/middlewares/student';
+import teacher from '../../../shared/middlewares/teacher';
 import TeamService from '../services/TeamService';
 
 const teamsRouter = Router();
+teamsRouter.use(ensureAuthenticated);
 
-teamsRouter.put('/student/:id', async (request, response) => {
+teamsRouter.put('/student/:id', student, async (request, response) => {
   const { id } = request.params;
   const { yearCreation, courseName, level } = request.body;
   try {
@@ -18,7 +22,7 @@ teamsRouter.put('/student/:id', async (request, response) => {
   }
 });
 
-teamsRouter.get('/:idCurso', async (request, response) => {
+teamsRouter.get('/:idCurso', teacher, async (request, response) => {
   const { idCurso } = request.params;
   try {
    const teamService = new TeamService();

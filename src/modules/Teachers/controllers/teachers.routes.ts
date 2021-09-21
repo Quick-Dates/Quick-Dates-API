@@ -3,6 +3,8 @@ import AuthService from '../services/AuthService';
 import SuapService from '../../../shared/services/SuapService';
 import { IResponseMyData } from '../../Students/interfaces/IResponse';
 import TeacherService from '../services/TeacherService';
+import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated';
+import teacher from '../../../shared/middlewares/teacher';
 
 const teachersRouter = Router();
 
@@ -25,7 +27,7 @@ teachersRouter.post('/signin', async (request, response) => {
   }
 });
 
-teachersRouter.get('/:id', async (request, response) => {
+teachersRouter.get('/:id', ensureAuthenticated, teacher, async (request, response) => {
   const { id } = request.params;
   try {
     const teacherService = new TeacherService();
