@@ -66,7 +66,7 @@ class TaskService {
     return true;
   }
 
-  async update(id: number, id_teacher: number, taskData: Tasks): Promise<Tasks> {
+  async update(id: number, id_teacher: string, taskData: Tasks): Promise<Tasks> {
     const taskRepository = getRepository(Tasks);
     const teacherRepository = getRepository(Teachers);
 
@@ -84,7 +84,7 @@ class TaskService {
     if (teacher.id !== task.id_teacher) {
       throw new AppError("Você não tem permissão para alterar essa tarefa", 401);
     }
-    // validar startDate e finalDate
+
     if (taskData.maximumScore < 0 || taskData.maximumScore > 10) {
       throw new AppError("Pontuação máxima inválida", 400);
     }
