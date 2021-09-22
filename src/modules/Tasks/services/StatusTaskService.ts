@@ -3,6 +3,7 @@ import AppError from "../../../shared/errors/AppError";
 import Students from "../../Students/models/Students";
 import { SituationTaskEnum } from "../enuns/SituationTaskEnum";
 import StatusTasks from "../models/StatusTasks";
+import Tasks from "../models/Tasks";
 
 class StatusTaskService {
   async create({ id_student, id_task }: any): Promise<StatusTasks> {
@@ -18,10 +19,10 @@ class StatusTaskService {
     return statusTask;
   }
 
-  async indexTasksByStudent(id_student: number): Promise<StatusTasks[]> {
+  async indexTasksByStudent(id_student: string) {
     const statusTaskRepository = getRepository(StatusTasks);
     const studentRepository = getRepository(Students);
-    const taskRepository = getRepository(StatusTasks);
+    const taskRepository = getRepository(Tasks);
 
     const student = await studentRepository.findOne({ where: { id: id_student } });
 
@@ -33,13 +34,22 @@ class StatusTaskService {
       where: { id_student },
     });
 
-    statusTasks = statusTasks.map(async (statusTask: any) => {
+     statusTasks = await Promise.all(statusTasks.map(async (statusTask: any) => {
       const task = await taskRepository.findOne({ where: { id: statusTask.id_task } });
       if (!task) {
         throw new AppError("Tarefa não encontrada", 404);
       }
-      return { ...statusTask, task };
-    })
+      if(statusTask.situation === SituationTaskEnum.EM_ANDAMENTO) {
+        const finalDateTime = new Date(`${task.finalDate} ${task.finalTime}`);
+        const currentDateTime = new Date();
+        if(currentDateTime > finalDateTime) {
+          statusTask.situation = SituationTaskEnum.ATRASADA;
+          await statusTaskRepository.save(statusTask);
+        }
+      }
+      delete task.id_teacher;
+      return { ...task };
+    }))
 
     return statusTasks;
   }

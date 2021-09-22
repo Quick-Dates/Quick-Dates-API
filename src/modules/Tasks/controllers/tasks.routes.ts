@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated';
+import student from '../../../shared/middlewares/student';
 import teacher from '../../../shared/middlewares/teacher';
 import Tasks from '../models/Tasks';
 import TaskService from '../services/TaskService';
@@ -52,6 +53,14 @@ tasksRouter.get('/teacher', teacher, async (request, response) => {
  const taskService = new TaskService();
 
  const tasks = await taskService.indexByTeacher(id_teacher);
+ return response.json(tasks);
+});
+
+tasksRouter.get('/student', student, async (request, response) => {
+ const idStudent = request.user.id;
+ const taskService = new TaskService();
+
+ const tasks = await taskService.indexTasksByStudent(idStudent);
  return response.json(tasks);
 });
 

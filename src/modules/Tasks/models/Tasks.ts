@@ -32,7 +32,7 @@ class Tasks {
   subject: string;
 
   @Column()
-  id_teacher: string;
+  id_teacher?: string;
 
   @ManyToOne(() => Teachers)
   @JoinColumn({name: 'id_teacher', referencedColumnName: 'id'})

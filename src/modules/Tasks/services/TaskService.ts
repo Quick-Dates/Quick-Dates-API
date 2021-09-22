@@ -147,7 +147,7 @@ class TaskService {
     return tasks;
   }
 
-  async indexTasksByTeam(idStudent: number, idTeam: number): Promise<Tasks[]> {
+  async indexTasksByStudent(idStudent: string): Promise<Tasks[]> {
     const studentRepository = getRepository(Students);
 
     const student = await studentRepository.findOne({ where: { id: idStudent } });
