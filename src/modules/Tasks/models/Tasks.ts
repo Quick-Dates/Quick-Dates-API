@@ -38,7 +38,7 @@ class Tasks {
   @JoinColumn({name: 'id_teacher', referencedColumnName: 'id'})
   teacher: Teachers;
 
-  @OneToMany(() => StatusTasks, (statusTask) => statusTask.task)
+  @OneToMany(() => StatusTasks, (statusTask) => statusTask.task, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   statusTasks: StatusTasks[];
 }
 

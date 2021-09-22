@@ -36,11 +36,18 @@ tasksRouter.put('/:id', teacher, async (request, response) => {
   return response.status(204).send();
 });
 
-tasksRouter.get('/', async (request, response) => {
-  // TODO
+tasksRouter.delete('/:id', teacher, async (request, response) => {
+  const { id } = request.params;
+  const id_teacher = request.user.id;
+
+  const taskService = new TaskService();
+
+  await taskService.delete(+id, id_teacher);
+
+  return response.status(204).send();
 });
 
-tasksRouter.delete('/:id', async (request, response) => {
+tasksRouter.get('/', async (request, response) => {
   // TODO
 });
 

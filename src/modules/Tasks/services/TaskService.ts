@@ -93,12 +93,23 @@ class TaskService {
     return taskData
   }
 
-  async delete(id: number): Promise<Tasks> {
+  async delete(id: number, idTeacher: string): Promise<Tasks> {
     const taskRepository = getRepository(Tasks);
     const task = await taskRepository.findOne({ where: { id } });
 
     if (!task) {
       throw new AppError("Tarefa não encontrada", 404);
+    }
+
+    const teacherRepository = getRepository(Teachers);
+    const teacher = await teacherRepository.findOne({ where: { id: idTeacher } });
+
+    if (!teacher) {
+      throw new AppError("Professor não encontrado", 404);
+    }
+
+    if (teacher.id !== task.id_teacher) {
+      throw new AppError("Você não tem permissão para deletar essa tarefa", 401);
     }
 
     await taskRepository.delete(id);

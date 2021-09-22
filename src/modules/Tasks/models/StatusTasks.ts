@@ -20,11 +20,11 @@ class StatusTasks {
   @Column()
   id_task: number;
 
-  @ManyToOne(() => Students)
+  @ManyToOne(() => Students, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   @JoinColumn({name: 'id_student', referencedColumnName: 'id'})
   student: Students;
 
-  @ManyToOne(() => Tasks)
+  @ManyToOne(() => Tasks, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   @JoinColumn({name: 'id_task', referencedColumnName: 'id'})
   task: Tasks;
 }
