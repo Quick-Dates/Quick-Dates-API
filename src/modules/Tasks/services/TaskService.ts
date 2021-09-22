@@ -19,10 +19,14 @@ class TaskService {
     if (!teacher) {
       throw new AppError('Professor não encontrado', 404);
     }
-    // validar startDate e finalDate
+
     if (maximumScore < 0 || maximumScore > 10) {
       throw new AppError("Pontuação máxima inválida", 400);
     }
+    if(!this.validateDates(startDate, startTime, finalDate, finalTime)){
+      throw new AppError("Datas inválidas", 400);
+    }
+
     const task = taskRepository.create({
       description,
       finalDate,
@@ -48,6 +52,18 @@ class TaskService {
       });
     });
     return task;
+  }
+
+  private validateDates(startDate: string, startTime: string, finalDate: string, finalTime: string): boolean {
+    const startDateTime = new Date(`${startDate} ${startTime}`);
+    const finalDateTime = new Date(`${finalDate} ${finalTime}`);
+    if(finalDateTime < startDateTime){
+      return false;
+    }
+    if(startDateTime < new Date()){
+      return false;
+    }
+    return true;
   }
 
   async update(id: number, id_teacher: number, taskData: Tasks): Promise<Tasks> {
