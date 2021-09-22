@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import tasksRouter from '../../modules/Tasks/routes/tasks.routes';
+import tasksRouter from '../../modules/Tasks/controllers/tasks.routes';
 import studentsRouter from '../../modules/Students/controllers/students.routes';
 import teachersRouter from '../../modules/Teachers/controllers/teachers.routes';
 import teamsRouter from '../../modules/Teams/controllers/teams.routes';

@@ -69,7 +69,7 @@ class AuthService {
         name: teacher.name,
         profile: ProfileEnum.TEACHER,
       }, process.env.AUTH_SECRET as string, {
-        expiresIn: '1d'
+        expiresIn: '5d'
       });
 
       return {token};
