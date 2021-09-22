@@ -117,7 +117,7 @@ class TaskService {
     return task;
   }
 
-  async indexByTeacher(idTeacher: number): Promise<Tasks[]> {
+  async indexByTeacher(idTeacher: string): Promise<Tasks[]> {
     const taskRepository = getRepository(Tasks);
     const teacherRepository = getRepository(Teachers);
 

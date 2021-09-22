@@ -47,8 +47,12 @@ tasksRouter.delete('/:id', teacher, async (request, response) => {
   return response.status(204).send();
 });
 
-tasksRouter.get('/', async (request, response) => {
-  // TODO
+tasksRouter.get('/teacher', teacher, async (request, response) => {
+ const id_teacher = request.user.id;
+ const taskService = new TaskService();
+
+ const tasks = await taskService.indexByTeacher(id_teacher);
+ return response.json(tasks);
 });
 
 export default tasksRouter;
