@@ -189,7 +189,7 @@ class TaskService {
     return task;
   }
 
-  async indexByIdWithTeacher(idTask: number, idTeacher: number): Promise<Tasks> {
+  async indexByIdWithTeacher(idTask: number, idTeacher: string): Promise<Tasks> {
     const teacherRepository = getRepository(Teachers);
     const taskRepository = getRepository(Tasks);
 
@@ -208,6 +208,8 @@ class TaskService {
     if(teacher.id !== task.id_teacher) {
       throw new AppError("Você não tem permissão para visualizar essa tarefa", 401);
     }
+
+    delete task.id_teacher;
 
     return task;
   }
