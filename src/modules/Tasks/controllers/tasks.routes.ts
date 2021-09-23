@@ -3,6 +3,7 @@ import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated
 import student from '../../../shared/middlewares/student';
 import teacher from '../../../shared/middlewares/teacher';
 import Tasks from '../models/Tasks';
+import StatusTaskService from '../services/StatusTaskService';
 import TaskService from '../services/TaskService';
 
 const tasksRouter = Router();
@@ -33,6 +34,18 @@ tasksRouter.put('/:id', teacher, async (request, response) => {
   await taskService.update(+id, id_teacher,{
      description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title
   } as Tasks);
+
+  return response.status(204).send();
+});
+
+tasksRouter.patch('/:id/situation', student, async (request, response) => {
+  const { id } = request.params;
+  const id_student = request.user.id;
+  const { completed } = request.body;
+
+  const statusTaskService = new StatusTaskService();
+
+  await statusTaskService.updateSituation(+id, id_student, completed);
 
   return response.status(204).send();
 });
