@@ -73,4 +73,13 @@ tasksRouter.get('/:id/teacher', teacher, async (request, response) => {
  return response.json(tasks);
 });
 
+tasksRouter.get('/:id/student', student, async (request, response) => {
+ const id = +request.params.id;
+ const idStudent = request.user.id;
+ const taskService = new TaskService();
+
+ const tasks = await taskService.indexByIdWithStudent(id, idStudent);
+ return response.json(tasks);
+});
+
 export default tasksRouter;

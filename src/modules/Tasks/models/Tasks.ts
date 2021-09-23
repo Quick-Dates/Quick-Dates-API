@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Teachers from "../../Teachers/models/Teachers";
+import { SituationTaskEnum } from "../enuns/SituationTaskEnum";
 import StatusTasks from "./StatusTasks";
 
 @Entity('tasks')
@@ -21,6 +22,8 @@ class Tasks {
 
   @Column()
   description: string;
+
+  situation?: SituationTaskEnum;
 
   @Column()
   startTime: string;

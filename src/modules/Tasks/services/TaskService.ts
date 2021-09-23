@@ -162,7 +162,7 @@ class TaskService {
     return tasks;
   }
 
-  async indexByIdWithStudent(idTask: number, idStudent: number): Promise<Tasks> {
+  async indexByIdWithStudent(idTask: number, idStudent: string): Promise<Tasks> {
     const studentRepository = getRepository(Students);
     const taskRepository = getRepository(Tasks);
 
@@ -180,11 +180,9 @@ class TaskService {
 
     const statusTaskService = new StatusTaskService();
 
-    task = await statusTaskService.indexTaskByStudentAndTask(idTask , idStudent) as any;
+    task.situation = await statusTaskService.indexSituation(idTask , idStudent) as any;
 
-    if (!task) {
-      throw new AppError("Tarefa não encontrada", 404);
-    }
+    delete task.id_teacher;
 
     return task;
   }

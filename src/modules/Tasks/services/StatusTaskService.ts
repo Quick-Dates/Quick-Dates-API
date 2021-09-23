@@ -44,7 +44,7 @@ class StatusTaskService {
         const currentDateTime = new Date();
         if(currentDateTime > finalDateTime) {
           statusTask.situation = SituationTaskEnum.ATRASADA;
-          await statusTaskRepository.save(statusTask);
+          await statusTaskRepository.update(statusTask.id, statusTask);
         }
       }
       delete task.id_teacher;
@@ -54,10 +54,10 @@ class StatusTaskService {
     return statusTasks;
   }
 
-  async indexTaskByStudentAndTask(id_task: number, id_student: number): Promise<StatusTasks> {
+  async indexSituation(id_task: number, id_student: string): Promise<StatusTasks> {
     const statusTaskRepository = getRepository(StatusTasks);
     const studentRepository = getRepository(Students);
-    const taskRepository = getRepository(StatusTasks);
+    const taskRepository = getRepository(Tasks);
 
     const student = await studentRepository.findOne({ where: { id: id_student } });
 
@@ -75,10 +75,18 @@ class StatusTaskService {
       where: { id_student, id_task },
     });
 
-    return {
-      task,
-      ...statusTask
-    };
+    if(!statusTask) {
+      throw new AppError("Tarefa do aluno não encontrado", 404);
+    }
+
+    const finalDateTime = new Date(`${task.finalDate} ${task.finalTime}`);
+    const currentDateTime = new Date();
+    if(currentDateTime > finalDateTime && statusTask.situation === SituationTaskEnum.EM_ANDAMENTO) {
+      statusTask.situation = SituationTaskEnum.ATRASADA;
+      await statusTaskRepository.update(statusTask.id, statusTask);
+    }
+
+    return statusTask.situation;
   }
 }
 
