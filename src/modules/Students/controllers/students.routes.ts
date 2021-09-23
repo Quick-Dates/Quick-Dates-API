@@ -13,31 +13,38 @@ studentsRouter.post('/signin', async (request, response) => {
     const suapService = new SuapService();
     const authService = new AuthService();
 
-    const tokenSuap = await suapService.signin({username, password});
+    const tokenSuap = await suapService.signin({ username, password });
     const dataStudent = await suapService.indexMyData(tokenSuap);
-    const token = await authService.execute({tokenSuap: tokenSuap.token, dataStudent, password});
+    const token = await authService.execute({ tokenSuap: tokenSuap.token, dataStudent, password });
 
     return response.json(token);
   } catch (error: any) {
     const status = error.response && error.response.status || 400;
     const message = error.response && error.response.data.detail || error.message;
     console.error(message);
-    return response.status(status).json({message})
+    return response.status(status).json({ message })
   }
+});
+
+studentsRouter.get('/grades', ensureAuthenticated, student, async (request, response) => {
+  return response.status(503).json({
+    status: 'warn',
+    message: 'Essa funcionalidade foi adiada'
+  });
+});
+
+studentsRouter.get('/ranking', ensureAuthenticated, student, async (request, response) => {
+  return response.status(503).json({
+    status: 'warn',
+    message: 'Essa funcionalidade foi adiada'
+  });
 });
 
 studentsRouter.get('/:id', ensureAuthenticated, student, async (request, response) => {
   const { id } = request.params;
-  try {
-    const studentService = new StudentService();
-    const student = await  studentService.indexById(id);
-    return response.json(student);
-  } catch (error: any) {
-    const status = error.response && error.response.status || 400;
-    const message = error.response && error.response.data.detail || error.message;
-    console.error(message);
-    return response.status(status).json({message})
-  }
+  const studentService = new StudentService();
+  const student = await studentService.indexById(id);
+  return response.json(student);
 });
 
 export default studentsRouter;
