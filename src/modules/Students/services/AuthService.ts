@@ -67,13 +67,13 @@ class AuthService {
     if(hasChange) {
       await studentRepository.update(student.id, {...student});
     }
-
     if(student) {
       const token = sign({
         tokenSuap,
         id: student.id,
         name: student.name,
         profile: ProfileEnum.STUDENT,
+        email: student.email,
       }, process.env.AUTH_SECRET as string, {
         expiresIn: '5d'
       });

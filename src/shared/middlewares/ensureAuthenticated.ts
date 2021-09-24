@@ -11,6 +11,7 @@ interface TokenPayload {
     name: string;
     profile: ProfileEnum;
     course?: string;
+    email: string;
     iat: number;
     exp: number;
 
@@ -32,15 +33,7 @@ export default function ensureAuthenticated(
         try{
             const decoded = verify(token, process.env.AUTH_SECRET as string)
 
-            const { id, name, profile, course, tokenSuap } = decoded as TokenPayload
-
-            request.user = {
-                id,
-                name,
-                profile,
-                course,
-                tokenSuap
-              };
+            request.user = decoded as any;
 
             return next()
         } catch {

@@ -68,6 +68,7 @@ class AuthService {
         id: teacher.id,
         name: teacher.name,
         profile: ProfileEnum.TEACHER,
+        email: teacher.email,
       }, process.env.AUTH_SECRET as string, {
         expiresIn: '5d'
       });

@@ -6,6 +6,7 @@ declare namespace Express{
           tokenSuap: string;
           name: string;
           course?: string;
+          email: string;
       }
   }
 }
