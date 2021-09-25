@@ -113,28 +113,4 @@ tasksRouter.post('/email', student, async (request, response) => {
   return response.json({ message });
 });
 
-tasksRouter.post('/email', student, async (request, response) => {
-  const message = request.body.message;
-  await transporter.sendMail({
-    from: `Quick Dates <${process.env.EMAIL}>`,
-    to: `${request.user.email}`,
-    subject: 'Quick Dates - Tarefa',
-    text: request.user.name,
-    html: htmlToSend(`Seja bem vindo ${request.user.name} ao Quick Dates`, message)
-  })
-  return response.json({ message });
-});
-
-function htmlToSend(header: string, content: string) {
-  const filePath = path.join(__dirname, '../../../views/template/email.html');
-  const source = fs.readFileSync(filePath, 'utf-8').toString();
-  const template = handlebars.compile(source);
-  const replacements = {
-    header,
-    content
-  };
-  return template(replacements);
-}
-
-
 export default tasksRouter;
