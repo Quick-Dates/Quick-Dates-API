@@ -50,18 +50,7 @@ export const studentGetByIdResponseSchema = {
       enum: ['M', 'F']
     },
     team: {
-      type: 'object',
-      properties: {
-        id: {
-          type: 'integer'
-        },
-        yearCreation: {
-          type: 'integer'
-        },
-        name: {
-          type: 'string'
-        }
-      }
+      $ref: '#/schemas/teamSchema'
     }
   }
 }
