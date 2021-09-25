@@ -1,7 +1,7 @@
-import { studentsPath } from './paths/students-path';
+import { studentGradesPath, studentPathWithId, studentRankingPath, studentsPathSignin } from './paths/students-path';
 import { tasksPath, tasksPathWithId } from './paths/tasks-path';
 import { teachersPath } from './paths/teachers-path';
-import { studentSigninResponseSchema, studentSigninSchema } from './schemas/student-schema';
+import { studentFeatureErrorSchema, studentGetByIdResponseSchema, studentSigninResponseSchema, studentSigninSchema } from './schemas/student-schema';
 import { taskSchema, taskParamsSchema, tasksSchema } from './schemas/task-schema'
 import { teacherSigninResponseSchema, teacherSigninSchema } from './schemas/teacher-schema';
 export default {
@@ -28,7 +28,10 @@ export default {
   paths: {
     '/tasks': tasksPath,
     '/tasks/{id}': tasksPathWithId,
-    '/students/signin': studentsPath,
+    '/students/signin': studentsPathSignin,
+    '/students/{id}': studentPathWithId,
+    '/students/ranking': studentRankingPath,
+    '/students/grades': studentGradesPath,
     '/teachers/signin': teachersPath,
   },
   schemas: {
@@ -37,6 +40,8 @@ export default {
     tasks: tasksSchema,
     studentSignin: studentSigninSchema,
     studentSigninResponse: studentSigninResponseSchema,
+    studentGetByIdResponse: studentGetByIdResponseSchema,
+    studentFeatureError: studentFeatureErrorSchema,
     teacherSignin: teacherSigninSchema,
     teacherSigninResponse: teacherSigninResponseSchema,
   }
