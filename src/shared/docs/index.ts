@@ -67,5 +67,15 @@ export default {
     courseSchema: courseSchema,
     coursesSchema: coursesSchema,
     teamCreateBody: teamCreateBodySchema,
+  },
+
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    }
   }
 }

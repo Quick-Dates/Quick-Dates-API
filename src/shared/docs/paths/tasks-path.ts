@@ -2,6 +2,11 @@ export const tasksTeamPath = {
   post: {
     tags: ['Tasks'],
     summary: 'Criar uma tarefa para uma turma',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'idTeam',
@@ -33,6 +38,11 @@ export const tasksPathWithId = {
   put: {
     tags: ['Tasks'],
     summary: 'Editar uma tarefa pelo id',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'id',
@@ -62,6 +72,11 @@ export const tasksPathWithId = {
   delete: {
     tags: ['Tasks'],
     summary: 'Deletar uma tarefa pelo id',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'id',
@@ -85,6 +100,11 @@ export const tasksByTeacherPath = {
   get: {
     tags: ['Tasks'],
     summary: 'Listar todas as tarefas que o professor marcou',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     responses: {
       200: {
         description: 'Sucesso',
@@ -104,6 +124,11 @@ export const tasksByStudentPath = {
   get: {
     tags: ['Tasks'],
     summary: 'Listar todas as tarefas do aluno',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     responses: {
       200: {
         description: 'Sucesso',
@@ -123,6 +148,11 @@ export const tasksByIdByStudentPath = {
   get: {
     tags: ['Tasks'],
     summary: 'Detalhes tarefas do aluno',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'id',
@@ -153,6 +183,11 @@ export const tasksByIdByTeacherPath = {
   get: {
     tags: ['Tasks'],
     summary: 'Detalhes tarefas que o professor marcou',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'id',
@@ -183,6 +218,11 @@ export const tasksSituationPath = {
   patch: {
     tags: ['Tasks'],
     summary: 'Alterar o estado de uma tarefa',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'id',

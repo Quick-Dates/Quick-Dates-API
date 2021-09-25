@@ -30,6 +30,11 @@ export const teachersByIdPath = {
   get: {
     tags: ['Teachers'],
     summary: 'Dados do professor',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'id',

@@ -26,10 +26,15 @@ export const studentsPathSignin = {
   },
 }
 
-export const studentPathWithId =  {
+export const studentPathWithId = {
   get: {
     tags: ['Students'],
     summary: 'Dados do aluno pelo id',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'id',
@@ -56,10 +61,15 @@ export const studentPathWithId =  {
   },
 }
 
-export const studentRankingPath =  {
+export const studentRankingPath = {
   get: {
     tags: ['Students'],
     summary: 'Ranking de alunos de uma turma',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     responses: {
       503: {
         description: 'Warn',
@@ -75,10 +85,15 @@ export const studentRankingPath =  {
   },
 }
 
-export const studentGradesPath =  {
+export const studentGradesPath = {
   get: {
     tags: ['Students'],
     summary: 'Notas de um aluno',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     responses: {
       503: {
         description: 'Warn',

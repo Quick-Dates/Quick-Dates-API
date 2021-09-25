@@ -2,6 +2,11 @@ export const teamsByCoursePath = {
   get: {
     tags: ['Teams'],
     summary: 'Listar turmas de um curso',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'idCourse',
@@ -32,6 +37,11 @@ export const teamCoursesPath = {
   get: {
     tags: ['Teams'],
     summary: 'Listar todos os cursos',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     responses: {
       200: {
         description: 'Sucesso',
@@ -51,6 +61,11 @@ export const teamsStudentPath = {
   put: {
     tags: ['Teams'],
     summary: 'Incluir um student em uma turma',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
     parameters: [
       {
         name: 'idStudent',
