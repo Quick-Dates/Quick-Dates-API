@@ -23,9 +23,9 @@ class TeacherService {
     });
     await teacherRepository.save(teacher)
 
-    setTimeout(()=>{
+    setTimeout(async ()=>{
       const nodeMailerService = new NodeMailerService();
-      nodeMailerService.sendEmailWelcome(teacher);
+      await nodeMailerService.sendEmailWelcome(teacher);
     }, 3000)
 
     return teacher

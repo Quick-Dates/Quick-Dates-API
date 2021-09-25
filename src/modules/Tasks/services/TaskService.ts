@@ -1,10 +1,10 @@
 import { getRepository } from "typeorm";
 import AppError from "../../../shared/errors/AppError";
+import NodeMailerService from "../../../shared/services/NodeMailerService";
 import Students from "../../Students/models/Students";
 import Teachers from "../../Teachers/models/Teachers";
 import Teams from "../../Teams/models/Teams";
 import { ITask } from "../interfaces/ITask";
-import StatusTasks from "../models/StatusTasks";
 import Tasks from "../models/Tasks";
 import StatusTaskService from "./StatusTaskService";
 
@@ -50,6 +50,10 @@ class TaskService {
         id_student: student.id,
         id_task: task.id
       });
+      setTimeout(async ()=>{
+        const nodeMailerService = new NodeMailerService();
+        await nodeMailerService.sendEmailTaskCreated(student, teacher, task);
+      }, 3000)
     });
     return task;
   }

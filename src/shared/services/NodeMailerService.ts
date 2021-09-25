@@ -30,8 +30,8 @@ export default class NodeMailerService {
       toEmail: student.email,
       subject: 'Nova Atividade',
       header: `Atividade ${task.title} criada`,
-      content: `Oi ${student.name} ${teacher.gender === GenderEnum.Masculino ? 'O Professor' : 'A Professora'} ${teacher.name} de ${task.subject}
-      nesse momento agendou uma atividade ${task.title}, entre no Quick Dates para mais detalhes!`
+      content: `Oi ${student.name}, ${teacher.gender === GenderEnum.Masculino ? 'o Professor' : 'a Professora'} ${teacher.name} de ${task.subject}
+      neste momento agendou uma atividade ${task.title}. Entre no Quick Dates para mais detalhes!`
     })
   }
 
