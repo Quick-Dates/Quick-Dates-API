@@ -1,10 +1,10 @@
 import { studentGradesPath, studentPathWithId, studentRankingPath, studentsPathSignin } from './paths/students-path';
-import { tasksPath, tasksPathWithId } from './paths/tasks-path';
+import { tasksTeamPath, tasksPathWithId, tasksByTeacherPath, tasksByStudentPath, tasksByIdByStudentPath, tasksByIdByTeacherPath, tasksSituationPath } from './paths/tasks-path';
 import { teachersByIdPath, teachersPath } from './paths/teachers-path';
 import { teamCoursesPath, teamsByCoursePath, teamsStudentPath } from './paths/teams-path';
 import { courseSchema, coursesSchema } from './schemas/courseSchema';
 import { studentFeatureErrorSchema, studentGetByIdResponseSchema, studentSigninResponseSchema, studentSigninSchema } from './schemas/student-schema';
-import { taskSchema, taskParamsSchema, tasksSchema } from './schemas/task-schema'
+import { taskSchema, taskParamsSchema, tasksSchema, taskDetailsSchema, taskSituationBodySchema } from './schemas/task-schema'
 import { teacherGetByIdResponseSchema, teacherSigninResponseSchema, teacherSigninSchema } from './schemas/teacher-schema';
 import { teamCreateBodySchema, teamSchema, teamsSchema } from './schemas/team-shema';
 export default {
@@ -32,8 +32,13 @@ export default {
     },
   ],
   paths: {
-    '/tasks': tasksPath,
+    '/tasks/student': tasksByStudentPath,
+    '/tasks/teacher': tasksByTeacherPath,
     '/tasks/{id}': tasksPathWithId,
+    '/tasks/{id}/situation': tasksSituationPath,
+    '/tasks/{id}/student': tasksByIdByStudentPath,
+    '/tasks/{id}/teacher': tasksByIdByTeacherPath,
+    '/tasks/team/{idTeam}': tasksTeamPath,
     '/students/signin': studentsPathSignin,
     '/students/{id}': studentPathWithId,
     '/students/ranking': studentRankingPath,
@@ -48,6 +53,8 @@ export default {
     task: taskSchema,
     taskParams: taskParamsSchema,
     tasks: tasksSchema,
+    taskDetail: taskDetailsSchema,
+    taskSituationBody: taskSituationBodySchema,
     studentSignin: studentSigninSchema,
     studentSigninResponse: studentSigninResponseSchema,
     studentGetByIdResponse: studentGetByIdResponseSchema,

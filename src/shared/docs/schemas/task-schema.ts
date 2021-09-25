@@ -4,31 +4,111 @@ export const taskSchema = {
     id: {
       type: 'integer',
     },
-    nome: {
+    title: {
       type: 'string',
     },
-  }
+    description: {
+      type: 'string',
+    },
+    subject: {
+      type: 'string',
+    },
+    startDate: {
+      type: 'string',
+    },
+    finalDate: {
+      type: 'string',
+    },
+    startTime: {
+      type: 'string',
+    },
+    finalTime: {
+      type: 'string',
+    },
+    maximumScore: {
+      type: 'integer',
+    },
+  },
 }
+
 export const tasksSchema = {
   type: 'array',
   items: {
-    type: 'object',
-    properties: {
-      id: {
-        type: 'integer',
-      },
-      nome: {
-        type: 'string',
-      },
-    }
+    $ref: '#/schemas/task',
   }
 }
 export const taskParamsSchema = {
   type: 'object',
   properties: {
-    nome: {
+    title: {
       type: 'string',
     },
+    description: {
+      type: 'string',
+    },
+    subject: {
+      type: 'string',
+    },
+    startDate: {
+      type: 'string',
+    },
+    finalDate: {
+      type: 'string',
+    },
+    startTime: {
+      type: 'string',
+    },
+    finalTime: {
+      type: 'string',
+    },
+    maximumScore: {
+      type: 'integer',
+    },
   },
-  required: ['nome']
+}
+
+export const taskDetailsSchema = {
+  type: 'object',
+  properties: {
+    id: {
+      type: 'integer',
+    },
+    title: {
+      type: 'string',
+    },
+    description: {
+      type: 'string',
+    },
+    subject: {
+      type: 'string',
+    },
+    startDate: {
+      type: 'string',
+    },
+    finalDate: {
+      type: 'string',
+    },
+    startTime: {
+      type: 'string',
+    },
+    finalTime: {
+      type: 'string',
+    },
+    maximumScore: {
+      type: 'integer',
+    },
+    situation: {
+      type: 'string',
+      enum: ['EM_ANDAMENTO', 'CONCLUIDA', 'ATRASADA']
+    },
+  }
+}
+
+export const taskSituationBodySchema = {
+  type: 'object',
+  properties: {
+    completed: {
+      type: 'boolean',
+    }
+  }
 }
