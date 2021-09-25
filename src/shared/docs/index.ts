@@ -1,9 +1,9 @@
 import { studentGradesPath, studentPathWithId, studentRankingPath, studentsPathSignin } from './paths/students-path';
 import { tasksPath, tasksPathWithId } from './paths/tasks-path';
-import { teachersPath } from './paths/teachers-path';
+import { teachersByIdPath, teachersPath } from './paths/teachers-path';
 import { studentFeatureErrorSchema, studentGetByIdResponseSchema, studentSigninResponseSchema, studentSigninSchema } from './schemas/student-schema';
 import { taskSchema, taskParamsSchema, tasksSchema } from './schemas/task-schema'
-import { teacherSigninResponseSchema, teacherSigninSchema } from './schemas/teacher-schema';
+import { teacherGetByIdResponseSchema, teacherSigninResponseSchema, teacherSigninSchema } from './schemas/teacher-schema';
 export default {
   openapi: '3.0.0',
   info: {
@@ -33,6 +33,7 @@ export default {
     '/students/ranking': studentRankingPath,
     '/students/grades': studentGradesPath,
     '/teachers/signin': teachersPath,
+    '/teachers/{id}': teachersByIdPath,
   },
   schemas: {
     task: taskSchema,
@@ -44,5 +45,6 @@ export default {
     studentFeatureError: studentFeatureErrorSchema,
     teacherSignin: teacherSigninSchema,
     teacherSigninResponse: teacherSigninResponseSchema,
+    teacherGetByIdResponse: teacherGetByIdResponseSchema,
   }
 }

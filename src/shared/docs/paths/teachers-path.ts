@@ -25,3 +25,33 @@ export const teachersPath = {
     }
   },
 }
+
+export const teachersByIdPath = {
+  get: {
+    tags: ['Teachers'],
+    summary: 'Dados do professor',
+    parameters: [
+      {
+        name: 'id',
+        in: 'path',
+        description: 'id do professor',
+        required: true,
+        schema: {
+          type: 'string',
+        }
+      }
+    ],
+    responses: {
+      200: {
+        description: 'Sucesso',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/teacherGetByIdResponse'
+            }
+          }
+        }
+      }
+    }
+  },
+}
