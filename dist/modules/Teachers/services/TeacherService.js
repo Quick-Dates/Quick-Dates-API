@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var bcryptjs_1 = require("bcryptjs");
 var typeorm_1 = require("typeorm");
 var AppError_1 = __importDefault(require("../../../shared/errors/AppError"));
+var NodeMailerService_1 = __importDefault(require("../../../shared/services/NodeMailerService"));
 var Teachers_1 = __importDefault(require("../models/Teachers"));
 var TeacherService = /** @class */ (function () {
     function TeacherService() {
@@ -50,6 +51,7 @@ var TeacherService = /** @class */ (function () {
         var id = _a.id, matricula = _a.matricula, nome_usual = _a.nome_usual, email = _a.email, data_nascimento = _a.data_nascimento, vinculo = _a.vinculo, sexo = _a.sexo, password = _a.password;
         return __awaiter(this, void 0, void 0, function () {
             var teacherRepository, hashedPassword, teacher;
+            var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -70,6 +72,19 @@ var TeacherService = /** @class */ (function () {
                         return [4 /*yield*/, teacherRepository.save(teacher)];
                     case 2:
                         _b.sent();
+                        setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
+                            var nodeMailerService;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        nodeMailerService = new NodeMailerService_1.default();
+                                        return [4 /*yield*/, nodeMailerService.sendEmailWelcome(teacher)];
+                                    case 1:
+                                        _a.sent();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); }, 3000);
                         return [2 /*return*/, teacher];
                 }
             });
@@ -98,4 +113,4 @@ var TeacherService = /** @class */ (function () {
     return TeacherService;
 }());
 exports.default = TeacherService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVhY2hlclNlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFjaGVycy9zZXJ2aWNlcy9UZWFjaGVyU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLHFDQUFnQztBQUNoQyxtQ0FBd0M7QUFDeEMsNkVBQXVEO0FBRXZELGdFQUEwQztBQUUxQztJQUFBO0lBa0NBLENBQUM7SUFqQ08sK0JBQU0sR0FBWixVQUFhLEVBQWtHO1lBQWpHLEVBQUUsUUFBQSxFQUFFLFNBQVMsZUFBQSxFQUFFLFVBQVUsZ0JBQUEsRUFBRSxLQUFLLFdBQUEsRUFBRSxlQUFlLHFCQUFBLEVBQUUsT0FBTyxhQUFBLEVBQUUsSUFBSSxVQUFBLEVBQUUsUUFBUSxjQUFBOzs7Ozs7d0JBQ2hGLGlCQUFpQixHQUFHLHVCQUFhLENBQUMsa0JBQVEsQ0FBQyxDQUFDO3dCQUUzQixxQkFBTSxlQUFJLENBQUMsUUFBUSxFQUFFLEVBQUUsQ0FBQyxFQUFBOzt3QkFBekMsY0FBYyxHQUFHLFNBQXdCO3dCQUV6QyxPQUFPLEdBQUcsaUJBQWlCLENBQUMsTUFBTSxDQUFDOzRCQUN2QyxZQUFZLEVBQUUsU0FBUzs0QkFDdkIsSUFBSSxFQUFFLFVBQVU7NEJBQ2hCLFFBQVEsRUFBRSxPQUFPLENBQUMsSUFBSTs0QkFDdEIsUUFBUSxFQUFFLGNBQWM7NEJBQ3hCLEtBQUssT0FBQTs0QkFDTCxTQUFTLEVBQUUsZUFBZTs0QkFDMUIsTUFBTSxFQUFFLElBQUk7NEJBQ1osTUFBTSxFQUFFLEVBQUU7eUJBQ1gsQ0FBQyxDQUFDO3dCQUNILHFCQUFNLGlCQUFpQixDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsRUFBQTs7d0JBQXJDLFNBQXFDLENBQUE7d0JBRXJDLHNCQUFPLE9BQU8sRUFBQTs7OztLQUNmO0lBRUssa0NBQVMsR0FBZixVQUFnQixFQUFVOzs7Ozs7d0JBQ2xCLGlCQUFpQixHQUFHLHVCQUFhLENBQUMsa0JBQVEsQ0FBQyxDQUFDO3dCQUVsQyxxQkFBTSxpQkFBaUIsQ0FBQyxPQUFPLENBQUMsRUFBRSxLQUFLLEVBQUUsRUFBRSxFQUFFLElBQUEsRUFBRSxFQUFFLENBQUMsRUFBQTs7d0JBQTVELE9BQU8sR0FBRyxTQUFrRDt3QkFDbEUsSUFBSSxDQUFDLE9BQU8sRUFBRTs0QkFDWixNQUFNLElBQUksa0JBQVEsQ0FBQywwQkFBMEIsRUFBRSxHQUFHLENBQUMsQ0FBQzt5QkFDckQ7d0JBRUQsT0FBTyxPQUFPLENBQUMsUUFBUSxDQUFDO3dCQUN4QixPQUFPLE9BQU8sQ0FBQyxNQUFNLENBQUM7d0JBRXRCLHNCQUFPLE9BQU8sRUFBQzs7OztLQUNoQjtJQUNILHFCQUFDO0FBQUQsQ0FBQyxBQWxDRCxJQWtDQztBQUVELGtCQUFlLGNBQWMsQ0FBQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVhY2hlclNlcnZpY2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFjaGVycy9zZXJ2aWNlcy9UZWFjaGVyU2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLHFDQUFnQztBQUNoQyxtQ0FBd0M7QUFDeEMsNkVBQXVEO0FBQ3ZELGlHQUEyRTtBQUUzRSxnRUFBMEM7QUFFMUM7SUFBQTtJQXVDQSxDQUFDO0lBdENPLCtCQUFNLEdBQVosVUFBYSxFQUFrRztZQUFqRyxFQUFFLFFBQUEsRUFBRSxTQUFTLGVBQUEsRUFBRSxVQUFVLGdCQUFBLEVBQUUsS0FBSyxXQUFBLEVBQUUsZUFBZSxxQkFBQSxFQUFFLE9BQU8sYUFBQSxFQUFFLElBQUksVUFBQSxFQUFFLFFBQVEsY0FBQTs7Ozs7Ozt3QkFDaEYsaUJBQWlCLEdBQUcsdUJBQWEsQ0FBQyxrQkFBUSxDQUFDLENBQUM7d0JBRTNCLHFCQUFNLGVBQUksQ0FBQyxRQUFRLEVBQUUsRUFBRSxDQUFDLEVBQUE7O3dCQUF6QyxjQUFjLEdBQUcsU0FBd0I7d0JBRXpDLE9BQU8sR0FBRyxpQkFBaUIsQ0FBQyxNQUFNLENBQUM7NEJBQ3ZDLFlBQVksRUFBRSxTQUFTOzRCQUN2QixJQUFJLEVBQUUsVUFBVTs0QkFDaEIsUUFBUSxFQUFFLE9BQU8sQ0FBQyxJQUFJOzRCQUN0QixRQUFRLEVBQUUsY0FBYzs0QkFDeEIsS0FBSyxPQUFBOzRCQUNMLFNBQVMsRUFBRSxlQUFlOzRCQUMxQixNQUFNLEVBQUUsSUFBSTs0QkFDWixNQUFNLEVBQUUsRUFBRTt5QkFDWCxDQUFDLENBQUM7d0JBQ0gscUJBQU0saUJBQWlCLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxFQUFBOzt3QkFBckMsU0FBcUMsQ0FBQTt3QkFFckMsVUFBVSxDQUFDOzs7Ozt3Q0FDSCxpQkFBaUIsR0FBRyxJQUFJLDJCQUFpQixFQUFFLENBQUM7d0NBQ2xELHFCQUFNLGlCQUFpQixDQUFDLGdCQUFnQixDQUFDLE9BQU8sQ0FBQyxFQUFBOzt3Q0FBakQsU0FBaUQsQ0FBQzs7Ozs2QkFDbkQsRUFBRSxJQUFJLENBQUMsQ0FBQTt3QkFFUixzQkFBTyxPQUFPLEVBQUE7Ozs7S0FDZjtJQUVLLGtDQUFTLEdBQWYsVUFBZ0IsRUFBVTs7Ozs7O3dCQUNsQixpQkFBaUIsR0FBRyx1QkFBYSxDQUFDLGtCQUFRLENBQUMsQ0FBQzt3QkFFbEMscUJBQU0saUJBQWlCLENBQUMsT0FBTyxDQUFDLEVBQUUsS0FBSyxFQUFFLEVBQUUsRUFBRSxJQUFBLEVBQUUsRUFBRSxDQUFDLEVBQUE7O3dCQUE1RCxPQUFPLEdBQUcsU0FBa0Q7d0JBQ2xFLElBQUksQ0FBQyxPQUFPLEVBQUU7NEJBQ1osTUFBTSxJQUFJLGtCQUFRLENBQUMsMEJBQTBCLEVBQUUsR0FBRyxDQUFDLENBQUM7eUJBQ3JEO3dCQUVELE9BQU8sT0FBTyxDQUFDLFFBQVEsQ0FBQzt3QkFDeEIsT0FBTyxPQUFPLENBQUMsTUFBTSxDQUFDO3dCQUV0QixzQkFBTyxPQUFPLEVBQUM7Ozs7S0FDaEI7SUFDSCxxQkFBQztBQUFELENBQUMsQUF2Q0QsSUF1Q0M7QUFFRCxrQkFBZSxjQUFjLENBQUMifQ==

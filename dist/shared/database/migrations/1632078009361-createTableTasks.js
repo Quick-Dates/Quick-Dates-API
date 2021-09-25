@@ -36,15 +36,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddColumnTeamIdInTableStudents1632023474256 = void 0;
-var AddColumnTeamIdInTableStudents1632023474256 = /** @class */ (function () {
-    function AddColumnTeamIdInTableStudents1632023474256() {
+exports.createTableTasks1632078009361 = void 0;
+var createTableTasks1632078009361 = /** @class */ (function () {
+    function createTableTasks1632078009361() {
     }
-    AddColumnTeamIdInTableStudents1632023474256.prototype.up = function (queryRunner) {
+    createTableTasks1632078009361.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"students\" ADD COLUMN \"id_team\" integer;\n      ALTER TABLE \"students\" ADD CONSTRAINT teamfk FOREIGN KEY (id_team) REFERENCES teams (id);\n      ")];
+                    case 0: return [4 /*yield*/, queryRunner.query("CREATE TABLE \"tasks\" (\n        \"id\" SERIAL NOT NULL PRIMARY KEY,\n        \"title\" VARCHAR NOT NULL,\n        \"startDate\" VARCHAR NOT NULL,\n        \"finalDate\" VARCHAR NOT NULL,\n        \"maximumScore\" INTEGER NOT NULL,\n        \"description\" VARCHAR NOT NULL,\n        \"startTime\" VARCHAR NOT NULL,\n        \"finalTime\" VARCHAR NOT NULL,\n        \"subject\" VARCHAR NOT NULL\n      );\n      CREATE TYPE \"situation_tasks_enum\" AS ENUM ('EM_ANDAMENTO', 'CONCLUIDA', 'ATRASADA');\n      CREATE TABLE \"status_tasks\" (\n        \"id\" SERIAL NOT NULL PRIMARY KEY,\n        \"situation\" \"situation_tasks_enum\" NOT NULL,\n        \"id_student\" uuid NOT NULL,\n        \"id_task\" INTEGER NOT NULL,\n        CONSTRAINT \"student_task_fk\" FOREIGN KEY (\"id_student\") REFERENCES \"students\" (id),\n        CONSTRAINT \"task_student_fk\" FOREIGN KEY (\"id_task\") REFERENCES \"tasks\" (id)\n      );\n      ")];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -52,11 +52,11 @@ var AddColumnTeamIdInTableStudents1632023474256 = /** @class */ (function () {
             });
         });
     };
-    AddColumnTeamIdInTableStudents1632023474256.prototype.down = function (queryRunner) {
+    createTableTasks1632078009361.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("\n      ALTER TABLE \"students\" DROP COLUMN \"id_team\";\n      ")];
+                    case 0: return [4 /*yield*/, queryRunner.query("\n    DROP TABLE IF EXISTS \"tasks\";\n    DROP TYPE IF EXISTS \"situation_tasks_enum\";\n    DROP TABLE IF EXISTS \"status_tasks\";")];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -64,7 +64,7 @@ var AddColumnTeamIdInTableStudents1632023474256 = /** @class */ (function () {
             });
         });
     };
-    return AddColumnTeamIdInTableStudents1632023474256;
+    return createTableTasks1632078009361;
 }());
-exports.AddColumnTeamIdInTableStudents1632023474256 = AddColumnTeamIdInTableStudents1632023474256;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMjAyMzQ3NDI1Ni1BZGRDb2x1bW5UZWFtSWRJblRhYmxlU3R1ZGVudHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvc2hhcmVkL2RhdGFiYXNlL21pZ3JhdGlvbnMvMTYzMjAyMzQ3NDI1Ni1BZGRDb2x1bW5UZWFtSWRJblRhYmxlU3R1ZGVudHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBRUE7SUFBQTtJQWNBLENBQUM7SUFaZ0Isd0RBQUUsR0FBZixVQUFnQixXQUF3Qjs7Ozs0QkFDdEMscUJBQU0sV0FBVyxDQUFDLEtBQUssQ0FBQyxxS0FFdkIsQ0FBQyxFQUFBOzt3QkFGRixTQUVFLENBQUM7Ozs7O0tBQ0o7SUFFWSwwREFBSSxHQUFqQixVQUFrQixXQUF3Qjs7Ozs0QkFDeEMscUJBQU0sV0FBVyxDQUFDLEtBQUssQ0FBQyxtRUFFdkIsQ0FBQyxFQUFBOzt3QkFGRixTQUVFLENBQUM7Ozs7O0tBQ0o7SUFFTCxrREFBQztBQUFELENBQUMsQUFkRCxJQWNDO0FBZFksa0dBQTJDIn0=
+exports.createTableTasks1632078009361 = createTableTasks1632078009361;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMjA3ODAwOTM2MS1jcmVhdGVUYWJsZVRhc2tzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL3NoYXJlZC9kYXRhYmFzZS9taWdyYXRpb25zLzE2MzIwNzgwMDkzNjEtY3JlYXRlVGFibGVUYXNrcy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFFQTtJQUFBO0lBaUNBLENBQUM7SUEvQmMsMENBQUUsR0FBZixVQUFnQixXQUF3Qjs7Ozs0QkFDdEMscUJBQU0sV0FBVyxDQUFDLEtBQUssQ0FBQyxtNkJBb0JyQixDQUFDLEVBQUE7O3dCQXBCSixTQW9CSSxDQUFDOzs7OztLQUNOO0lBRVksNENBQUksR0FBakIsVUFBa0IsV0FBd0I7Ozs7NEJBQ3hDLHFCQUFNLFdBQVcsQ0FBQyxLQUFLLENBQUMsc0lBR2EsQ0FBQyxFQUFBOzt3QkFIdEMsU0FHc0MsQ0FBQzs7Ozs7S0FDeEM7SUFFSCxvQ0FBQztBQUFELENBQUMsQUFqQ0QsSUFpQ0M7QUFqQ1ksc0VBQTZCIn0=

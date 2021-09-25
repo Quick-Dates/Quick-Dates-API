@@ -36,15 +36,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AddColumnTeamIdInTableStudents1632023474256 = void 0;
-var AddColumnTeamIdInTableStudents1632023474256 = /** @class */ (function () {
-    function AddColumnTeamIdInTableStudents1632023474256() {
+exports.addColumnIdTeacherInTableTasks1632260010572 = void 0;
+var addColumnIdTeacherInTableTasks1632260010572 = /** @class */ (function () {
+    function addColumnIdTeacherInTableTasks1632260010572() {
     }
-    AddColumnTeamIdInTableStudents1632023474256.prototype.up = function (queryRunner) {
+    addColumnIdTeacherInTableTasks1632260010572.prototype.up = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("ALTER TABLE \"students\" ADD COLUMN \"id_team\" integer;\n      ALTER TABLE \"students\" ADD CONSTRAINT teamfk FOREIGN KEY (id_team) REFERENCES teams (id);\n      ")];
+                    case 0: return [4 /*yield*/, queryRunner.query("\n    ALTER TABLE \"tasks\" ADD COLUMN \"id_teacher\" uuid;\n    ALTER TABLE \"tasks\" ADD CONSTRAINT \"teacher_task_fk\" FOREIGN KEY (id_teacher) REFERENCES \"teachers\" (id);\n    ")];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -52,11 +52,11 @@ var AddColumnTeamIdInTableStudents1632023474256 = /** @class */ (function () {
             });
         });
     };
-    AddColumnTeamIdInTableStudents1632023474256.prototype.down = function (queryRunner) {
+    addColumnIdTeacherInTableTasks1632260010572.prototype.down = function (queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, queryRunner.query("\n      ALTER TABLE \"students\" DROP COLUMN \"id_team\";\n      ")];
+                    case 0: return [4 /*yield*/, queryRunner.query("\n    ALTER TABLE \"tasks\" DROP COLUMN \"id_teacher\";\n    ")];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -64,7 +64,7 @@ var AddColumnTeamIdInTableStudents1632023474256 = /** @class */ (function () {
             });
         });
     };
-    return AddColumnTeamIdInTableStudents1632023474256;
+    return addColumnIdTeacherInTableTasks1632260010572;
 }());
-exports.AddColumnTeamIdInTableStudents1632023474256 = AddColumnTeamIdInTableStudents1632023474256;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMjAyMzQ3NDI1Ni1BZGRDb2x1bW5UZWFtSWRJblRhYmxlU3R1ZGVudHMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvc2hhcmVkL2RhdGFiYXNlL21pZ3JhdGlvbnMvMTYzMjAyMzQ3NDI1Ni1BZGRDb2x1bW5UZWFtSWRJblRhYmxlU3R1ZGVudHMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBRUE7SUFBQTtJQWNBLENBQUM7SUFaZ0Isd0RBQUUsR0FBZixVQUFnQixXQUF3Qjs7Ozs0QkFDdEMscUJBQU0sV0FBVyxDQUFDLEtBQUssQ0FBQyxxS0FFdkIsQ0FBQyxFQUFBOzt3QkFGRixTQUVFLENBQUM7Ozs7O0tBQ0o7SUFFWSwwREFBSSxHQUFqQixVQUFrQixXQUF3Qjs7Ozs0QkFDeEMscUJBQU0sV0FBVyxDQUFDLEtBQUssQ0FBQyxtRUFFdkIsQ0FBQyxFQUFBOzt3QkFGRixTQUVFLENBQUM7Ozs7O0tBQ0o7SUFFTCxrREFBQztBQUFELENBQUMsQUFkRCxJQWNDO0FBZFksa0dBQTJDIn0=
+exports.addColumnIdTeacherInTableTasks1632260010572 = addColumnIdTeacherInTableTasks1632260010572;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMTYzMjI2MDAxMDU3Mi1hZGRDb2x1bW5JZFRlYWNoZXJJblRhYmxlVGFza3MuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvc2hhcmVkL2RhdGFiYXNlL21pZ3JhdGlvbnMvMTYzMjI2MDAxMDU3Mi1hZGRDb2x1bW5JZFRlYWNoZXJJblRhYmxlVGFza3MudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBRUE7SUFBQTtJQWVBLENBQUM7SUFiYyx3REFBRSxHQUFmLFVBQWdCLFdBQXdCOzs7OzRCQUN0QyxxQkFBTSxXQUFXLENBQUMsS0FBSyxDQUFDLHdMQUd2QixDQUFDLEVBQUE7O3dCQUhGLFNBR0UsQ0FBQzs7Ozs7S0FDSjtJQUVZLDBEQUFJLEdBQWpCLFVBQWtCLFdBQXdCOzs7OzRCQUN4QyxxQkFBTSxXQUFXLENBQUMsS0FBSyxDQUFDLCtEQUV2QixDQUFDLEVBQUE7O3dCQUZGLFNBRUUsQ0FBQzs7Ozs7S0FDSjtJQUVILGtEQUFDO0FBQUQsQ0FBQyxBQWZELElBZUM7QUFmWSxrR0FBMkMifQ==
