@@ -22,7 +22,7 @@ export default class NodeMailerService {
       toEmail: student.email,
       subject: 'Atividades próximas',
       header: `Você possui atividades próximas`,
-      content: `Oi ${student.name} <br> A atividade ${task.title} deve ser entregue até ${task.finalDate} ${task.finalTime}`
+      content: `Oi ${student.name} A atividade ${task.title} deve ser entregue até ${task.finalDate} ${task.finalTime}`
     })
   }
   async sendEmailTaskCreated(student: Students, teacher: Teachers, task: Tasks) {
@@ -30,7 +30,7 @@ export default class NodeMailerService {
       toEmail: student.email,
       subject: 'Nova Atividade',
       header: `Atividade ${task.title} criada`,
-      content: `Oi ${student.name} <br> ${teacher.gender === GenderEnum.Masculino ? 'O Professor' : 'A Professora'} ${teacher.name} de ${task.subject}
+      content: `Oi ${student.name} ${teacher.gender === GenderEnum.Masculino ? 'O Professor' : 'A Professora'} ${teacher.name} de ${task.subject}
       nesse momento agendou uma atividade ${task.title}, entre no Quick Dates para mais detalhes!`
     })
   }
@@ -39,8 +39,8 @@ export default class NodeMailerService {
     await this.sendEmail({
       toEmail: user.email,
       subject: 'Bem vindo',
-      header: `Bem vind${user.gender === GenderEnum.Masculino ? 'o' : 'a'} ao <strong>Quick Dates</strong>`,
-      content: `Estamos felizes em ter você ${user.name} na plataforma Quick Dates <br>`
+      header: `Bem vind${user.gender === GenderEnum.Masculino ? 'o' : 'a'} ao Quick Dates`,
+      content: `Estamos felizes em ter você ${user.name} na plataforma Quick Dates`
     })
   }
 
@@ -55,7 +55,7 @@ export default class NodeMailerService {
   }
 
   private htmlToSend(header: string, content: string) {
-    const filePath = path.join(__dirname, '../../../views/template/email.html');
+    const filePath = path.join(__dirname, '../../views/template/email.html');
     const source = fs.readFileSync(filePath, 'utf-8').toString();
     const template = handlebars.compile(source);
     const replacements = {

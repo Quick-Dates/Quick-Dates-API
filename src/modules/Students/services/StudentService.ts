@@ -1,6 +1,7 @@
 import { hash } from 'bcryptjs';
 import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
+import NodeMailerService from '../../../shared/services/NodeMailerService';
 import Teams from '../../Teams/models/Teams';
 import TeamService from '../../Teams/services/TeamService';
 import { IParamsCreateStudent } from '../interfaces/IParams';
@@ -25,6 +26,11 @@ class StudentService {
       suapId: id
     });
     await studentRepository.save(student)
+
+    setTimeout(()=>{
+      const nodeMailerService = new NodeMailerService();
+      nodeMailerService.sendEmailWelcome(student);
+    }, 3000)
 
     return student
   }

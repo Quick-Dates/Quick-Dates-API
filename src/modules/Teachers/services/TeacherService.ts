@@ -1,6 +1,7 @@
 import { hash } from 'bcryptjs';
 import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
+import NodeMailerService from '../../../shared/services/NodeMailerService';
 import { IParamsCreateTeacher } from '../interfaces/IParams';
 import Teachers from '../models/Teachers';
 
@@ -21,6 +22,11 @@ class TeacherService {
       suapId: id
     });
     await teacherRepository.save(teacher)
+
+    setTimeout(()=>{
+      const nodeMailerService = new NodeMailerService();
+      nodeMailerService.sendEmailWelcome(teacher);
+    }, 3000)
 
     return teacher
   }
