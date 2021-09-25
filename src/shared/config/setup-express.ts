@@ -3,7 +3,7 @@ import cors from 'cors'
 
 export default (app: Express): void => {
   app.use(cors(
-    {origin: ['https://quickdates.tech', 'http://localhost:3000']}
+    {origin: ['https://quick-dates.vercel.app', 'http://localhost:3000']}
   ));
   app.use(json());
 }
