@@ -36,6 +36,7 @@ export default class NodeMailerService {
   }
 
   async sendEmailWelcome(user: Students | Teachers) {
+    console.log(user.email)
     await this.sendEmail({
       toEmail: user.email,
       subject: 'Bem vindo',
