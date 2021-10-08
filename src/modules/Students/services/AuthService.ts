@@ -74,11 +74,10 @@ class AuthService {
         name: student.name,
         profile: ProfileEnum.STUDENT,
         email: student.email,
-        course: student.course,
+        course: dataStudent.vinculo.curso.split(' ')[2],
       }, process.env.AUTH_SECRET as string, {
         expiresIn: '5d'
       });
-
       return {token};
     }
 
