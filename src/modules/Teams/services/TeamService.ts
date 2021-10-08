@@ -10,7 +10,7 @@ import CourseService from './CourseService';
 
 class TeamService {
 
-  async addStudentToTeam(idStudent: string, yearCreation: number, courseName: TypeCourseEnum, level: LevelCourseEnum) {
+  async addStudentToTeam(idStudent: string, yearCreation: number, courseName: TypeCourseEnum, level: LevelCourseEnum): Promise<Teams> {
     const teamRepository = getRepository(Teams);
     const courseRepository = getRepository(Courses);
     const studentRepository = getRepository(Students);
@@ -32,6 +32,7 @@ class TeamService {
     }
     student.id_team = team.id;
     await studentRepository.update({ id: student.id }, student);
+    return team;
   }
 
   async create({ id_course, yearCreation }: ITeam): Promise<Teams> {

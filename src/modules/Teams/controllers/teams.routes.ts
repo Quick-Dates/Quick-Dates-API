@@ -12,8 +12,8 @@ teamsRouter.put('/student/:id', student, async (request, response) => {
   const { id } = request.params;
   const { yearCreation, courseName, level } = request.body;
   const teamService = new TeamService();
-  await teamService.addStudentToTeam(id, yearCreation, courseName, level);
-  return response.status(201).send();
+  const team = await teamService.addStudentToTeam(id, yearCreation, courseName, level);
+  return response.json(team);
 });
 
 teamsRouter.get('/courses', teacher, async (request, response) => {
