@@ -68,13 +68,20 @@ class AuthService {
       await studentRepository.update(student.id, {...student});
     }
     if(student) {
+      const course = dataStudent.vinculo.curso
+      .split(' ')[2]
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, "")
+      .toUpperCase();
+
+      console.log(course);
       const token = sign({
         tokenSuap,
         id: student.id,
         name: student.name,
         profile: ProfileEnum.STUDENT,
         email: student.email,
-        course: dataStudent.vinculo.curso.split(' ')[2],
+        course
       }, process.env.AUTH_SECRET as string, {
         expiresIn: '5d'
       });
