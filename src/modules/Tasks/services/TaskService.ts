@@ -9,15 +9,23 @@ import Tasks from "../models/Tasks";
 import StatusTaskService from "./StatusTaskService";
 
 class TaskService {
-  async create(idTeam: number, { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title, id_teacher }: ITask): Promise<Tasks> { //
+  async create(idTeam: number, { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title, id_teacher }: ITask)
+  : Promise<{task: Tasks, teacher:Teachers}> {
     const taskRepository = getRepository(Tasks);
     const studentRepository = getRepository(Students);
     const teacherRepository = getRepository(Teachers);
+    const teamRepository = getRepository(Teams);
 
     const teacher = await teacherRepository.findOne({ where: { id: id_teacher } });
 
     if (!teacher) {
       throw new AppError('Professor não encontrado', 404);
+    }
+
+    const team = await teamRepository.findOne({ where: { id: idTeam } });
+
+    if (!team) {
+      throw new AppError('Turma não encontrada', 404);
     }
 
     if (maximumScore < 0 || maximumScore > 10) {
@@ -37,25 +45,13 @@ class TaskService {
       subject,
       title,
       teacher: teacher,
-      id_teacher: teacher.id
+      id_teacher: teacher.id,
+      id_team: team.id
     });
 
 
     await taskRepository.save(task);
-
-    const studentsByTeam = await studentRepository.find({ where: { id_team: idTeam } });
-    const statusTaskService = new StatusTaskService();
-    studentsByTeam.forEach(async student => {
-      await statusTaskService.create({
-        id_student: student.id,
-        id_task: task.id
-      });
-      setTimeout(async ()=>{
-        const nodeMailerService = new NodeMailerService();
-        await nodeMailerService.sendEmailTaskCreated(student, teacher, task);
-      }, 3000)
-    });
-    return task;
+    return {task, teacher};
   }
 
   private validateDates(startDate: string, startTime: string, finalDate: string, finalTime: string): boolean {
@@ -162,6 +158,7 @@ class TaskService {
 
     const statusTaskService = new StatusTaskService();
     const tasks = await statusTaskService.indexTasksByStudent(idStudent) as any;
+    console.log(tasks);
 
     return tasks;
   }

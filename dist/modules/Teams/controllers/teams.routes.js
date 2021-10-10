@@ -43,21 +43,40 @@ var express_1 = require("express");
 var ensureAuthenticated_1 = __importDefault(require("../../../shared/middlewares/ensureAuthenticated"));
 var student_1 = __importDefault(require("../../../shared/middlewares/student"));
 var teacher_1 = __importDefault(require("../../../shared/middlewares/teacher"));
+var StatusTaskService_1 = __importDefault(require("../../Tasks/services/StatusTaskService"));
+var TaskService_1 = __importDefault(require("../../Tasks/services/TaskService"));
 var CourseService_1 = __importDefault(require("../services/CourseService"));
 var TeamService_1 = __importDefault(require("../services/TeamService"));
 var teamsRouter = express_1.Router();
 teamsRouter.use(ensureAuthenticated_1.default);
 teamsRouter.put('/student/:id', student_1.default, function (request, response) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, _a, yearCreation, courseName, level, teamService, team;
+    var id, _a, yearCreation, courseName, level, teamService, taskService, statusTaskService, team;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 id = request.params.id;
                 _a = request.body, yearCreation = _a.yearCreation, courseName = _a.courseName, level = _a.level;
                 teamService = new TeamService_1.default();
+                taskService = new TaskService_1.default();
+                statusTaskService = new StatusTaskService_1.default();
                 return [4 /*yield*/, teamService.addStudentToTeam(id, yearCreation, courseName, level)];
             case 1:
                 team = _b.sent();
+                setTimeout(function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var tasks;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, taskService.indexByTeam(team.id)];
+                            case 1:
+                                tasks = _a.sent();
+                                console.log(tasks);
+                                return [4 /*yield*/, statusTaskService.createTasks(id, tasks)];
+                            case 2:
+                                _a.sent();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); }, 1000);
                 return [2 /*return*/, response.json(team)];
         }
     });
@@ -90,4 +109,4 @@ teamsRouter.get('/:idCurso', teacher_1.default, function (request, response) { r
     });
 }); });
 exports.default = teamsRouter;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGVhbXMucm91dGVzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL21vZHVsZXMvVGVhbXMvY29udHJvbGxlcnMvdGVhbXMucm91dGVzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQWlDO0FBQ2pDLHdHQUFrRjtBQUNsRixnRkFBMEQ7QUFDMUQsZ0ZBQTBEO0FBQzFELDRFQUFzRDtBQUN0RCx3RUFBa0Q7QUFFbEQsSUFBTSxXQUFXLEdBQUcsZ0JBQU0sRUFBRSxDQUFDO0FBQzdCLFdBQVcsQ0FBQyxHQUFHLENBQUMsNkJBQW1CLENBQUMsQ0FBQztBQUVyQyxXQUFXLENBQUMsR0FBRyxDQUFDLGNBQWMsRUFBRSxpQkFBTyxFQUFFLFVBQU8sT0FBTyxFQUFFLFFBQVE7Ozs7O2dCQUN2RCxFQUFFLEdBQUssT0FBTyxDQUFDLE1BQU0sR0FBbkIsQ0FBb0I7Z0JBQ3hCLEtBQXNDLE9BQU8sQ0FBQyxJQUFJLEVBQWhELFlBQVksa0JBQUEsRUFBRSxVQUFVLGdCQUFBLEVBQUUsS0FBSyxXQUFBLENBQWtCO2dCQUNuRCxXQUFXLEdBQUcsSUFBSSxxQkFBVyxFQUFFLENBQUM7Z0JBQ3pCLHFCQUFNLFdBQVcsQ0FBQyxnQkFBZ0IsQ0FBQyxFQUFFLEVBQUUsWUFBWSxFQUFFLFVBQVUsRUFBRSxLQUFLLENBQUMsRUFBQTs7Z0JBQTlFLElBQUksR0FBRyxTQUF1RTtnQkFDcEYsc0JBQU8sUUFBUSxDQUFDLElBQUksQ0FBQyxJQUFJLENBQUMsRUFBQzs7O0tBQzVCLENBQUMsQ0FBQztBQUVILFdBQVcsQ0FBQyxHQUFHLENBQUMsVUFBVSxFQUFFLGlCQUFPLEVBQUUsVUFBTyxPQUFPLEVBQUUsUUFBUTs7Ozs7Z0JBQ3JELGFBQWEsR0FBRyxJQUFJLHVCQUFhLEVBQUUsQ0FBQztnQkFDMUIscUJBQU0sYUFBYSxDQUFDLEtBQUssRUFBRSxFQUFBOztnQkFBckMsT0FBTyxHQUFHLFNBQTJCO2dCQUMzQyxzQkFBTyxRQUFRLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxFQUFDOzs7S0FDL0IsQ0FBQyxDQUFDO0FBQ0gsV0FBVyxDQUFDLEdBQUcsQ0FBQyxXQUFXLEVBQUUsaUJBQU8sRUFBRSxVQUFPLE9BQU8sRUFBRSxRQUFROzs7OztnQkFDcEQsT0FBTyxHQUFLLE9BQU8sQ0FBQyxNQUFNLFFBQW5CLENBQW9CO2dCQUM3QixXQUFXLEdBQUcsSUFBSSxxQkFBVyxFQUFFLENBQUM7Z0JBQ3hCLHFCQUFNLFdBQVcsQ0FBQyxnQkFBZ0IsQ0FBQyxDQUFDLE9BQU8sQ0FBQyxFQUFBOztnQkFBcEQsS0FBSyxHQUFHLFNBQTRDO2dCQUMxRCxzQkFBTyxRQUFRLENBQUMsSUFBSSxDQUFDLEtBQUssQ0FBQyxFQUFDOzs7S0FDN0IsQ0FBQyxDQUFDO0FBRUgsa0JBQWUsV0FBVyxDQUFDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidGVhbXMucm91dGVzLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL21vZHVsZXMvVGVhbXMvY29udHJvbGxlcnMvdGVhbXMucm91dGVzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQWlDO0FBQ2pDLHdHQUFrRjtBQUNsRixnRkFBMEQ7QUFDMUQsZ0ZBQTBEO0FBQzFELDZGQUF1RTtBQUN2RSxpRkFBMkQ7QUFDM0QsNEVBQXNEO0FBQ3RELHdFQUFrRDtBQUVsRCxJQUFNLFdBQVcsR0FBRyxnQkFBTSxFQUFFLENBQUM7QUFDN0IsV0FBVyxDQUFDLEdBQUcsQ0FBQyw2QkFBbUIsQ0FBQyxDQUFDO0FBRXJDLFdBQVcsQ0FBQyxHQUFHLENBQUMsY0FBYyxFQUFFLGlCQUFPLEVBQUUsVUFBTyxPQUFPLEVBQUUsUUFBUTs7Ozs7Z0JBQ3ZELEVBQUUsR0FBSyxPQUFPLENBQUMsTUFBTSxHQUFuQixDQUFvQjtnQkFDeEIsS0FBc0MsT0FBTyxDQUFDLElBQUksRUFBaEQsWUFBWSxrQkFBQSxFQUFFLFVBQVUsZ0JBQUEsRUFBRSxLQUFLLFdBQUEsQ0FBa0I7Z0JBQ25ELFdBQVcsR0FBRyxJQUFJLHFCQUFXLEVBQUUsQ0FBQztnQkFDaEMsV0FBVyxHQUFHLElBQUkscUJBQVcsRUFBRSxDQUFDO2dCQUNoQyxpQkFBaUIsR0FBRyxJQUFJLDJCQUFpQixFQUFFLENBQUM7Z0JBQ3JDLHFCQUFNLFdBQVcsQ0FBQyxnQkFBZ0IsQ0FBQyxFQUFFLEVBQUUsWUFBWSxFQUFFLFVBQVUsRUFBRSxLQUFLLENBQUMsRUFBQTs7Z0JBQTlFLElBQUksR0FBRyxTQUF1RTtnQkFDcEYsVUFBVSxDQUFDOzs7O29DQUNLLHFCQUFNLFdBQVcsQ0FBQyxXQUFXLENBQUMsSUFBSSxDQUFDLEVBQUUsQ0FBQyxFQUFBOztnQ0FBOUMsS0FBSyxHQUFHLFNBQXNDO2dDQUNwRCxPQUFPLENBQUMsR0FBRyxDQUFDLEtBQUssQ0FBQyxDQUFDO2dDQUNuQixxQkFBTSxpQkFBaUIsQ0FBQyxXQUFXLENBQUMsRUFBRSxFQUFFLEtBQUssQ0FBQyxFQUFBOztnQ0FBOUMsU0FBOEMsQ0FBQzs7OztxQkFDaEQsRUFBRSxJQUFJLENBQUMsQ0FBQztnQkFDVCxzQkFBTyxRQUFRLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxFQUFDOzs7S0FDNUIsQ0FBQyxDQUFDO0FBRUgsV0FBVyxDQUFDLEdBQUcsQ0FBQyxVQUFVLEVBQUUsaUJBQU8sRUFBRSxVQUFPLE9BQU8sRUFBRSxRQUFROzs7OztnQkFDckQsYUFBYSxHQUFHLElBQUksdUJBQWEsRUFBRSxDQUFDO2dCQUMxQixxQkFBTSxhQUFhLENBQUMsS0FBSyxFQUFFLEVBQUE7O2dCQUFyQyxPQUFPLEdBQUcsU0FBMkI7Z0JBQzNDLHNCQUFPLFFBQVEsQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLEVBQUM7OztLQUMvQixDQUFDLENBQUM7QUFDSCxXQUFXLENBQUMsR0FBRyxDQUFDLFdBQVcsRUFBRSxpQkFBTyxFQUFFLFVBQU8sT0FBTyxFQUFFLFFBQVE7Ozs7O2dCQUNwRCxPQUFPLEdBQUssT0FBTyxDQUFDLE1BQU0sUUFBbkIsQ0FBb0I7Z0JBQzdCLFdBQVcsR0FBRyxJQUFJLHFCQUFXLEVBQUUsQ0FBQztnQkFDeEIscUJBQU0sV0FBVyxDQUFDLGdCQUFnQixDQUFDLENBQUMsT0FBTyxDQUFDLEVBQUE7O2dCQUFwRCxLQUFLLEdBQUcsU0FBNEM7Z0JBQzFELHNCQUFPLFFBQVEsQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLEVBQUM7OztLQUM3QixDQUFDLENBQUM7QUFFSCxrQkFBZSxXQUFXLENBQUMifQ==

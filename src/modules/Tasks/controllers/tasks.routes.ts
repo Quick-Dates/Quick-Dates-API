@@ -6,9 +6,7 @@ import teacher from '../../../shared/middlewares/teacher';
 import Tasks from '../models/Tasks';
 import StatusTaskService from '../services/StatusTaskService';
 import TaskService from '../services/TaskService';
-import path from 'path';
-import fs from 'fs';
-import handlebars from 'handlebars';
+import TeamService from '../../Teams/services/TeamService';
 
 const tasksRouter = Router();
 
@@ -20,11 +18,16 @@ tasksRouter.post('/team/:id', teacher, async (request, response) => {
   const { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title } = request.body;
 
   const taskService = new TaskService();
+  const teamService = new TeamService();
+  const statusTaskService = new StatusTaskService();
 
-  await taskService.create(+id, {
+
+ const {task, teacher} = await taskService.create(+id, {
     id_teacher, description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title
   });
 
+  const studentsByTeam = await teamService.indexStudentsByTeam(+id) ;
+  await statusTaskService.createTaskByStudents(studentsByTeam, task, teacher);
   return response.status(201).send();
 });
 

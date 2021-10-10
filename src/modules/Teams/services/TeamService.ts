@@ -137,6 +137,12 @@ class TeamService {
 
     return team
   }
+
+  indexStudentsByTeam(id: number): Promise<Students[]> {
+    const studentRepository = getRepository(Students);
+
+    return studentRepository.find({ where: { id_team: id } })
+  }
 }
 
 export default TeamService;

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var Students_1 = __importDefault(require("../../Students/models/Students"));
+var Tasks_1 = __importDefault(require("../../Tasks/models/Tasks"));
 var Courses_1 = __importDefault(require("./Courses"));
 var Teams = /** @class */ (function () {
     function Teams() {
@@ -39,10 +40,14 @@ var Teams = /** @class */ (function () {
         typeorm_1.OneToMany(function () { return Students_1.default; }, function (students) { return students.team; }),
         __metadata("design:type", Array)
     ], Teams.prototype, "students", void 0);
+    __decorate([
+        typeorm_1.OneToMany(function () { return Tasks_1.default; }, function (tasks) { return tasks.team; }, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
+        __metadata("design:type", Array)
+    ], Teams.prototype, "tasks", void 0);
     Teams = __decorate([
         typeorm_1.Entity('teams')
     ], Teams);
     return Teams;
 }());
 exports.default = Teams;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVhbXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFtcy9tb2RlbHMvVGVhbXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBNkc7QUFDN0csNEVBQXNEO0FBQ3RELHNEQUFnQztBQUdoQztJQUFBO0lBa0JBLENBQUM7SUFoQkM7UUFEQyxnQ0FBc0IsRUFBRTs7cUNBQ2Q7SUFHWDtRQURDLGdCQUFNLEVBQUU7OytDQUNZO0lBS3JCO1FBREMsZ0JBQU0sRUFBRTs7NENBQ1M7SUFJbEI7UUFGQyxtQkFBUyxDQUFDLGNBQU0sT0FBQSxpQkFBTyxFQUFQLENBQU8sQ0FBQztRQUN4QixvQkFBVSxDQUFDLEVBQUUsSUFBSSxFQUFFLFdBQVcsRUFBRSxvQkFBb0IsRUFBRSxJQUFJLEVBQUUsQ0FBQztrQ0FDdEQsaUJBQU87eUNBQUM7SUFHaEI7UUFEQyxtQkFBUyxDQUFDLGNBQU0sT0FBQSxrQkFBUSxFQUFSLENBQVEsRUFBRSxVQUFDLFFBQVEsSUFBSyxPQUFBLFFBQVEsQ0FBQyxJQUFJLEVBQWIsQ0FBYSxDQUFDOzsyQ0FDbEM7SUFqQmpCLEtBQUs7UUFEVixnQkFBTSxDQUFDLE9BQU8sQ0FBQztPQUNWLEtBQUssQ0FrQlY7SUFBRCxZQUFDO0NBQUEsQUFsQkQsSUFrQkM7QUFFRCxrQkFBZSxLQUFLLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVhbXMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFtcy9tb2RlbHMvVGVhbXMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBNkc7QUFDN0csNEVBQXNEO0FBQ3RELG1FQUE2QztBQUM3QyxzREFBZ0M7QUFHaEM7SUFBQTtJQXFCQSxDQUFDO0lBbkJDO1FBREMsZ0NBQXNCLEVBQUU7O3FDQUNkO0lBR1g7UUFEQyxnQkFBTSxFQUFFOzsrQ0FDWTtJQUtyQjtRQURDLGdCQUFNLEVBQUU7OzRDQUNTO0lBSWxCO1FBRkMsbUJBQVMsQ0FBQyxjQUFNLE9BQUEsaUJBQU8sRUFBUCxDQUFPLENBQUM7UUFDeEIsb0JBQVUsQ0FBQyxFQUFFLElBQUksRUFBRSxXQUFXLEVBQUUsb0JBQW9CLEVBQUUsSUFBSSxFQUFFLENBQUM7a0NBQ3RELGlCQUFPO3lDQUFDO0lBR2hCO1FBREMsbUJBQVMsQ0FBQyxjQUFNLE9BQUEsa0JBQVEsRUFBUixDQUFRLEVBQUUsVUFBQyxRQUFRLElBQUssT0FBQSxRQUFRLENBQUMsSUFBSSxFQUFiLENBQWEsQ0FBQzs7MkNBQ2xDO0lBR3JCO1FBREMsbUJBQVMsQ0FBQyxjQUFNLE9BQUEsZUFBSyxFQUFMLENBQUssRUFBRSxVQUFDLEtBQUssSUFBSyxPQUFBLEtBQUssQ0FBQyxJQUFJLEVBQVYsQ0FBVSxFQUFFLEVBQUMsUUFBUSxFQUFFLFNBQVMsRUFBRSxRQUFRLEVBQUUsU0FBUyxFQUFDLENBQUM7O3dDQUMzRTtJQXBCWCxLQUFLO1FBRFYsZ0JBQU0sQ0FBQyxPQUFPLENBQUM7T0FDVixLQUFLLENBcUJWO0lBQUQsWUFBQztDQUFBLEFBckJELElBcUJDO0FBRUQsa0JBQWUsS0FBSyxDQUFDIn0=
