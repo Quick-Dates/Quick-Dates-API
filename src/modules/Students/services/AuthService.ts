@@ -74,7 +74,6 @@ class AuthService {
       .replace(/[\u0300-\u036f]/g, "")
       .toUpperCase();
 
-      console.log(course);
       const token = sign({
         tokenSuap,
         id: student.id,
