@@ -10,7 +10,7 @@ import StatusTaskService from "./StatusTaskService";
 
 class TaskService {
   async create(idTeam: number, { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title, id_teacher }: ITask)
-  : Promise<{task: Tasks, teacher:Teachers}> {
+    : Promise<{ task: Tasks, teacher: Teachers }> {
     const taskRepository = getRepository(Tasks);
     const studentRepository = getRepository(Students);
     const teacherRepository = getRepository(Teachers);
@@ -31,7 +31,7 @@ class TaskService {
     if (maximumScore < 0 || maximumScore > 10) {
       throw new AppError("Pontuação máxima inválida", 400);
     }
-    if(!this.validateDates(startDate, startTime, finalDate, finalTime)){
+    if (!this.validateDates(startDate, startTime, finalDate, finalTime)) {
       throw new AppError("Datas inválidas", 400);
     }
 
@@ -51,16 +51,16 @@ class TaskService {
 
 
     await taskRepository.save(task);
-    return {task, teacher};
+    return { task, teacher };
   }
 
   private validateDates(startDate: string, startTime: string, finalDate: string, finalTime: string): boolean {
     const startDateTime = new Date(`${startDate} ${startTime}`);
     const finalDateTime = new Date(`${finalDate} ${finalTime}`);
-    if(finalDateTime < startDateTime){
+    if (finalDateTime < startDateTime) {
       return false;
     }
-    if(startDateTime < new Date()){
+    if (startDateTime < new Date()) {
       return false;
     }
     return true;
@@ -127,7 +127,7 @@ class TaskService {
       throw new AppError("Professor não encontrado", 404);
     }
 
-    const tasks = await taskRepository.find({ where: { id_teacher: teacher.id } });
+    const tasks = await taskRepository.find({ where: { id_teacher: teacher.id }, join: { alias: "task", leftJoinAndSelect: { team: "task.team" } } });
 
     return tasks;
   }
@@ -181,7 +181,7 @@ class TaskService {
 
     const statusTaskService = new StatusTaskService();
 
-    task.situation = await statusTaskService.indexSituation(idTask , idStudent) as any;
+    task.situation = await statusTaskService.indexSituation(idTask, idStudent) as any;
 
     delete task.id_teacher;
 
@@ -204,7 +204,7 @@ class TaskService {
       throw new AppError("Tarefa não encontrada", 404);
     }
 
-    if(teacher.id !== task.id_teacher) {
+    if (teacher.id !== task.id_teacher) {
       throw new AppError("Você não tem permissão para visualizar essa tarefa", 401);
     }
 
