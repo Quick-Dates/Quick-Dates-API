@@ -127,7 +127,7 @@ class TaskService {
       throw new AppError("Professor não encontrado", 404);
     }
 
-    const tasks = await taskRepository.find({ where: { id_teacher: teacher.id }, join: { alias: "task", leftJoinAndSelect: { team: "task.team" } } });
+    const tasks = await taskRepository.find({ where: { id_teacher: teacher.id }, join: { alias: "task", leftJoinAndSelect: { team: "task.team", course: "team.course" } } });
 
     return tasks;
   }
