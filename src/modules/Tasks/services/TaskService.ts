@@ -209,6 +209,10 @@ class TaskService {
 
     delete task.id_teacher;
 
+    const yearCurrent = new Date().getFullYear();
+
+    task.team.name = `${(yearCurrent - task.team.yearCreation) + 1}° ano`;
+
     return task;
   }
 
