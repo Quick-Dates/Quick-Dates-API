@@ -150,7 +150,7 @@ class TaskService {
   async indexTasksByStudent(idStudent: string): Promise<Tasks[]> {
     const studentRepository = getRepository(Students);
 
-    const student = await studentRepository.findOne({ where: { id: idStudent } });
+    const student = await studentRepository.findOne({ where: { id: idStudent }, join: { alias: "task", leftJoinAndSelect: { team: "task.team", course: "team.course" } } });
 
     if (!student) {
       throw new AppError("Aluno não encontrado", 404);
@@ -158,7 +158,6 @@ class TaskService {
 
     const statusTaskService = new StatusTaskService();
     const tasks = await statusTaskService.indexTasksByStudent(idStudent) as any;
-    console.log(tasks);
 
     return tasks;
   }
@@ -198,7 +197,7 @@ class TaskService {
       throw new AppError("Professor não encontrado", 404);
     }
 
-    let task = await taskRepository.findOne({ where: { id: idTask, id_teacher: idTeacher } });
+    let task = await taskRepository.findOne({ where: { id: idTask, id_teacher: idTeacher }, join: { alias: "task", leftJoinAndSelect: { team: "task.team", course: "team.course" } } });
 
     if (!task) {
       throw new AppError("Tarefa não encontrada", 404);
