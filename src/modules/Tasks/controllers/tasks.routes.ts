@@ -7,6 +7,7 @@ import Tasks from '../models/Tasks';
 import StatusTaskService from '../services/StatusTaskService';
 import TaskService from '../services/TaskService';
 import TeamService from '../../Teams/services/TeamService';
+import StudentService from '../../Students/services/StudentService';
 
 const tasksRouter = Router();
 
@@ -79,8 +80,11 @@ tasksRouter.get('/teacher', teacher, async (request, response) => {
 tasksRouter.get('/student', student, async (request, response) => {
   const idStudent = request.user.id;
   const taskService = new TaskService();
+  const studentService = new StudentService();
 
-  const tasks = await taskService.indexTasksByStudent(idStudent);
+  const student = await studentService.indexById(idStudent);
+
+  const tasks = await taskService.indexByTeam(student.id_team as number);
   return response.json(tasks);
 });
 
@@ -100,20 +104,6 @@ tasksRouter.get('/:id/student', student, async (request, response) => {
 
   const tasks = await taskService.indexByIdWithStudent(id, idStudent);
   return response.json(tasks);
-});
-
-tasksRouter.post('/email', student, async (request, response) => {
-  const message = request.body.message;
-  console.log(process.env.EMAIL);
-  console.log(request.user.email);
- await transporter.sendMail({
-    from: `Quick Dates <${process.env.EMAIL}>`,
-    to: `${request.user.email}`,
-    subject: 'Quick Dates - Tarefa',
-    text: message,
-    html: `<h1>${message}</h1>`
-  })
-  return response.json({ message });
 });
 
 export default tasksRouter;

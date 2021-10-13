@@ -87,7 +87,6 @@ class TeamService {
       .where("teams.yearCreation <= :yearCurrent AND teams.yearCreation >= :yearCurrent - 3", { yearCurrent })
       .andWhere("teams.id_course = :id_course", { id_course })
       .execute();
-    console.log(teams)
 
     const teamsNotDuplicate: Teams[] = teams.filter((team, index) => teams.findIndex(t => t.id === team.id) === index);
 
