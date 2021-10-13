@@ -83,8 +83,7 @@ tasksRouter.get('/student', student, async (request, response) => {
   const studentService = new StudentService();
 
   const student = await studentService.indexById(idStudent);
-
-  const tasks = await taskService.indexByTeam(student.id_team as number);
+  const tasks = await taskService.indexByTeam(student.team.id);
   return response.json(tasks);
 });
 
