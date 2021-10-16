@@ -9,6 +9,7 @@ import setupError from './shared/errors/setupError';
 import setupExpress from './shared/config/setup-express';
 import setupRoutes from './shared/routes/setup-routes';
 import setupSwagger from './shared/config/setup-swagger';
+import prototypes from './shared/utils/protorypes';
 
 
 createConnection();
@@ -18,5 +19,6 @@ setupExpress(app);
 setupSwagger(app);
 setupRoutes(app);
 setupError(app);
+prototypes();
 
 export default app;

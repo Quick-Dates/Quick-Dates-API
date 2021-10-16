@@ -132,6 +132,34 @@ class TaskService {
     return tasks;
   }
 
+  async indexTasksWeek(student: Students): Promise<Tasks[]> {
+    const taskRepository = getRepository(Tasks);
+    const teamRepository = getRepository(Teams);
+
+    const team = await teamRepository.findOne({ where: { id: student.team.id } });
+
+    if (!team) {
+      throw new AppError("Turma não encontrada", 404);
+    }
+
+    const startDateCurrentWeek = new Date()
+    .toLocaleDateString()
+    .split('/')
+    .changePosition(1, 0)
+    .reverse()
+    .join('-')
+
+    const finalDateCurrentWeek = new Date(new Date().setDate(new Date().getDate() + 7))
+    .toLocaleDateString()
+    .split('/')
+    .changePosition(1, 0)
+    .reverse()
+    .join('-')
+
+    const tasks = await taskRepository.find({ where: { id_team: team.id } });
+
+    return tasks;
+  }
   async indexByTeam(idTeam: number): Promise<Tasks[]> {
     const taskRepository = getRepository(Tasks);
     const teamRepository = getRepository(Teams);

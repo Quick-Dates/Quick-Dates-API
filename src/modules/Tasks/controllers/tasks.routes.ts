@@ -105,4 +105,14 @@ tasksRouter.get('/:id/student', student, async (request, response) => {
   return response.json(tasks);
 });
 
+tasksRouter.get('/statistics-week', student, async (request, response) => {
+  const idStudent = request.user.id;
+  const taskService = new TaskService();
+  const studentService = new StudentService();
+
+  const student = await studentService.indexById(idStudent);
+  const tasks = await taskService.indexTasksWeek(student);
+  return response.json(tasks);
+});
+
 export default tasksRouter;
