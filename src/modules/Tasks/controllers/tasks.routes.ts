@@ -112,7 +112,8 @@ tasksRouter.get('/statistics-week', student, async (request, response) => {
 
   const student = await studentService.indexById(idStudent);
   const tasks = await taskService.indexTasksWeek(student);
-  return response.json(tasks);
+  const statisticsWeekTasks = taskService.statisticsWeekTasks(tasks);
+  return response.json(statisticsWeekTasks);
 });
 
 export default tasksRouter;

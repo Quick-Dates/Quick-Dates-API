@@ -1,9 +1,11 @@
-import { getRepository } from "typeorm";
+import { Between, Connection, getRepository } from "typeorm";
 import AppError from "../../../shared/errors/AppError";
 import NodeMailerService from "../../../shared/services/NodeMailerService";
 import Students from "../../Students/models/Students";
 import Teachers from "../../Teachers/models/Teachers";
 import Teams from "../../Teams/models/Teams";
+import { SituationTaskEnum } from "../enuns/SituationTaskEnum";
+import { IStatisticsTaskWeek } from "../interfaces/IStatisticsTaskWeek";
 import { ITask } from "../interfaces/ITask";
 import Tasks from "../models/Tasks";
 import StatusTaskService from "./StatusTaskService";
@@ -143,22 +145,47 @@ class TaskService {
     }
 
     const startDateCurrentWeek = new Date()
-    .toLocaleDateString()
-    .split('/')
-    .changePosition(1, 0)
-    .reverse()
-    .join('-')
+      .toLocaleDateString()
 
     const finalDateCurrentWeek = new Date(new Date().setDate(new Date().getDate() + 7))
-    .toLocaleDateString()
-    .split('/')
-    .changePosition(1, 0)
-    .reverse()
-    .join('-')
+      .toLocaleDateString()
 
-    const tasks = await taskRepository.find({ where: { id_team: team.id } });
+    const tasks = await taskRepository.find(
+      {
+        relations: ["statusTasks"],
+        where:
+        {
+          id_team: team.id,
+          finalDate: Between(startDateCurrentWeek, finalDateCurrentWeek),
+        }
+      });
+
+      tasks.forEach(task => {
+        task.statusTasks?.forEach(statusTask => {
+          if (statusTask.id_student === student.id) {
+            task.situation = statusTask.situation;
+          }
+        });
+        delete task.statusTasks;
+        delete task.id_teacher;
+      });
 
     return tasks;
+  }
+
+  statisticsWeekTasks(Tasks: Tasks[]): IStatisticsTaskWeek {
+    const length = Tasks.length;
+    const completed = Tasks.filter(task => task.situation === SituationTaskEnum.CONCLUIDA).length
+    const inProgress = Tasks.filter(task => task.situation === SituationTaskEnum.EM_ANDAMENTO).length
+    const late = Tasks.filter(task => task.situation === SituationTaskEnum.ATRASADA).length
+    const successPercentage = (completed / length) * 100
+    return {
+      length: length,
+      completed,
+      inProgress,
+      late,
+      successPercentage
+    }
   }
   async indexByTeam(idTeam: number): Promise<Tasks[]> {
     const taskRepository = getRepository(Tasks);

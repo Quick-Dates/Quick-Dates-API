@@ -50,7 +50,7 @@ class Tasks {
   team: Teams;
 
   @OneToMany(() => StatusTasks, (statusTask) => statusTask.task, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
-  statusTasks: StatusTasks[];
+  statusTasks?: StatusTasks[];
 }
 
 export default Tasks;
