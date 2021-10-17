@@ -143,6 +143,29 @@ export const tasksByStudentPath = {
     }
   },
 }
+export const tasksStatistics = {
+  get: {
+    tags: ['Tasks'],
+    summary: 'Detalhar estatíscas do desempenho do aluno na semana',
+    security: [
+      {
+        bearerAuth: []
+      }
+    ],
+    responses: {
+      200: {
+        description: 'Sucesso',
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/schemas/taskResponseStatistics'
+            }
+          }
+        }
+      }
+    }
+  },
+}
 
 export const tasksByIdByStudentPath = {
   get: {

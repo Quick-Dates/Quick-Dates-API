@@ -112,3 +112,23 @@ export const taskSituationBodySchema = {
     }
   }
 }
+export const taskResponseStatisticsSchema = {
+  type: 'object',
+  properties: {
+    length: {
+      type: 'integer',
+    },
+    completed: {
+      type: 'integer',
+    },
+    inProgress: {
+      type: 'integer',
+    },
+    late: {
+      type: 'integer',
+    },
+    successPercentage: {
+      type: 'integer',
+    },
+  }
+}

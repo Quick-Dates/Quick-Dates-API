@@ -1,10 +1,10 @@
 import { studentGradesPath, studentPathWithId, studentRankingPath, studentsPathSignin } from './paths/students-path';
-import { tasksTeamPath, tasksPathWithId, tasksByTeacherPath, tasksByStudentPath, tasksByIdByStudentPath, tasksByIdByTeacherPath, tasksSituationPath } from './paths/tasks-path';
+import { tasksTeamPath, tasksPathWithId, tasksByTeacherPath, tasksByStudentPath, tasksByIdByStudentPath, tasksByIdByTeacherPath, tasksSituationPath, tasksStatistics } from './paths/tasks-path';
 import { teachersByIdPath, teachersPath } from './paths/teachers-path';
 import { teamCoursesPath, teamsByCoursePath, teamsStudentPath } from './paths/teams-path';
 import { courseSchema, coursesSchema } from './schemas/courseSchema';
 import { studentFeatureErrorSchema, studentGetByIdResponseSchema, studentSigninResponseSchema, studentSigninSchema } from './schemas/student-schema';
-import { taskSchema, taskParamsSchema, tasksSchema, taskDetailsSchema, taskSituationBodySchema } from './schemas/task-schema'
+import { taskSchema, taskParamsSchema, tasksSchema, taskDetailsSchema, taskSituationBodySchema, taskResponseStatisticsSchema } from './schemas/task-schema'
 import { teacherGetByIdResponseSchema, teacherSigninResponseSchema, teacherSigninSchema } from './schemas/teacher-schema';
 import { teamCreateBodySchema, teamSchema, teamsSchema } from './schemas/team-shema';
 export default {
@@ -33,6 +33,7 @@ export default {
   ],
   paths: {
     '/tasks/student': tasksByStudentPath,
+    '/tasks/student/statistics-week': tasksStatistics,
     '/tasks/teacher': tasksByTeacherPath,
     '/tasks/{id}': tasksPathWithId,
     '/tasks/{id}/situation': tasksSituationPath,
@@ -67,6 +68,7 @@ export default {
     courseSchema: courseSchema,
     coursesSchema: coursesSchema,
     teamCreateBody: teamCreateBodySchema,
+    taskResponseStatistics: taskResponseStatisticsSchema
   },
 
   components: {
