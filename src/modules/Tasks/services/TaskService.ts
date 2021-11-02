@@ -33,8 +33,14 @@ class TaskService {
     if (maximumScore < 0 || maximumScore > 10) {
       throw new AppError("Pontuação máxima inválida", 400);
     }
+
     if (!this.validateDates(startDate, startTime, finalDate, finalTime)) {
       throw new AppError("Datas inválidas", 400);
+    }
+    const tasksByFinalDate = await this.indexByFinalDate(finalDate, idTeam);
+
+    if(tasksByFinalDate.length >= 2) {
+      throw new AppError("Já existe duas atividades avaliativas para essa data", 400);
     }
 
     const task = taskRepository.create({
@@ -66,6 +72,16 @@ class TaskService {
       return false;
     }
     return true;
+  }
+
+  private async indexByFinalDate(finalDate: string, id_team: number) {
+    const taskRepository = getRepository(Tasks);
+    return await taskRepository.find({
+      where: {
+        finalDate,
+        id_team
+      }
+    })
   }
 
   async update(id: number, id_teacher: string, taskData: Tasks): Promise<Tasks> {

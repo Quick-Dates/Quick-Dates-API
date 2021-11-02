@@ -19,7 +19,7 @@ var Teachers = /** @class */ (function () {
     function Teachers() {
     }
     __decorate([
-        typeorm_1.Column('uuid', {
+        (0, typeorm_1.Column)('uuid', {
             primary: true,
             name: 'id',
             default: function () { return "uuid_generate_v4()"; }
@@ -27,48 +27,48 @@ var Teachers = /** @class */ (function () {
         __metadata("design:type", String)
     ], Teachers.prototype, "id", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], Teachers.prototype, "registration", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], Teachers.prototype, "password", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], Teachers.prototype, "name", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], Teachers.prototype, "fullName", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], Teachers.prototype, "email", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], Teachers.prototype, "birthDate", void 0);
     __decorate([
-        typeorm_1.Column({
+        (0, typeorm_1.Column)({
             type: 'enum',
             enum: ['M', 'F'],
         }),
         __metadata("design:type", String)
     ], Teachers.prototype, "gender", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
     ], Teachers.prototype, "suapId", void 0);
     __decorate([
-        typeorm_1.OneToMany(function () { return Tasks_1.default; }, function (tasks) { return tasks.teacher; }),
+        (0, typeorm_1.OneToMany)(function () { return Tasks_1.default; }, function (tasks) { return tasks.teacher; }),
         __metadata("design:type", Array)
     ], Teachers.prototype, "tasks", void 0);
     Teachers = __decorate([
-        typeorm_1.Entity('teachers')
+        (0, typeorm_1.Entity)('teachers')
     ], Teachers);
     return Teachers;
 }());
 exports.default = Teachers;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVhY2hlcnMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFjaGVycy9tb2RlbHMvVGVhY2hlcnMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBb0Q7QUFDcEQsOERBQTZEO0FBQzdELG1FQUE2QztBQUc3QztJQUFBO0lBcUNBLENBQUM7SUEvQkM7UUFMQyxnQkFBTSxDQUFDLE1BQU0sRUFBRTtZQUNkLE9BQU8sRUFBRSxJQUFJO1lBQ2IsSUFBSSxFQUFFLElBQUk7WUFDVixPQUFPLEVBQUUsY0FBTSxPQUFBLG9CQUFvQixFQUFwQixDQUFvQjtTQUNwQyxDQUFDOzt3Q0FDUztJQUdYO1FBREMsZ0JBQU0sRUFBRTs7a0RBQ1k7SUFHckI7UUFEQyxnQkFBTSxFQUFFOzs4Q0FDUztJQUdsQjtRQURDLGdCQUFNLEVBQUU7OzBDQUNJO0lBR2I7UUFEQyxnQkFBTSxFQUFFOzs4Q0FDUTtJQUdqQjtRQURDLGdCQUFNLEVBQUU7OzJDQUNLO0lBR2Q7UUFEQyxnQkFBTSxFQUFFOzsrQ0FDUztJQU1sQjtRQUpDLGdCQUFNLENBQUM7WUFDTixJQUFJLEVBQUUsTUFBTTtZQUNaLElBQUksRUFBRSxDQUFDLEdBQUcsRUFBRSxHQUFHLENBQUM7U0FDakIsQ0FBQzs7NENBQ2lCO0lBR25CO1FBREMsZ0JBQU0sRUFBRTs7NENBQ087SUFHaEI7UUFEQyxtQkFBUyxDQUFDLGNBQU0sT0FBQSxlQUFLLEVBQUwsQ0FBSyxFQUFFLFVBQUMsS0FBSyxJQUFLLE9BQUEsS0FBSyxDQUFDLE9BQU8sRUFBYixDQUFhLENBQUM7OzJDQUNsQztJQXBDWCxRQUFRO1FBRGIsZ0JBQU0sQ0FBQyxVQUFVLENBQUM7T0FDYixRQUFRLENBcUNiO0lBQUQsZUFBQztDQUFBLEFBckNELElBcUNDO0FBRUQsa0JBQWUsUUFBUSxDQUFDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiVGVhY2hlcnMuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UZWFjaGVycy9tb2RlbHMvVGVhY2hlcnMudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBb0Q7QUFDcEQsOERBQTZEO0FBQzdELG1FQUE2QztBQUc3QztJQUFBO0lBcUNBLENBQUM7SUEvQkM7UUFMQyxJQUFBLGdCQUFNLEVBQUMsTUFBTSxFQUFFO1lBQ2QsT0FBTyxFQUFFLElBQUk7WUFDYixJQUFJLEVBQUUsSUFBSTtZQUNWLE9BQU8sRUFBRSxjQUFNLE9BQUEsb0JBQW9CLEVBQXBCLENBQW9CO1NBQ3BDLENBQUM7O3dDQUNTO0lBR1g7UUFEQyxJQUFBLGdCQUFNLEdBQUU7O2tEQUNZO0lBR3JCO1FBREMsSUFBQSxnQkFBTSxHQUFFOzs4Q0FDUztJQUdsQjtRQURDLElBQUEsZ0JBQU0sR0FBRTs7MENBQ0k7SUFHYjtRQURDLElBQUEsZ0JBQU0sR0FBRTs7OENBQ1E7SUFHakI7UUFEQyxJQUFBLGdCQUFNLEdBQUU7OzJDQUNLO0lBR2Q7UUFEQyxJQUFBLGdCQUFNLEdBQUU7OytDQUNTO0lBTWxCO1FBSkMsSUFBQSxnQkFBTSxFQUFDO1lBQ04sSUFBSSxFQUFFLE1BQU07WUFDWixJQUFJLEVBQUUsQ0FBQyxHQUFHLEVBQUUsR0FBRyxDQUFDO1NBQ2pCLENBQUM7OzRDQUNpQjtJQUduQjtRQURDLElBQUEsZ0JBQU0sR0FBRTs7NENBQ087SUFHaEI7UUFEQyxJQUFBLG1CQUFTLEVBQUMsY0FBTSxPQUFBLGVBQUssRUFBTCxDQUFLLEVBQUUsVUFBQyxLQUFLLElBQUssT0FBQSxLQUFLLENBQUMsT0FBTyxFQUFiLENBQWEsQ0FBQzs7MkNBQ2xDO0lBcENYLFFBQVE7UUFEYixJQUFBLGdCQUFNLEVBQUMsVUFBVSxDQUFDO09BQ2IsUUFBUSxDQXFDYjtJQUFELGVBQUM7Q0FBQSxBQXJDRCxJQXFDQztBQUVELGtCQUFlLFFBQVEsQ0FBQyJ9

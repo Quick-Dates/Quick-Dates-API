@@ -51,7 +51,7 @@ var CourseService = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        courseRepository = typeorm_1.getRepository(Courses_1.default);
+                        courseRepository = (0, typeorm_1.getRepository)(Courses_1.default);
                         course = courseRepository.create({
                             level: level,
                             name: name,
@@ -70,7 +70,7 @@ var CourseService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        courseRepository = typeorm_1.getRepository(Courses_1.default);
+                        courseRepository = (0, typeorm_1.getRepository)(Courses_1.default);
                         return [4 /*yield*/, courseRepository.find()];
                     case 1:
                         cousers = _a.sent();
@@ -86,7 +86,7 @@ var CourseService = /** @class */ (function () {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        courseRepository = typeorm_1.getRepository(Courses_1.default);
+                        courseRepository = (0, typeorm_1.getRepository)(Courses_1.default);
                         return [4 /*yield*/, courseRepository.findOne({ where: { id: id } })];
                     case 1:
                         course = _b.sent();
@@ -98,4 +98,4 @@ var CourseService = /** @class */ (function () {
     return CourseService;
 }());
 exports.default = CourseService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ291cnNlU2VydmljZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9tb2R1bGVzL1RlYW1zL3NlcnZpY2VzL0NvdXJzZVNlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBd0M7QUFFeEMsOERBQXdDO0FBRXhDO0lBQUE7SUErQkEsQ0FBQztJQTlCTyw4QkFBTSxHQUFaLFVBQWEsRUFBc0I7WUFBckIsSUFBSSxVQUFBLEVBQUUsS0FBSyxXQUFBOzs7Ozs7d0JBQ2pCLGdCQUFnQixHQUFHLHVCQUFhLENBQUMsaUJBQU8sQ0FBQyxDQUFDO3dCQUUxQyxNQUFNLEdBQUcsZ0JBQWdCLENBQUMsTUFBTSxDQUFDOzRCQUNyQyxLQUFLLE9BQUE7NEJBQ0wsSUFBSSxNQUFBO3lCQUNMLENBQUMsQ0FBQzt3QkFFSCxxQkFBTSxnQkFBZ0IsQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDLEVBQUE7O3dCQUFuQyxTQUFtQyxDQUFBO3dCQUVuQyxzQkFBTyxNQUFNLEVBQUE7Ozs7S0FDZDtJQUVLLDZCQUFLLEdBQVg7Ozs7Ozt3QkFDUSxnQkFBZ0IsR0FBRyx1QkFBYSxDQUFDLGlCQUFPLENBQUMsQ0FBQzt3QkFHaEMscUJBQU0sZ0JBQWdCLENBQUMsSUFBSSxFQUFFLEVBQUE7O3dCQUF2QyxPQUFPLEdBQUcsU0FBNkI7d0JBRTdDLHNCQUFPLE9BQU8sRUFBQTs7OztLQUNmO0lBRUssaUNBQVMsR0FBZixVQUFnQixFQUFTO1lBQVIsRUFBRSxRQUFBOzs7Ozs7d0JBQ1gsZ0JBQWdCLEdBQUcsdUJBQWEsQ0FBQyxpQkFBTyxDQUFDLENBQUM7d0JBR2pDLHFCQUFNLGdCQUFnQixDQUFDLE9BQU8sQ0FBQyxFQUFDLEtBQUssRUFBRSxFQUFDLEVBQUUsSUFBQSxFQUFDLEVBQUMsQ0FBQyxFQUFBOzt3QkFBdEQsTUFBTSxHQUFHLFNBQTZDO3dCQUU1RCxzQkFBTyxNQUFNLEVBQUE7Ozs7S0FDZDtJQUNILG9CQUFDO0FBQUQsQ0FBQyxBQS9CRCxJQStCQztBQUVELGtCQUFlLGFBQWEsQ0FBQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ291cnNlU2VydmljZS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9tb2R1bGVzL1RlYW1zL3NlcnZpY2VzL0NvdXJzZVNlcnZpY2UudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBd0M7QUFFeEMsOERBQXdDO0FBRXhDO0lBQUE7SUErQkEsQ0FBQztJQTlCTyw4QkFBTSxHQUFaLFVBQWEsRUFBc0I7WUFBckIsSUFBSSxVQUFBLEVBQUUsS0FBSyxXQUFBOzs7Ozs7d0JBQ2pCLGdCQUFnQixHQUFHLElBQUEsdUJBQWEsRUFBQyxpQkFBTyxDQUFDLENBQUM7d0JBRTFDLE1BQU0sR0FBRyxnQkFBZ0IsQ0FBQyxNQUFNLENBQUM7NEJBQ3JDLEtBQUssT0FBQTs0QkFDTCxJQUFJLE1BQUE7eUJBQ0wsQ0FBQyxDQUFDO3dCQUVILHFCQUFNLGdCQUFnQixDQUFDLElBQUksQ0FBQyxNQUFNLENBQUMsRUFBQTs7d0JBQW5DLFNBQW1DLENBQUE7d0JBRW5DLHNCQUFPLE1BQU0sRUFBQTs7OztLQUNkO0lBRUssNkJBQUssR0FBWDs7Ozs7O3dCQUNRLGdCQUFnQixHQUFHLElBQUEsdUJBQWEsRUFBQyxpQkFBTyxDQUFDLENBQUM7d0JBR2hDLHFCQUFNLGdCQUFnQixDQUFDLElBQUksRUFBRSxFQUFBOzt3QkFBdkMsT0FBTyxHQUFHLFNBQTZCO3dCQUU3QyxzQkFBTyxPQUFPLEVBQUE7Ozs7S0FDZjtJQUVLLGlDQUFTLEdBQWYsVUFBZ0IsRUFBUztZQUFSLEVBQUUsUUFBQTs7Ozs7O3dCQUNYLGdCQUFnQixHQUFHLElBQUEsdUJBQWEsRUFBQyxpQkFBTyxDQUFDLENBQUM7d0JBR2pDLHFCQUFNLGdCQUFnQixDQUFDLE9BQU8sQ0FBQyxFQUFDLEtBQUssRUFBRSxFQUFDLEVBQUUsSUFBQSxFQUFDLEVBQUMsQ0FBQyxFQUFBOzt3QkFBdEQsTUFBTSxHQUFHLFNBQTZDO3dCQUU1RCxzQkFBTyxNQUFNLEVBQUE7Ozs7S0FDZDtJQUNILG9CQUFDO0FBQUQsQ0FBQyxBQS9CRCxJQStCQztBQUVELGtCQUFlLGFBQWEsQ0FBQyJ9

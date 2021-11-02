@@ -20,38 +20,38 @@ var StatusTasks = /** @class */ (function () {
     function StatusTasks() {
     }
     __decorate([
-        typeorm_1.PrimaryGeneratedColumn(),
+        (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", Number)
     ], StatusTasks.prototype, "id", void 0);
     __decorate([
-        typeorm_1.Column({
+        (0, typeorm_1.Column)({
             type: 'enum',
             enum: ['EM_ANDAMENTO', 'CONCLUIDA', 'ATRASADA'],
         }),
         __metadata("design:type", String)
     ], StatusTasks.prototype, "situation", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], StatusTasks.prototype, "id_student", void 0);
     __decorate([
-        typeorm_1.Column(),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", Number)
     ], StatusTasks.prototype, "id_task", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function () { return Students_1.default; }, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
-        typeorm_1.JoinColumn({ name: 'id_student', referencedColumnName: 'id' }),
+        (0, typeorm_1.ManyToOne)(function () { return Students_1.default; }, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
+        (0, typeorm_1.JoinColumn)({ name: 'id_student', referencedColumnName: 'id' }),
         __metadata("design:type", Students_1.default)
     ], StatusTasks.prototype, "student", void 0);
     __decorate([
-        typeorm_1.ManyToOne(function () { return Tasks_1.default; }, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
-        typeorm_1.JoinColumn({ name: 'id_task', referencedColumnName: 'id' }),
+        (0, typeorm_1.ManyToOne)(function () { return Tasks_1.default; }, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
+        (0, typeorm_1.JoinColumn)({ name: 'id_task', referencedColumnName: 'id' }),
         __metadata("design:type", Tasks_1.default)
     ], StatusTasks.prototype, "task", void 0);
     StatusTasks = __decorate([
-        typeorm_1.Entity('status_tasks')
+        (0, typeorm_1.Entity)('status_tasks')
     ], StatusTasks);
     return StatusTasks;
 }());
 exports.default = StatusTasks;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3RhdHVzVGFza3MuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UYXNrcy9tb2RlbHMvU3RhdHVzVGFza3MudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBd0Y7QUFDeEYsNEVBQXNEO0FBQ3RELGdFQUErRDtBQUMvRCxrREFBNEI7QUFHNUI7SUFBQTtJQXVCQSxDQUFDO0lBckJDO1FBREMsZ0NBQXNCLEVBQUU7OzJDQUNkO0lBTVg7UUFKQyxnQkFBTSxDQUFDO1lBQ04sSUFBSSxFQUFFLE1BQU07WUFDWixJQUFJLEVBQUUsQ0FBQyxjQUFjLEVBQUUsV0FBVyxFQUFFLFVBQVUsQ0FBQztTQUNoRCxDQUFDOztrREFDMkI7SUFHN0I7UUFEQyxnQkFBTSxFQUFFOzttREFDVTtJQUduQjtRQURDLGdCQUFNLEVBQUU7O2dEQUNPO0lBSWhCO1FBRkMsbUJBQVMsQ0FBQyxjQUFNLE9BQUEsa0JBQVEsRUFBUixDQUFRLEVBQUUsRUFBQyxRQUFRLEVBQUUsU0FBUyxFQUFFLFFBQVEsRUFBRSxTQUFTLEVBQUMsQ0FBQztRQUNyRSxvQkFBVSxDQUFDLEVBQUMsSUFBSSxFQUFFLFlBQVksRUFBRSxvQkFBb0IsRUFBRSxJQUFJLEVBQUMsQ0FBQztrQ0FDcEQsa0JBQVE7Z0RBQUM7SUFJbEI7UUFGQyxtQkFBUyxDQUFDLGNBQU0sT0FBQSxlQUFLLEVBQUwsQ0FBSyxFQUFFLEVBQUMsUUFBUSxFQUFFLFNBQVMsRUFBRSxRQUFRLEVBQUUsU0FBUyxFQUFDLENBQUM7UUFDbEUsb0JBQVUsQ0FBQyxFQUFDLElBQUksRUFBRSxTQUFTLEVBQUUsb0JBQW9CLEVBQUUsSUFBSSxFQUFDLENBQUM7a0NBQ3BELGVBQUs7NkNBQUM7SUF0QlIsV0FBVztRQURoQixnQkFBTSxDQUFDLGNBQWMsQ0FBQztPQUNqQixXQUFXLENBdUJoQjtJQUFELGtCQUFDO0NBQUEsQUF2QkQsSUF1QkM7QUFFRCxrQkFBZSxXQUFXLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiU3RhdHVzVGFza3MuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbW9kdWxlcy9UYXNrcy9tb2RlbHMvU3RhdHVzVGFza3MudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7QUFBQSxtQ0FBd0Y7QUFDeEYsNEVBQXNEO0FBQ3RELGdFQUErRDtBQUMvRCxrREFBNEI7QUFHNUI7SUFBQTtJQXVCQSxDQUFDO0lBckJDO1FBREMsSUFBQSxnQ0FBc0IsR0FBRTs7MkNBQ2Q7SUFNWDtRQUpDLElBQUEsZ0JBQU0sRUFBQztZQUNOLElBQUksRUFBRSxNQUFNO1lBQ1osSUFBSSxFQUFFLENBQUMsY0FBYyxFQUFFLFdBQVcsRUFBRSxVQUFVLENBQUM7U0FDaEQsQ0FBQzs7a0RBQzJCO0lBRzdCO1FBREMsSUFBQSxnQkFBTSxHQUFFOzttREFDVTtJQUduQjtRQURDLElBQUEsZ0JBQU0sR0FBRTs7Z0RBQ087SUFJaEI7UUFGQyxJQUFBLG1CQUFTLEVBQUMsY0FBTSxPQUFBLGtCQUFRLEVBQVIsQ0FBUSxFQUFFLEVBQUMsUUFBUSxFQUFFLFNBQVMsRUFBRSxRQUFRLEVBQUUsU0FBUyxFQUFDLENBQUM7UUFDckUsSUFBQSxvQkFBVSxFQUFDLEVBQUMsSUFBSSxFQUFFLFlBQVksRUFBRSxvQkFBb0IsRUFBRSxJQUFJLEVBQUMsQ0FBQztrQ0FDcEQsa0JBQVE7Z0RBQUM7SUFJbEI7UUFGQyxJQUFBLG1CQUFTLEVBQUMsY0FBTSxPQUFBLGVBQUssRUFBTCxDQUFLLEVBQUUsRUFBQyxRQUFRLEVBQUUsU0FBUyxFQUFFLFFBQVEsRUFBRSxTQUFTLEVBQUMsQ0FBQztRQUNsRSxJQUFBLG9CQUFVLEVBQUMsRUFBQyxJQUFJLEVBQUUsU0FBUyxFQUFFLG9CQUFvQixFQUFFLElBQUksRUFBQyxDQUFDO2tDQUNwRCxlQUFLOzZDQUFDO0lBdEJSLFdBQVc7UUFEaEIsSUFBQSxnQkFBTSxFQUFDLGNBQWMsQ0FBQztPQUNqQixXQUFXLENBdUJoQjtJQUFELGtCQUFDO0NBQUEsQUF2QkQsSUF1QkM7QUFFRCxrQkFBZSxXQUFXLENBQUMifQ==

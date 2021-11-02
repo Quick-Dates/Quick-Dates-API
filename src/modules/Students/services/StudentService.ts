@@ -8,7 +8,7 @@ import { IParamsCreateStudent } from '../interfaces/IParams';
 import Students from '../models/Students';
 
 class StudentService {
-  async create({id, matricula, nome_usual, email, data_nascimento, vinculo, sexo, password}: IParamsCreateStudent): Promise<Students> {
+  async create({ id, matricula, nome_usual, email, data_nascimento, vinculo, sexo, password }: IParamsCreateStudent): Promise<Students> {
     const studentRepository = getRepository(Students);
 
     const hashedPassword = await hash(password, 10);
@@ -27,7 +27,7 @@ class StudentService {
     });
     await studentRepository.save(student)
 
-    setTimeout(async ()=>{
+    setTimeout(async () => {
       const nodeMailerService = new NodeMailerService();
       await nodeMailerService.sendEmailWelcome(student);
     }, 3000)
@@ -55,5 +55,6 @@ class StudentService {
     return student;
   }
 }
+
 
 export default StudentService;

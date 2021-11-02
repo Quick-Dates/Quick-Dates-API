@@ -20,31 +20,31 @@ var Courses = /** @class */ (function () {
     function Courses() {
     }
     __decorate([
-        typeorm_1.PrimaryGeneratedColumn(),
+        (0, typeorm_1.PrimaryGeneratedColumn)(),
         __metadata("design:type", Number)
     ], Courses.prototype, "id", void 0);
     __decorate([
-        typeorm_1.Column({
+        (0, typeorm_1.Column)({
             type: 'enum',
             enum: ['INFORMATICA', 'ALIMENTOS', 'SECRETARIADO', 'QUIMICA']
         }),
         __metadata("design:type", String)
     ], Courses.prototype, "name", void 0);
     __decorate([
-        typeorm_1.Column({
+        (0, typeorm_1.Column)({
             type: 'enum',
             enum: ['EMI', 'TADS']
         }),
         __metadata("design:type", String)
     ], Courses.prototype, "level", void 0);
     __decorate([
-        typeorm_1.OneToMany(function () { return Teams_1.default; }, function (teams) { return teams.course; }),
+        (0, typeorm_1.OneToMany)(function () { return Teams_1.default; }, function (teams) { return teams.course; }),
         __metadata("design:type", Array)
     ], Courses.prototype, "teams", void 0);
     Courses = __decorate([
-        typeorm_1.Entity('courses')
+        (0, typeorm_1.Entity)('courses')
     ], Courses);
     return Courses;
 }());
 exports.default = Courses;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ291cnNlcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9tb2R1bGVzL1RlYW1zL21vZGVscy9Db3Vyc2VzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQTRFO0FBQzVFLDJEQUEwRDtBQUMxRCx5REFBd0Q7QUFDeEQsa0RBQTRCO0FBRzVCO0lBQUE7SUFrQkEsQ0FBQztJQWhCQztRQURDLGdDQUFzQixFQUFFOzt1Q0FDZDtJQU1YO1FBSkMsZ0JBQU0sQ0FBQztZQUNOLElBQUksRUFBRSxNQUFNO1lBQ1osSUFBSSxFQUFFLENBQUMsYUFBYSxFQUFFLFdBQVcsRUFBRSxjQUFjLEVBQUcsU0FBUyxDQUFDO1NBQy9ELENBQUM7O3lDQUNtQjtJQU1yQjtRQUpDLGdCQUFNLENBQUM7WUFDTixJQUFJLEVBQUUsTUFBTTtZQUNaLElBQUksRUFBRSxDQUFDLEtBQUssRUFBRSxNQUFNLENBQUM7U0FDdEIsQ0FBQzs7MENBQ3FCO0lBR3ZCO1FBREMsbUJBQVMsQ0FBQyxjQUFNLE9BQUEsZUFBSyxFQUFMLENBQUssRUFBRSxVQUFDLEtBQUssSUFBSyxPQUFBLEtBQUssQ0FBQyxNQUFNLEVBQVosQ0FBWSxDQUFDOzswQ0FDakM7SUFqQlgsT0FBTztRQURaLGdCQUFNLENBQUMsU0FBUyxDQUFDO09BQ1osT0FBTyxDQWtCWjtJQUFELGNBQUM7Q0FBQSxBQWxCRCxJQWtCQztBQUVELGtCQUFlLE9BQU8sQ0FBQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiQ291cnNlcy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9tb2R1bGVzL1RlYW1zL21vZGVscy9Db3Vyc2VzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQUEsbUNBQTRFO0FBQzVFLDJEQUEwRDtBQUMxRCx5REFBd0Q7QUFDeEQsa0RBQTRCO0FBRzVCO0lBQUE7SUFrQkEsQ0FBQztJQWhCQztRQURDLElBQUEsZ0NBQXNCLEdBQUU7O3VDQUNkO0lBTVg7UUFKQyxJQUFBLGdCQUFNLEVBQUM7WUFDTixJQUFJLEVBQUUsTUFBTTtZQUNaLElBQUksRUFBRSxDQUFDLGFBQWEsRUFBRSxXQUFXLEVBQUUsY0FBYyxFQUFHLFNBQVMsQ0FBQztTQUMvRCxDQUFDOzt5Q0FDbUI7SUFNckI7UUFKQyxJQUFBLGdCQUFNLEVBQUM7WUFDTixJQUFJLEVBQUUsTUFBTTtZQUNaLElBQUksRUFBRSxDQUFDLEtBQUssRUFBRSxNQUFNLENBQUM7U0FDdEIsQ0FBQzs7MENBQ3FCO0lBR3ZCO1FBREMsSUFBQSxtQkFBUyxFQUFDLGNBQU0sT0FBQSxlQUFLLEVBQUwsQ0FBSyxFQUFFLFVBQUMsS0FBSyxJQUFLLE9BQUEsS0FBSyxDQUFDLE1BQU0sRUFBWixDQUFZLENBQUM7OzBDQUNqQztJQWpCWCxPQUFPO1FBRFosSUFBQSxnQkFBTSxFQUFDLFNBQVMsQ0FBQztPQUNaLE9BQU8sQ0FrQlo7SUFBRCxjQUFDO0NBQUEsQUFsQkQsSUFrQkM7QUFFRCxrQkFBZSxPQUFPLENBQUMifQ==
