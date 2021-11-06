@@ -10,11 +10,13 @@ import setupExpress from './shared/config/setup-express';
 import setupRoutes from './shared/routes/setup-routes';
 import setupSwagger from './shared/config/setup-swagger';
 import prototypes from './shared/utils/protorypes';
+import setupInjector from './shared/config/setup-injector';
 
 
 createConnection();
 
 const app = express();
+setupInjector();
 setupExpress(app);
 setupSwagger(app);
 setupRoutes(app);

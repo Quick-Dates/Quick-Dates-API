@@ -4,6 +4,7 @@ import SuapService from '../../../shared/services/SuapService';
 import StudentService from '../services/StudentService';
 import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated';
 import student from '../../../shared/middlewares/student';
+import { container } from 'tsyringe';
 
 const studentsRouter = Router();
 
@@ -11,7 +12,7 @@ studentsRouter.post('/signin', async (request, response) => {
   const { username, password } = request.body;
   try {
     const suapService = new SuapService();
-    const authService = new AuthService();
+    const authService = container.resolve(AuthService);
 
     const tokenSuap = await suapService.signin({ username, password });
     const dataStudent = await suapService.indexMyData(tokenSuap);
