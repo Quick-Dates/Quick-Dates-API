@@ -264,22 +264,21 @@ describe('Student', () => {
       studentService = new StudentService(fakeStudentsRepository, nodeMailerService, teamService)
 
       jest.spyOn(container, 'resolve').mockReturnValue(studentService);
-      jest.spyOn(studentService, 'create').mockRestore();
       jest.spyOn(fakeStudentsRepository, 'create').mockImplementation();
-      jest.spyOn(fakeStudentsRepository, 'update').mockImplementation();
       jest.spyOn(fakeStudentsRepository, 'findBySuapId').mockReturnValue({} as any);
       jest.spyOn(global, 'setTimeout').mockImplementation();
       jest.spyOn(nodeMailerService, 'sendEmailWelcome').mockImplementation();
     });
     it('should encrypt password before creating a student', async() => {
       const fakeStudent = {
-       password: ''
+       password: 'password'
       };
 
-      jest.spyOn(bcryptjs, 'hash').mockImplementation();
+      jest.spyOn(bcryptjs, 'hash').mockResolvedValue('password_encrypt' as never);
       await studentService.create(fakeStudent as any).catch(() => { });
 
       expect(bcryptjs.hash).toHaveBeenCalledWith(fakeStudent.password, 10);
+      expect(fakeStudentsRepository.create).toHaveBeenCalledWith({password: 'password_encrypt'});
     })
     it.todo('should creating student')
     it.todo('should send email to student after creating in 3 secs')
