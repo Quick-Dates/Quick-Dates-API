@@ -10,7 +10,7 @@ class Students {
     name: 'id',
     default: () => "uuid_generate_v4()"
   })
-  id: string;
+  id?: string;
 
   @Column()
   registration: number;
@@ -50,10 +50,10 @@ class Students {
 
   @ManyToOne(() => Teams)
   @JoinColumn({name: 'id_team', referencedColumnName: 'id'})
-  team: Teams;
+  team?: Teams;
 
   @OneToMany(() => StatusTasks, (statusTask) => statusTask.task)
-  statusTasks: StatusTasks[];
+  statusTasks?: StatusTasks[];
 }
 
 export default Students;

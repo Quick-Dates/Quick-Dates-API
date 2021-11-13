@@ -1,51 +1,57 @@
 import { hash } from 'bcryptjs';
-import { getRepository } from 'typeorm';
+import { inject } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
 import NodeMailerService from '../../../shared/services/NodeMailerService';
-import Teams from '../../Teams/models/Teams';
 import TeamService from '../../Teams/services/TeamService';
 import { IParamsCreateStudent } from '../interfaces/IParams';
+import IStudentRepository from '../interfaces/IStudentRepository';
 import Students from '../models/Students';
 
 class StudentService {
-  async create({ id, matricula, nome_usual, email, data_nascimento, vinculo, sexo, password }: IParamsCreateStudent): Promise<Students> {
-    const studentRepository = getRepository(Students);
 
+  constructor(
+    @inject('StudentRepository')
+    private studentRepository: IStudentRepository,
+
+    @inject('NodeMailerService')
+    private nodeMailerService: NodeMailerService,
+
+    @inject('TeamService')
+    private teamService: TeamService,
+  ) {
+
+  }
+  async create({ registration, name, fullName, password, email, birthDate, situation, systematicSituation, gender, suapId  }:
+    IParamsCreateStudent): Promise<Students> {
     const hashedPassword = await hash(password, 10);
 
-    const student = studentRepository.create({
-      registration: matricula,
-      name: nome_usual,
-      fullName: vinculo.nome,
-      password: hashedPassword,
+    const student = await this.studentRepository.create({
+      registration,
+      name,
+      fullName,
+      password : hashedPassword,
       email,
-      birthDate: data_nascimento,
-      situation: vinculo.situacao,
-      systematicSituation: vinculo.situacao_sistemica,
-      gender: sexo,
-      suapId: id
+      birthDate,
+      situation,
+      systematicSituation,
+      gender,
+      suapId
     });
-    await studentRepository.save(student)
 
     setTimeout(async () => {
-      const nodeMailerService = new NodeMailerService();
-      await nodeMailerService.sendEmailWelcome(student);
+      await this.nodeMailerService.sendEmailWelcome(student);
     }, 3000)
 
     return student
   }
 
   async indexById(id: string): Promise<Students> {
-    const studentRepository = getRepository(Students);
-    const teamService = new TeamService();
-
-
-    const student = await studentRepository.findOne({ where: { id } });
+    const student = await this.studentRepository.findById(id);
     if (!student) {
       throw new AppError('Aluno não encontrado', 404);
     }
 
-    const team = await teamService.indexById(student.id_team as number);
+    const team = await this.teamService.indexById(student.id_team as number);
     student.team = team;
 
     delete student.password;

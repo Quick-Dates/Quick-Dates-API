@@ -12,11 +12,17 @@ export default class StudentsRepository implements IStudentRepository {
     return await this.ormRepository.findOne(id);
   }
 
-  async  findBySuapId(suapId: number): Promise<Students | undefined> {
+  async findBySuapId(suapId: number): Promise<Students | undefined> {
     return await this.ormRepository.findOne({ where: { suapId } });
   }
 
   async update(id: string, student: Students): Promise<void> {
-   await this.ormRepository.update(id, student);
-   }
+    await this.ormRepository.update(id, student);
+  }
+
+  async create(student: Students): Promise<Students> {
+    const studentCreated = this.ormRepository.create(student);
+    await this.ormRepository.save(studentCreated)
+    return studentCreated;
+  }
 }

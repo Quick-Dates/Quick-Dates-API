@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { getRepository } from 'typeorm';
 import { IResponseSignin } from '../interfaces/IResponse';
 import Students from '../models/Students';
@@ -6,7 +7,7 @@ import StudentService from './StudentService';
 import AppError from '../../../shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
 import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
-import { inject, injectable } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 import IStudentRepository from '../interfaces/IStudentRepository';
 
 interface IParamsAuth {
@@ -19,10 +20,7 @@ interface IParamsAuth {
 class AuthService {
   constructor(
     @inject('StudentRepository')
-    private studentRepository: IStudentRepository,
-
-    @inject('StudentService')
-    private studentService: StudentService
+    private studentRepository: IStudentRepository
   ) {
 
   }
@@ -32,9 +30,9 @@ class AuthService {
       throw new AppError('Perfil de usuário inválido');
     }
     let student: Students = await this.studentRepository.findBySuapId(dataStudent.id) as Students;
-
+    const studentService = container.resolve(StudentService);
     if (!student) {
-      student = await this.studentService.create({ ...dataStudent, password });
+      student = await studentService.create({ ...dataStudent, password });
     }
 
     let hasChange = this.verifyChangeData(student, dataStudent);
@@ -47,7 +45,7 @@ class AuthService {
     }
 
     if (hasChange) {
-      await this.studentRepository.update(student.id, { ...student });
+      await this.studentRepository.update(student.id as string, { ...student });
     }
 
     if (student) {

@@ -5,10 +5,15 @@ import FakeStudentsRepository from './fakes/FakeStudentsRepository';
 import bcryptjs from 'bcryptjs';
 import jsonwebtoken from 'jsonwebtoken';
 import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
+import NodeMailerService from '../../../shared/services/NodeMailerService';
+import TeamService from '../../Teams/services/TeamService';
+import { container } from 'tsyringe';
 
 let fakeStudentsRepository: FakeStudentsRepository;
 let studentService: StudentService;
 let authStudentService: AuthService;
+let nodeMailerService: NodeMailerService;
+let teamService: TeamService;
 const dataFake = {
   dataStudent: {
     tipo_vinculo: 'Aluno',
@@ -23,12 +28,15 @@ const dataFake = {
 
 describe('Student', () => {
 
-  describe('Signin', () => {
+  describe('AuthService', () => {
     beforeEach(() => {
       fakeStudentsRepository = new FakeStudentsRepository();
-      studentService = new StudentService();
-      authStudentService = new AuthService(fakeStudentsRepository, studentService);
+      nodeMailerService = new NodeMailerService();
+      teamService = new TeamService();
+      studentService = new StudentService(fakeStudentsRepository, nodeMailerService, teamService)
+      authStudentService = new AuthService(fakeStudentsRepository);
 
+      jest.spyOn(container, 'resolve').mockReturnValue(studentService);
       jest.spyOn(studentService, 'create').mockImplementation();
       jest.spyOn(fakeStudentsRepository, 'update').mockImplementation();
       jest.spyOn(fakeStudentsRepository, 'findBySuapId').mockReturnValue({} as any);
@@ -40,7 +48,19 @@ describe('Student', () => {
     });
     it('should throw error if profile different student', async () => {
       try {
-        await authStudentService.execute(dataFake)
+        const dataStudentFake = {
+          dataStudent: {
+            tipo_vinculo: 'Professor',
+            id: 'id_valido',
+            vinculo: {
+              curso: 'Ensino medio Informática'
+            }
+          },
+          password: '',
+          tokenSuap: ''
+        }
+        await authStudentService.execute(dataStudentFake)
+        expect(true).toBe(false);
       } catch (error: any) {
         expect(error).toBeInstanceOf(AppError);
         expect(error.message).toBe('Perfil de usuário inválido');
@@ -53,8 +73,8 @@ describe('Student', () => {
       await authStudentService.execute(dataFake);
 
       expect(fakeStudentsRepository.findBySuapId).toHaveBeenCalledWith(dataFake.dataStudent.id);
-      expect(fakeStudentsRepository.update).toHaveBeenCalledTimes(0);
       expect(studentService.create).toHaveBeenCalledWith({ ...dataFake.dataStudent, password: dataFake.password });
+      expect(fakeStudentsRepository.update).toHaveBeenCalledTimes(0);
     })
     it('not should create student if student exists', async () => {
       await authStudentService.execute(dataFake);
@@ -85,7 +105,7 @@ describe('Student', () => {
       expect(fakeStudentsRepository.update).toHaveBeenCalledWith(1, { id: 1, teste: 'testando', password: 'password-valid' });
       expect(studentService.create).toHaveBeenCalledTimes(0);
     })
-    it('should generate token if students exists', async () => {
+    it('should generate token if students correct', async () => {
       const student = {
         id: 1,
         name: 'nome',
@@ -236,4 +256,34 @@ describe('Student', () => {
       });
     })
   });
+  describe('StudentService', () => {
+    beforeEach(() => {
+      fakeStudentsRepository = new FakeStudentsRepository();
+      nodeMailerService = new NodeMailerService();
+      teamService = new TeamService();
+      studentService = new StudentService(fakeStudentsRepository, nodeMailerService, teamService)
+
+      jest.spyOn(container, 'resolve').mockReturnValue(studentService);
+      jest.spyOn(studentService, 'create').mockRestore();
+      jest.spyOn(fakeStudentsRepository, 'create').mockImplementation();
+      jest.spyOn(fakeStudentsRepository, 'update').mockImplementation();
+      jest.spyOn(fakeStudentsRepository, 'findBySuapId').mockReturnValue({} as any);
+      jest.spyOn(global, 'setTimeout').mockImplementation();
+      jest.spyOn(nodeMailerService, 'sendEmailWelcome').mockImplementation();
+    });
+    it('should encrypt password before creating a student', async() => {
+      const fakeStudent = {
+       password: ''
+      };
+
+      jest.spyOn(bcryptjs, 'hash').mockImplementation();
+      await studentService.create(fakeStudent as any).catch(() => { });
+
+      expect(bcryptjs.hash).toHaveBeenCalledWith(fakeStudent.password, 10);
+    })
+    it.todo('should creating student')
+    it.todo('should send email to student after creating in 3 secs')
+    it.todo('should throw error if student not found')
+    it.todo('should return student by id')
+  })
 });

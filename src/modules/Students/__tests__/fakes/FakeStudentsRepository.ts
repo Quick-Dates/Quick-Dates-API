@@ -25,5 +25,11 @@ export default class FakeStudentsRepository implements IStudentRepository {
       resolve();
     });
   }
+  create(student: Students): Promise<Students> {
+    return new Promise((resolve) => {
+      this.students.push(student);
+      resolve(student);
+    });
+  }
 }
 
