@@ -8,6 +8,7 @@ import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
 import NodeMailerService from '../../../shared/services/NodeMailerService';
 import TeamService from '../../Teams/services/TeamService';
 import { container } from 'tsyringe';
+'use strict';
 
 let fakeStudentsRepository: FakeStudentsRepository;
 let studentService: StudentService;
@@ -300,7 +301,21 @@ describe('Student', () => {
       expect(fakeStudentsRepository.create).toHaveBeenCalledWith(fakeStudent);
       expect(student).toEqual(fakeStudent);
     })
-    it.todo('should send email to student after creating in 3 secs')
+    it('should send email welcome to student after creating in 3 secs', async() => {
+      const fakeStudent = {}
+
+      jest.useFakeTimers();
+      jest.spyOn(global, 'setTimeout').mockRestore();
+      jest.spyOn(fakeStudentsRepository, 'create').mockReturnValue(fakeStudent as any);
+      await studentService.create(fakeStudent as any)
+
+      expect(nodeMailerService.sendEmailWelcome).not.toHaveBeenCalled();
+
+      jest.advanceTimersByTime(3000)
+
+      expect(nodeMailerService.sendEmailWelcome).toHaveBeenCalledWith(fakeStudent);
+      expect(nodeMailerService.sendEmailWelcome).toHaveBeenCalledTimes(1);
+    })
     it.todo('should throw error if student not found')
     it.todo('should return student by id')
   })
