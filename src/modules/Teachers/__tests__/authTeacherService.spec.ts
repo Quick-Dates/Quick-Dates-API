@@ -76,7 +76,15 @@ describe('AuthService of Teacher', () => {
     expect(teacherService.create).not.toHaveBeenCalled();
     expect(fakeTeacherRepository.update).not.toHaveBeenCalled();
   })
-  it.todo('should update teacher if has change')
+  it('should update teacher if has change', async() => {
+    jest.spyOn(fakeTeacherRepository, 'findBySuapId').mockReturnValue(dataFake.dataTeacher as any);
+    jest.spyOn(authTeacherService, 'verifyChangeData').mockReturnValue(true);
+
+    await authTeacherService.execute(dataFake as any);
+
+    expect(fakeTeacherRepository.update).toHaveBeenLastCalledWith(dataFake.dataTeacher.id, dataFake.dataTeacher);
+    expect(teacherService.create).not.toHaveBeenCalled();
+  })
   it.todo('should update teacher if has change in password')
   it.todo('should generate token if teacher correct')
   it.todo('should overwrite data if has change dataTeacher')
