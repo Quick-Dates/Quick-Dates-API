@@ -27,7 +27,7 @@ class AuthService {
 
   async execute({ tokenSuap, dataStudent, password }: IParamsAuth): Promise<IResponseSignin | undefined> {
     if (dataStudent.tipo_vinculo !== 'Aluno') {
-      throw new AppError('Perfil de usuário inválido');
+      throw new AppError('Perfil de usuário inválido', 401);
     }
     let student: Students = await this.studentRepository.findBySuapId(dataStudent.id) as Students;
     const studentService = container.resolve(StudentService);

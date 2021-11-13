@@ -50,28 +50,14 @@ describe('AuthService', () => {
       const dataStudentFake = {
         dataStudent: {
           tipo_vinculo: 'Professor',
-          id: 'id_valido',
-          vinculo: {
-            curso: 'Ensino medio Informática',
-            nome: 'Nome Completo',
-            situacao: 'Ativo',
-            situacao_sistemica: 'Tudo certo',
-          },
-          data_nascimento: '01/01/2000',
-          email: 'emailteste',
-          nome_usual: 'nome_usual',
-          matricula: 'matricula',
-          sexo: 'M',
         },
-        password: '',
-        tokenSuap: ''
       }
       await authStudentService.execute(dataStudentFake as any)
       expect(true).toBe(false);
     } catch (error: any) {
       expect(error).toBeInstanceOf(AppError);
       expect(error.message).toBe('Perfil de usuário inválido');
-      expect(error.statusCode).toBe(400);
+      expect(error.statusCode).toBe(401);
     }
   })
   it('should create student if student not found', async () => {

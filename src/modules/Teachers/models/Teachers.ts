@@ -9,7 +9,7 @@ class Teachers {
     name: 'id',
     default: () => "uuid_generate_v4()"
   })
-  id: string;
+  id?: string;
 
   @Column()
   registration: string;
@@ -39,7 +39,7 @@ class Teachers {
   suapId?: number;
 
   @OneToMany(() => Tasks, (tasks) => tasks.teacher)
-  tasks: Tasks[];
+  tasks?: Tasks[];
 }
 
 export default Teachers;

@@ -1,26 +1,30 @@
-import { getRepository } from 'typeorm';
 import { IResponseSignin } from '../interfaces/IResponse';
 import { sign } from 'jsonwebtoken';
 import AppError from '../../../shared/errors/AppError';
 import { compare, hash } from 'bcryptjs';
-import Teachers from '../models/Teachers';
 import TeacherService from './TeacherService';
 import { IParamsAuth } from '../interfaces/IParams';
 import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
+import { container, inject, injectable } from 'tsyringe';
+import ITeacherRepository from '../interfaces/ITeacherRepository';
 
+@injectable()
 class AuthService {
+  constructor(
+    @inject('TeacherRepository')
+    private teacherRepository: ITeacherRepository
+  ) {
+
+  }
   async execute({tokenSuap, dataTeacher}: IParamsAuth): Promise<IResponseSignin | undefined> {
     if(dataTeacher.tipo_vinculo !== 'Servidor' && dataTeacher.vinculo.categoria !== 'docente') {
-      throw new AppError('Perfil de usuário inválido');
+      throw new AppError('Perfil de usuário inválido', 401);
     }
-    const teacherRepository = getRepository(Teachers);
 
-    let teacher: any = await teacherRepository.findOne({
-      where: {suapId: dataTeacher.id}
-    })
+    let teacher: any = await this.teacherRepository.findBySuapId(dataTeacher.id)
 
     if (!teacher) {
-      const teacherService = new TeacherService();
+      const teacherService = container.resolve(TeacherService);
 
       teacher = await teacherService.create(dataTeacher);
     }
@@ -59,7 +63,7 @@ class AuthService {
     }
 
     if(hasChange) {
-      await teacherRepository.save({...teacher});
+      await this.teacherRepository.update(teacher.id, teacher);
     }
 
     if(teacher) {
