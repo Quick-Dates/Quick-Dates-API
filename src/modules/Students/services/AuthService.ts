@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { getRepository } from 'typeorm';
-import { IResponseSignin } from '../interfaces/IResponse';
+import { IResponseMyData, IResponseSignin } from '../interfaces/IResponse';
 import Students from '../models/Students';
 import { sign } from 'jsonwebtoken';
 import StudentService from './StudentService';
@@ -12,7 +12,7 @@ import IStudentRepository from '../interfaces/IStudentRepository';
 
 interface IParamsAuth {
   tokenSuap: string;
-  dataStudent: any;
+  dataStudent: IResponseMyData;
   password: string;
 }
 
@@ -32,7 +32,10 @@ class AuthService {
     let student: Students = await this.studentRepository.findBySuapId(dataStudent.id) as Students;
     const studentService = container.resolve(StudentService);
     if (!student) {
-      student = await studentService.create({ ...dataStudent, password });
+      student = await studentService.create({ suapId: dataStudent.id, password, birthDate: dataStudent.data_nascimento,
+        email: dataStudent.email, name: dataStudent.nome_usual, registration: dataStudent.matricula,
+        fullName: dataStudent.vinculo.nome, gender: dataStudent.sexo, situation: dataStudent.vinculo.situacao,
+        systematicSituation: dataStudent.vinculo.situacao_sistemica });
     }
 
     let hasChange = this.verifyChangeData(student, dataStudent);

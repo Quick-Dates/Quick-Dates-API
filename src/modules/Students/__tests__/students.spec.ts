@@ -14,7 +14,7 @@ let studentService: StudentService;
 let authStudentService: AuthService;
 let nodeMailerService: NodeMailerService;
 let teamService: TeamService;
-const dataFake = {
+const dataFake: any = {
   dataStudent: {
     tipo_vinculo: 'Aluno',
     id: 'id_valido',
@@ -53,13 +53,21 @@ describe('Student', () => {
             tipo_vinculo: 'Professor',
             id: 'id_valido',
             vinculo: {
-              curso: 'Ensino medio Informática'
-            }
+              curso: 'Ensino medio Informática',
+              nome: 'Nome Completo',
+              situacao: 'Ativo',
+              situacao_sistemica: 'Tudo certo',
+            },
+            data_nascimento: '01/01/2000',
+            email: 'emailteste',
+            nome_usual: 'nome_usual',
+            matricula: 'matricula',
+            sexo: 'M',
           },
           password: '',
           tokenSuap: ''
         }
-        await authStudentService.execute(dataStudentFake)
+        await authStudentService.execute(dataStudentFake as any)
         expect(true).toBe(false);
       } catch (error: any) {
         expect(error).toBeInstanceOf(AppError);
@@ -73,7 +81,12 @@ describe('Student', () => {
       await authStudentService.execute(dataFake);
 
       expect(fakeStudentsRepository.findBySuapId).toHaveBeenCalledWith(dataFake.dataStudent.id);
-      expect(studentService.create).toHaveBeenCalledWith({ ...dataFake.dataStudent, password: dataFake.password });
+      expect(studentService.create).toHaveBeenCalledWith({
+        suapId: dataFake.dataStudent.id, password: dataFake.password, birthDate: dataFake.dataStudent.data_nascimento,
+        email: dataFake.dataStudent.email, name: dataFake.dataStudent.nome_usual, registration: dataFake.dataStudent.matricula,
+        fullName: dataFake.dataStudent.vinculo.nome, gender: dataFake.dataStudent.sexo, situation: dataFake.dataStudent.vinculo.situacao,
+        systematicSituation: dataFake.dataStudent.vinculo.situacao_sistemica
+      });
       expect(fakeStudentsRepository.update).toHaveBeenCalledTimes(0);
     })
     it('not should create student if student exists', async () => {

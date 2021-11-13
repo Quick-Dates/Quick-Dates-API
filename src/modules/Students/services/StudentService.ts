@@ -1,5 +1,5 @@
 import { hash } from 'bcryptjs';
-import { inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
 import NodeMailerService from '../../../shared/services/NodeMailerService';
 import TeamService from '../../Teams/services/TeamService';
@@ -7,6 +7,7 @@ import { IParamsCreateStudent } from '../interfaces/IParams';
 import IStudentRepository from '../interfaces/IStudentRepository';
 import Students from '../models/Students';
 
+@injectable()
 class StudentService {
 
   constructor(

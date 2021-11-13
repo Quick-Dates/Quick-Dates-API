@@ -8,6 +8,7 @@ import StatusTaskService from '../services/StatusTaskService';
 import TaskService from '../services/TaskService';
 import TeamService from '../../Teams/services/TeamService';
 import StudentService from '../../Students/services/StudentService';
+import { container } from 'tsyringe';
 
 const tasksRouter = Router();
 
@@ -80,10 +81,10 @@ tasksRouter.get('/teacher', teacher, async (request, response) => {
 tasksRouter.get('/student', student, async (request, response) => {
   const idStudent = request.user.id;
   const taskService = new TaskService();
-  const studentService = new StudentService();
+  const studentService = container.resolve(StudentService);
 
   const student = await studentService.indexById(idStudent);
-  const tasks = await taskService.indexByTeam(student.team.id);
+  const tasks = await taskService.indexByTeam(student?.team?.id as number);
   return response.json(tasks);
 });
 
@@ -108,7 +109,7 @@ tasksRouter.get('/:id/student', student, async (request, response) => {
 tasksRouter.get('/statistics-week', student, async (request, response) => {
   const idStudent = request.user.id;
   const taskService = new TaskService();
-  const studentService = new StudentService();
+  const studentService = container.resolve(StudentService);
 
   const student = await studentService.indexById(idStudent);
   const tasks = await taskService.indexTasksWeek(student);
