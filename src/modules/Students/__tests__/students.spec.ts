@@ -328,6 +328,19 @@ describe('Student', () => {
         expect(error.statusCode).toBe(404);
       }
     })
-    it.todo('should return student by id')
+    it('should return student by id', async () => {
+      const fakeStudent = {
+        teste: ''
+      }
+      const fakeTeam = {
+        testeTeam: ''
+      }
+      jest.spyOn(fakeStudentsRepository, 'findById').mockResolvedValue(fakeStudent as any);
+      jest.spyOn(teamService, 'indexById').mockResolvedValue(fakeTeam as any);
+
+      const student = await studentService.indexById('id');
+
+      expect(student).toEqual({...fakeStudent, team: fakeTeam});
+    })
   })
 });
