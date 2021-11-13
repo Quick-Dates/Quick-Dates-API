@@ -330,7 +330,8 @@ describe('Student', () => {
     })
     it('should return student by id', async () => {
       const fakeStudent = {
-        teste: ''
+        teste: '',
+        id_team: 'idTeam'
       }
       const fakeTeam = {
         testeTeam: ''
@@ -341,6 +342,8 @@ describe('Student', () => {
       const student = await studentService.indexById('id');
 
       expect(student).toEqual({...fakeStudent, team: fakeTeam});
+      expect(fakeStudentsRepository.findById).toHaveBeenCalledWith('id');
+      expect(teamService.indexById).toHaveBeenCalledWith('idTeam');
     })
   })
 });
