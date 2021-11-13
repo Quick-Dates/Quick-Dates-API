@@ -275,12 +275,31 @@ describe('Student', () => {
       };
 
       jest.spyOn(bcryptjs, 'hash').mockResolvedValue('password_encrypt' as never);
-      await studentService.create(fakeStudent as any).catch(() => { });
+      await studentService.create(fakeStudent as any)
 
       expect(bcryptjs.hash).toHaveBeenCalledWith(fakeStudent.password, 10);
       expect(fakeStudentsRepository.create).toHaveBeenCalledWith({password: 'password_encrypt'});
     })
-    it.todo('should creating student')
+    it('should creating student', async() => {
+      const fakeStudent = {
+        password: 'password_encrypt',
+        birthDate: 'birthDate',
+        email: 'email',
+        fullName: 'fullName',
+        gender: 'gender',
+        name: 'name',
+        registration: 0,
+        situation: 'situation',
+        suapId: 'suapId',
+        systematicSituation: 'systematicSituation'
+      }
+
+      jest.spyOn(fakeStudentsRepository, 'create').mockResolvedValue(fakeStudent as any);
+      const student = await studentService.create(fakeStudent as any)
+
+      expect(fakeStudentsRepository.create).toHaveBeenCalledWith(fakeStudent);
+      expect(student).toEqual(fakeStudent);
+    })
     it.todo('should send email to student after creating in 3 secs')
     it.todo('should throw error if student not found')
     it.todo('should return student by id')
