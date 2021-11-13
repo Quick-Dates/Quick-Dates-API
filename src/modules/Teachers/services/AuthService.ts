@@ -29,6 +29,34 @@ class AuthService {
       teacher = await teacherService.create(dataTeacher);
     }
 
+    let hasChange = this.verifyChangeData(teacher, dataTeacher);
+
+    const passwordMatched = await this.compareCriptografied(dataTeacher.password, teacher.password as string)
+
+    if(!passwordMatched) {
+      hasChange = true;
+      teacher.password = await hash(dataTeacher.password, 10);
+    }
+
+    if(hasChange) {
+      await this.teacherRepository.update(teacher.id, teacher);
+    }
+
+    if(teacher) {
+      const token = this.generateToken({
+        tokenSuap,
+        id: teacher.id,
+        name: teacher.name,
+        profile: ProfileEnum.TEACHER,
+        email: teacher.email,
+      }, process.env.AUTH_SECRET as string);
+
+      return {token};
+    }
+
+  }
+
+  verifyChangeData(teacher: any, myDataTeacher: any): boolean {
     const keysTeacher = [
       {teacher: 'registration', suap: 'matricula'},
       {teacher: 'name', suap: 'nome_usual'},
@@ -40,7 +68,6 @@ class AuthService {
     ];
 
     let hasChange = false;
-    const myDataTeacher = dataTeacher as any;
 
     for(const keyTeacher of keysTeacher) {
       if(keyTeacher.suap2) {
@@ -55,31 +82,17 @@ class AuthService {
         }
       }
     }
-    const passwordMatched = await compare(dataTeacher.password, teacher.password as string)
+    return hasChange;
+  }
 
-    if(!passwordMatched) {
-      hasChange = true;
-      teacher.password = await hash(dataTeacher.password, 10);
-    }
+  async compareCriptografied(value: string, hash: string): Promise<boolean> {
+    return await compare(value, hash);
+  }
 
-    if(hasChange) {
-      await this.teacherRepository.update(teacher.id, teacher);
-    }
-
-    if(teacher) {
-      const token = sign({
-        tokenSuap,
-        id: teacher.id,
-        name: teacher.name,
-        profile: ProfileEnum.TEACHER,
-        email: teacher.email,
-      }, process.env.AUTH_SECRET as string, {
-        expiresIn: '5d'
-      });
-
-      return {token};
-    }
-
+  generateToken(payload: any, authSecret: string) {
+    return sign(payload, authSecret, {
+      expiresIn: '5d'
+    })
   }
 }
 

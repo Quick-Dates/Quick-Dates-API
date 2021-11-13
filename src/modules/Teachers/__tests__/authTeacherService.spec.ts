@@ -33,13 +33,12 @@ describe('AuthService of Teacher', () => {
     authTeacherService = new AuthService(fakeTeacherRepository);
 
     jest.spyOn(container, 'resolve').mockReturnValue(teacherService);
-    jest.spyOn(teacherService, 'create').mockImplementation();
+    jest.spyOn(teacherService, 'create').mockResolvedValue({} as any);
     jest.spyOn(fakeTeacherRepository, 'update').mockImplementation();
     jest.spyOn(fakeTeacherRepository, 'findBySuapId').mockReturnValue({} as any);
-    // jest.spyOn(authTeacherService, 'verifyChangeData').mockReturnValue(false);
-    // jest.spyOn(authTeacherService, 'compareCriptografied').mockReturnValue(Promise.resolve(true));
-    // jest.spyOn(authTeacherService, 'thirdWordInUpperCase').mockImplementation();
-    // jest.spyOn(authTeacherService, 'generateToken').mockImplementation();
+    jest.spyOn(authTeacherService, 'verifyChangeData').mockReturnValue(false);
+    jest.spyOn(authTeacherService, 'compareCriptografied').mockReturnValue(Promise.resolve(true));
+    jest.spyOn(authTeacherService, 'generateToken').mockImplementation();
 
   });
 
@@ -60,10 +59,23 @@ describe('AuthService of Teacher', () => {
       expect(error.message).toBe('Perfil de usuário inválido');
       expect(error.statusCode).toBe(401);
     }
-
   })
-  it.todo('should create teacher if not found')
-  it.todo('not should create teacher if exists')
+  it('should create teacher if not found', async() => {
+    jest.spyOn(fakeTeacherRepository, 'findBySuapId').mockResolvedValue(undefined)
+
+
+    await authTeacherService.execute(dataFake as any);
+
+    expect(teacherService.create).toHaveBeenLastCalledWith(dataFake.dataTeacher);
+    expect(container.resolve).toHaveBeenLastCalledWith(TeacherService);
+  })
+  it('not should create teacher if exists', async() => {
+    await authTeacherService.execute(dataFake as any);
+
+    expect(fakeTeacherRepository.findBySuapId).toHaveBeenLastCalledWith(dataFake.dataTeacher.id);
+    expect(teacherService.create).not.toHaveBeenCalled();
+    expect(fakeTeacherRepository.update).not.toHaveBeenCalled();
+  })
   it.todo('should update teacher if has change')
   it.todo('should update teacher if has change in password')
   it.todo('should generate token if teacher correct')
