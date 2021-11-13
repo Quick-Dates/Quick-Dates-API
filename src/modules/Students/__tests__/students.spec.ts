@@ -8,7 +8,6 @@ import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
 import NodeMailerService from '../../../shared/services/NodeMailerService';
 import TeamService from '../../Teams/services/TeamService';
 import { container } from 'tsyringe';
-'use strict';
 
 let fakeStudentsRepository: FakeStudentsRepository;
 let studentService: StudentService;
@@ -217,7 +216,7 @@ describe('Student', () => {
         systematicSituation: ''
       })
     })
-    it('should compare value with hash', async() => {
+    it('should compare value with hash', async () => {
       jest.spyOn(authStudentService, 'compareCriptografied').mockRestore();
       jest.spyOn(bcryptjs, 'compare').mockReturnValue(Promise.resolve(true) as any);
 
@@ -270,18 +269,18 @@ describe('Student', () => {
       jest.spyOn(global, 'setTimeout').mockImplementation();
       jest.spyOn(nodeMailerService, 'sendEmailWelcome').mockImplementation();
     });
-    it('should encrypt password before creating a student', async() => {
+    it('should encrypt password before creating a student', async () => {
       const fakeStudent = {
-       password: 'password'
+        password: 'password'
       };
 
       jest.spyOn(bcryptjs, 'hash').mockResolvedValue('password_encrypt' as never);
       await studentService.create(fakeStudent as any)
 
       expect(bcryptjs.hash).toHaveBeenCalledWith(fakeStudent.password, 10);
-      expect(fakeStudentsRepository.create).toHaveBeenCalledWith({password: 'password_encrypt'});
+      expect(fakeStudentsRepository.create).toHaveBeenCalledWith({ password: 'password_encrypt' });
     })
-    it('should creating student', async() => {
+    it('should creating student', async () => {
       const fakeStudent = {
         password: 'password_encrypt',
         birthDate: 'birthDate',
@@ -301,7 +300,7 @@ describe('Student', () => {
       expect(fakeStudentsRepository.create).toHaveBeenCalledWith(fakeStudent);
       expect(student).toEqual(fakeStudent);
     })
-    it('should send email welcome to student after creating in 3 secs', async() => {
+    it('should send email welcome to student after creating in 3 secs', async () => {
       const fakeStudent = {}
 
       jest.useFakeTimers();
@@ -316,7 +315,19 @@ describe('Student', () => {
       expect(nodeMailerService.sendEmailWelcome).toHaveBeenCalledWith(fakeStudent);
       expect(nodeMailerService.sendEmailWelcome).toHaveBeenCalledTimes(1);
     })
-    it.todo('should throw error if student not found')
+    it('should throw error if student not found', async () => {
+      try {
+        jest.spyOn(fakeStudentsRepository, 'findBySuapId').mockResolvedValue(undefined);
+
+        await studentService.indexById('');
+
+        expect(true).toBe(false);
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError);
+        expect(error.message).toBe('Aluno não encontrado');
+        expect(error.statusCode).toBe(404);
+      }
+    })
     it.todo('should return student by id')
   })
 });
