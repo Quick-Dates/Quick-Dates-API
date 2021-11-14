@@ -70,7 +70,15 @@ describe('AuthService of Teacher', () => {
 
     await authTeacherService.execute(dataFake as any);
 
-    expect(teacherService.create).toHaveBeenLastCalledWith(dataFake.dataTeacher);
+    expect(teacherService.create).toHaveBeenLastCalledWith({
+      registration: dataFake.dataTeacher.matricula,
+      name: dataFake.dataTeacher.nome_usual,
+      fullName: dataFake.dataTeacher.vinculo.nome,
+      password: dataFake.dataTeacher.password,
+      email: dataFake.dataTeacher.email,
+      birthDate: dataFake.dataTeacher.data_nascimento,
+      gender: dataFake.dataTeacher.sexo,
+      suapId: dataFake.dataTeacher.id});
     expect(container.resolve).toHaveBeenLastCalledWith(TeacherService);
   })
   it('not should create teacher if exists', async() => {

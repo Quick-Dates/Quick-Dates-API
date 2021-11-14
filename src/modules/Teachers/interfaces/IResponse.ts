@@ -34,5 +34,6 @@ export interface IResponseMyData {
     url_foto_75x100: string;
     curriculo_lattes: string;
   }
+  password: string;
   sexo: GenderEnum;
 }

@@ -5,6 +5,7 @@ import { IResponseMyData } from '../../Students/interfaces/IResponse';
 import TeacherService from '../services/TeacherService';
 import ensureAuthenticated from '../../../shared/middlewares/ensureAuthenticated';
 import teacher from '../../../shared/middlewares/teacher';
+import { container } from 'tsyringe';
 
 const teachersRouter = Router();
 
@@ -12,11 +13,11 @@ teachersRouter.post('/signin', async (request, response) => {
   const { username, password } = request.body;
   try {
     const suapService = new SuapService();
-    const authService = new AuthService();
+    const authService = container.resolve(AuthService);
 
     const tokenSuap = await suapService.signin({username, password});
     const dataTeacher = await suapService.indexMyData(tokenSuap);
-    const token = await authService.execute({tokenSuap: tokenSuap.token, dataTeacher: {...dataTeacher, password} as IResponseMyData});
+    const token = await authService.execute({tokenSuap: tokenSuap.token, dataTeacher: {...dataTeacher, password} as any});
 
     return response.json(token);
   } catch (error: any) {
@@ -30,7 +31,7 @@ teachersRouter.post('/signin', async (request, response) => {
 teachersRouter.get('/:id', ensureAuthenticated, teacher, async (request, response) => {
   const { id } = request.params;
   try {
-    const teacherService = new TeacherService();
+    const teacherService = container.resolve(TeacherService);
     const teacher = await  teacherService.indexById(id);
     return response.json(teacher);
   } catch (error: any) {

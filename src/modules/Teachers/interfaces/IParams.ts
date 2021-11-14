@@ -1,5 +1,5 @@
 import { GenderEnum } from "../../../shared/enum/GenderEnum";
-import { IResponseMyData } from "../../Students/interfaces/IResponse";
+import { IResponseMyData } from "./IResponse";
 
 export interface IParamsSignin {
   username: string;
@@ -12,7 +12,7 @@ export interface IParamsMyData {
 
 export interface IParamsAuth {
   tokenSuap: string;
-  dataTeacher: any;
+  dataTeacher: IResponseMyData;
 }
 
 export interface IParamsCreateTeacher {

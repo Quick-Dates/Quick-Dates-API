@@ -1,9 +1,7 @@
 import { hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
-import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 import NodeMailerService from '../../../shared/services/NodeMailerService';
-import TeamService from '../../Teams/services/TeamService';
 import { IParamsCreateTeacher } from '../interfaces/IParams';
 import ITeacherRepository from '../interfaces/ITeacherRepository';
 import Teachers from '../models/Teachers';
