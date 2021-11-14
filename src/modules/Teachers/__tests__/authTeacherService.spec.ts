@@ -7,6 +7,7 @@ import AuthService from "../services/AuthService";
 import TeacherService from "../services/TeacherService";
 import FakeTeachersRepository from "./fakes/FakeTeachersRepository";
 import bcryptjs from "bcryptjs";
+import { ProfileEnum } from "../../../shared/enum/ProfileEnum";
 
 let fakeTeacherRepository: FakeTeachersRepository;
 let teacherService: TeacherService;
@@ -103,7 +104,32 @@ describe('AuthService of Teacher', () => {
     expect(fakeTeacherRepository.update).toHaveBeenLastCalledWith(fakeDataTeacher.id, {...fakeDataTeacher, password: 'password-valid'});
     expect(teacherService.create).not.toHaveBeenCalled();
   })
-  it.todo('should generate token if teacher correct')
+  it('should generate token if teacher correct', async () => {
+    const teacher = {
+      id: 1,
+      name: 'nome',
+      email: 'email'
+    }
+
+    jest.spyOn(fakeTeacherRepository, 'findBySuapId').mockReturnValue(teacher as any);
+    jest.spyOn(authTeacherService, 'generateToken').mockReturnValue('token-valid' as any);
+
+    process.env.AUTH_SECRET = 'mysecret';
+
+    const { token }: any = await authTeacherService.execute(dataFake as any);
+
+
+    expect(authTeacherService.generateToken).toHaveBeenCalledWith({
+      tokenSuap: dataFake.tokenSuap,
+      id: teacher.id,
+      name: teacher.name,
+      profile: ProfileEnum.TEACHER,
+      email: teacher.email,
+    }, 'mysecret');
+    expect(token).toBe('token-valid');
+    expect(fakeTeacherRepository.update).not.toHaveBeenCalled();
+    expect(teacherService.create).not.toHaveBeenCalled();
+  })
   it.todo('should overwrite data if has change dataTeacher')
   it.todo('not should overwrite data if not has change dataTeacher')
   it.todo('should compare value with hash')
