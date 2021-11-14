@@ -22,7 +22,7 @@ const dataFake: any = {
       curso: 'Ensino medio Informática'
     }
   },
-  password: '',
+  password: 'password-invalid',
   tokenSuap: ''
 }
 
@@ -92,7 +92,6 @@ describe('AuthService', () => {
   })
   it('should update student if has change in password', async () => {
     jest.spyOn(fakeStudentsRepository, 'findBySuapId').mockReturnValue({ id: 1, teste: 'testando', password: 'password-invalid' } as any);
-
     jest.spyOn(authStudentService, 'compareCriptografied').mockReturnValue(Promise.resolve(false));
     jest.spyOn(bcryptjs, 'hash').mockReturnValue(Promise.resolve('password-valid') as any);
 

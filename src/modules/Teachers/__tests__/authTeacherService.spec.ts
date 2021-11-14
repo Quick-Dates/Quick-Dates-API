@@ -6,6 +6,7 @@ import TeamService from "../../Teams/services/TeamService";
 import AuthService from "../services/AuthService";
 import TeacherService from "../services/TeacherService";
 import FakeTeachersRepository from "./fakes/FakeTeachersRepository";
+import bcryptjs from "bcryptjs";
 
 let fakeTeacherRepository: FakeTeachersRepository;
 let teacherService: TeacherService;
@@ -18,9 +19,10 @@ const dataFake: any = {
     id: 'id_valido',
     vinculo: {
       categoria: 'docente'
-    }
+    },
+    password: 'password-valid',
   },
-  password: '',
+  password: 'password-valid',
   tokenSuap: ''
 }
 
@@ -85,7 +87,22 @@ describe('AuthService of Teacher', () => {
     expect(fakeTeacherRepository.update).toHaveBeenLastCalledWith(dataFake.dataTeacher.id, dataFake.dataTeacher);
     expect(teacherService.create).not.toHaveBeenCalled();
   })
-  it.todo('should update teacher if has change in password')
+  it('should update teacher if has change in password', async() => {
+    const fakeDataTeacher = {
+      password: 'password-invalid',
+      id: 'id-valido'
+    }
+    jest.spyOn(fakeTeacherRepository, 'findBySuapId').mockReturnValue(fakeDataTeacher as any);
+    jest.spyOn(authTeacherService, 'compareCriptografied').mockReturnValue(Promise.resolve(false));
+    jest.spyOn(bcryptjs, 'hash').mockReturnValue(Promise.resolve('password-valid') as any);
+
+    await authTeacherService.execute(dataFake as any);
+
+    expect(authTeacherService.compareCriptografied).toHaveBeenCalledWith(dataFake.password, 'password-invalid');
+    expect(bcryptjs.hash).toHaveBeenCalledWith(dataFake.password, 10);
+    expect(fakeTeacherRepository.update).toHaveBeenLastCalledWith(fakeDataTeacher.id, {...fakeDataTeacher, password: 'password-valid'});
+    expect(teacherService.create).not.toHaveBeenCalled();
+  })
   it.todo('should generate token if teacher correct')
   it.todo('should overwrite data if has change dataTeacher')
   it.todo('not should overwrite data if not has change dataTeacher')
