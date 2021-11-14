@@ -8,6 +8,7 @@ import TeacherService from "../services/TeacherService";
 import FakeTeachersRepository from "./fakes/FakeTeachersRepository";
 import bcryptjs from "bcryptjs";
 import { ProfileEnum } from "../../../shared/enum/ProfileEnum";
+import student from "../../../shared/middlewares/student";
 
 let fakeTeacherRepository: FakeTeachersRepository;
 let teacherService: TeacherService;
@@ -130,8 +131,76 @@ describe('AuthService of Teacher', () => {
     expect(fakeTeacherRepository.update).not.toHaveBeenCalled();
     expect(teacherService.create).not.toHaveBeenCalled();
   })
-  it.todo('should overwrite data if has change dataTeacher')
-  it.todo('not should overwrite data if not has change dataTeacher')
+  it('should overwrite data if has change dataTeacher', () => {
+    jest.spyOn(authTeacherService, 'verifyChangeData').mockRestore()
+    const teacher = {
+      registration: '',
+      name: '',
+      fullName: '',
+      email: '',
+      birthDate: '',
+      gender: '',
+      suapId: 0
+    }
+    const dataTeacherSuap = {
+      matricula: 'change matricula',
+      nome_usual: 'change nome_usual',
+      vinculo: {
+        nome: 'change nome',
+      },
+      email: 'change email',
+      data_nascimento: 'change data_nascimento',
+      sexo: 'change sexo',
+      id: 2
+    }
+    const hasChange = authTeacherService.verifyChangeData(teacher, dataTeacherSuap);
+
+    expect(hasChange).toBe(true);
+    expect(teacher).toEqual({
+      registration: 'change matricula',
+      name: 'change nome_usual',
+      fullName: 'change nome',
+      email: 'change email',
+      birthDate: 'change data_nascimento',
+      gender: 'change sexo',
+      suapId: 2,
+    })
+  })
+  it('not should overwrite data if not has change dataTeacher', () => {
+    const teacher = {
+      registration: '',
+      name: '',
+      fullName: '',
+      email: '',
+      birthDate: '',
+      gender: '',
+      suapId: 0
+    }
+    const dataTeacherSuap = {
+      matricula: '',
+      nome_usual: '',
+      vinculo: {
+        nome: '',
+      },
+      email: '',
+      data_nascimento: '',
+      sexo: '',
+      id: 0
+    }
+
+    const hasChange = authTeacherService.verifyChangeData(teacher, dataTeacherSuap);
+
+    expect(hasChange).toBe(false);
+    expect(teacher).toEqual({
+      registration: '',
+      name: '',
+      fullName: '',
+      email: '',
+      birthDate: '',
+      gender: '',
+      suapId: 0,
+    })
+  })
   it.todo('should compare value with hash')
   it.todo('should return third word in Upper Case string')
   it.todo('should return generate token')
