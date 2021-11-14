@@ -9,7 +9,8 @@
     "prestart": "npx typeorm migration:run ",
     "start": "node dist/server.js",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "test": "cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand --watch"
+    "test": "cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand --watch",
+    "test:cov": "cross-env NODE_ENV=test jest --coverage"
   },
   "dependencies": {
     "axios": "^0.21.4",
