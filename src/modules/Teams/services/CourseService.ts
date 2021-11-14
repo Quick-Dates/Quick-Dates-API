@@ -1,35 +1,38 @@
+import { inject, injectable } from 'tsyringe';
 import { getRepository } from 'typeorm';
+import AppError from '../../../shared/errors/AppError';
 import { ICourse } from '../interfaces/ICourse';
 import Courses from '../models/Courses';
+import CourseRepository from '../repositories/CourseRepository';
 
+@injectable()
 class CourseService {
-  async create({name, level}: ICourse): Promise<Courses> {
-    const courseRepository = getRepository(Courses);
+  constructor(
+    @inject('CourseRepository')
+    private courseRepository: CourseRepository,
+  ) {}
 
-    const course = courseRepository.create({
+  async create({name, level}: ICourse): Promise<Courses> {
+    const course = await this.courseRepository.create({
       level,
       name,
     });
-
-    await courseRepository.save(course)
 
     return course
   }
 
   async index(): Promise<Courses[]> {
-    const courseRepository = getRepository(Courses);
-
-
-    const cousers = await courseRepository.find();
+    const cousers = await this.courseRepository.findAll();
 
     return cousers
   }
 
-  async indexById({id}: any): Promise<Courses | undefined> {
-    const courseRepository = getRepository(Courses);
+  async indexById({id}: any): Promise<Courses> {
+    const course = await this.courseRepository.findById(id);
 
-
-    const course = await courseRepository.findOne({where: {id}});
+    if(!course) {
+      throw new AppError('Curso não encontrado' , 404);
+    }
 
     return course
   }

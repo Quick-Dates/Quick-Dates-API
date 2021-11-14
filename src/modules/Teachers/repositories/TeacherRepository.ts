@@ -9,7 +9,7 @@ export default class TeacherRepository implements ITeacherRepository {
   }
 
   async findById(id: string): Promise<Teachers | undefined> {
-    return await this.ormRepository.findOne(id);
+    return await this.ormRepository.findOne({where: {id}});
   }
 
   async findBySuapId(suapId: number): Promise<Teachers | undefined> {

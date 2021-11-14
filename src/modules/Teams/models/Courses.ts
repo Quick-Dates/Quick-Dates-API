@@ -6,7 +6,7 @@ import Teams from "./Teams";
 @Entity('courses')
 class Courses {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({
     type: 'enum',
@@ -21,7 +21,7 @@ class Courses {
   level: LevelCourseEnum;
 
   @OneToMany(() => Teams, (teams) => teams.course)
-  teams: Teams[];
+  teams?: Teams[];
 }
 
 export default Courses;
