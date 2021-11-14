@@ -19,21 +19,21 @@ class TeacherService {
   ) {
 
   }
-  async create({id, matricula, nome_usual, email, data_nascimento, vinculo, sexo, password}: IParamsCreateTeacher): Promise<Teachers> {
+  async create({ registration, name, fullName, password, email, birthDate, gender, suapId }: IParamsCreateTeacher): Promise<Teachers> {
     const hashedPassword = await hash(password, 10);
 
     const teacher = await this.teacherRepository.create({
-      registration: matricula,
-      name: nome_usual,
-      fullName: vinculo.nome,
+      registration,
+      name,
+      fullName,
       password: hashedPassword,
       email,
-      birthDate: data_nascimento,
-      gender: sexo,
-      suapId: id
+      birthDate,
+      gender,
+      suapId
     });
 
-    setTimeout(async ()=>{
+    setTimeout(async () => {
       await this.nodeMailerService.sendEmailWelcome(teacher);
     }, 3000)
 
@@ -41,9 +41,7 @@ class TeacherService {
   }
 
   async indexById(id: string): Promise<Teachers> {
-    const teacherRepository = getRepository(Teachers);
-
-    const teacher = await teacherRepository.findOne({ where: { id } });
+    const teacher = await this.teacherRepository.findById(id);
     if (!teacher) {
       throw new AppError('Professor não encontrado', 404);
     }
