@@ -8,7 +8,7 @@ import TeacherService from "../services/TeacherService";
 import FakeTeachersRepository from "./fakes/FakeTeachersRepository";
 import bcryptjs from "bcryptjs";
 import { ProfileEnum } from "../../../shared/enum/ProfileEnum";
-import student from "../../../shared/middlewares/student";
+import jsonwebtoken from 'jsonwebtoken';
 
 let fakeTeacherRepository: FakeTeachersRepository;
 let teacherService: TeacherService;
@@ -201,7 +201,34 @@ describe('AuthService of Teacher', () => {
       suapId: 0,
     })
   })
-  it.todo('should compare value with hash')
-  it.todo('should return third word in Upper Case string')
-  it.todo('should return generate token')
+  it('should compare value with hash', async() => {
+    jest.spyOn(authTeacherService, 'compareCriptografied').mockRestore();
+    jest.spyOn(bcryptjs, 'compare').mockReturnValue(Promise.resolve(true) as any);
+
+    const isEqual = await authTeacherService.compareCriptografied('value', 'hash')
+
+    expect(isEqual).toBe(true);
+    expect(bcryptjs.compare).toHaveBeenCalledWith('value', 'hash');
+
+    jest.spyOn(bcryptjs, 'compare').mockReturnValue(Promise.resolve(false) as any);
+    const isEqual2 = await authTeacherService.compareCriptografied('value', 'hash');
+    expect(isEqual2).toBe(false);
+    expect(bcryptjs.compare).toHaveBeenCalledWith('value', 'hash');
+  })
+  it('should return generate token', () => {
+    jest.spyOn(authTeacherService, 'generateToken').mockRestore();
+    jest.spyOn(jsonwebtoken, 'sign').mockReturnValue('token-valid' as any);
+
+    const payload = {
+      teste: ''
+    }
+    const secret = 'secret';
+
+    const token = authTeacherService.generateToken(payload, secret);
+
+    expect(token).toBe('token-valid');
+    expect(jsonwebtoken.sign).toHaveBeenCalledWith(payload, secret, {
+      expiresIn: '5d'
+    });
+  })
 })
