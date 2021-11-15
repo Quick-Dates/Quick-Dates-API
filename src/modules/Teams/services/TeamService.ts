@@ -119,10 +119,8 @@ class TeamService {
     return teamData
   }
 
-  indexStudentsByTeam(id: number): Promise<Students[]> {
-    const studentRepository = getRepository(Students);
-
-    return studentRepository.find({ where: { id_team: id } })
+  async indexStudentsByTeam(id: number): Promise<Students[]> {
+    return await this.studentRepository.findAllByTeamId(id)
   }
 }
 

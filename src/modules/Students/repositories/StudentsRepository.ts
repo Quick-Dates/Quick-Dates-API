@@ -25,4 +25,8 @@ export default class StudentsRepository implements IStudentRepository {
     await this.ormRepository.save(studentCreated)
     return studentCreated;
   }
+
+  async findAllByTeamId(teamId: number): Promise< Students[]> {
+    return await this.ormRepository.find({ where: { id_team: teamId } });
+  }
 }

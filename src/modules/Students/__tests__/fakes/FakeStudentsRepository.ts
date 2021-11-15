@@ -31,5 +31,12 @@ export default class FakeStudentsRepository implements IStudentRepository {
       resolve(student);
     });
   }
+
+  findAllByTeamId(teamId: number): Promise<Students[]> {
+    return new Promise((resolve) => {
+      const student = this.students.filter(student => student.id_team === teamId);
+      resolve(student);
+    });
+  }
 }
 

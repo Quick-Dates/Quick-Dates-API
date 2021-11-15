@@ -257,6 +257,16 @@ describe('TeamService', () => {
     })
   })
   describe('#indexStudentsByTeam', () => {
-    it.todo('should list students of team')
+    it('should list students of team', async() => {
+      const fakeTeam = { id: 1 }
+      const fakeStudents = [{ id: 1 }, { id: 2 }]
+
+      jest.spyOn(fakeStudentsRepository, 'findAllByTeamId').mockResolvedValue(fakeStudents as never);
+
+      const students = await teamService.indexStudentsByTeam(fakeTeam.id);
+
+      expect(fakeStudentsRepository.findAllByTeamId).toHaveBeenCalledWith(fakeTeam.id);
+      expect(students).toEqual(fakeStudents);
+    })
   })
 })
