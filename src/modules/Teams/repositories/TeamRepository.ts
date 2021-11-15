@@ -24,13 +24,18 @@ export default class TeamRepository implements ITeamRepository {
       .where("teams.yearCreation <= :yearCurrent AND teams.yearCreation => :yearCurrent - 3", { yearCurrent })
       .execute();
   }
+
   async findAllByCourse(id_course: number, yearCurrent: number): Promise<Teams[]> {
-    return await this.ormRepository.createQueryBuilder()
+    const teams =  await this.ormRepository.createQueryBuilder()
       .select("*")
       .from(Teams, "teams")
       .where("teams.yearCreation <= :yearCurrent AND teams.yearCreation >= :yearCurrent - 3", { yearCurrent })
       .andWhere("teams.id_course = :id_course", { id_course })
       .execute();
+
+    const teamsNotDuplicate: Teams[] = teams.filter((team: Teams, index: number) =>
+    teams.findIndex((t: Teams) => t.id === team.id) === index);
+    return teamsNotDuplicate;
   }
   async findById(id: number): Promise<Teams | undefined> {
     return await this.ormRepository.findOne({ where: { id } });

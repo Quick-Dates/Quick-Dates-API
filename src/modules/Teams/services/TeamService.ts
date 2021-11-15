@@ -80,20 +80,11 @@ class TeamService {
   }
 
   async getTeamsByCourse(id_course: number): Promise<Teams[]> {
-    const teamRepository = getRepository(Teams);
-
     const yearCurrent = new Date().getFullYear();
 
-    const teams: Teams[] = await teamRepository.createQueryBuilder()
-      .select("*")
-      .from(Teams, "teams")
-      .where("teams.yearCreation <= :yearCurrent AND teams.yearCreation >= :yearCurrent - 3", { yearCurrent })
-      .andWhere("teams.id_course = :id_course", { id_course })
-      .execute();
+    const teams: Teams[] = await this.teamRepository.findAllByCourse(id_course, yearCurrent);
 
-    const teamsNotDuplicate: Teams[] = teams.filter((team, index) => teams.findIndex(t => t.id === team.id) === index);
-
-    return teamsNotDuplicate.map(team => {
+    return teams.map(team => {
       return {
         ...team,
         name: `${(yearCurrent - team.yearCreation) + 1}° ano`

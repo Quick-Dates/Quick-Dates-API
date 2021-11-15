@@ -174,21 +174,35 @@ describe('TeamService', () => {
   })
   describe('#index', () => {
     it('should list teams', async () => {
-      const fakeYearCreation = 2022;
+      const fakeYearCurrent = 2022;
       const fakeTeams = [{ id: 1 }, { id: 2 }];
 
-      jest.useFakeTimers().setSystemTime(new Date(fakeYearCreation, 1, 1).getTime());
+      jest.useFakeTimers().setSystemTime(new Date(fakeYearCurrent, 1, 1).getTime());
       jest.spyOn(fakeTeamRepository, 'findAll').mockResolvedValue(fakeTeams as never);
 
       const teams = await teamService.index();
 
-      expect(fakeTeamRepository.findAll).toHaveBeenCalledWith(fakeYearCreation);
+      expect(fakeTeamRepository.findAll).toHaveBeenCalledWith(fakeYearCurrent);
       expect(teams).toEqual(fakeTeams);
     })
   })
   describe('#getTeamsByCourse', () => {
-    it.todo('should list teams of course')
-    it.todo('should format name of course')
+    it('should list teams of course', async() => {
+      const fakeCourse = { id: 1 }
+      const fakeYearCurrent = 2022;
+      const fakeYearCreation = 2021;
+      const fakeTeams = [
+        { id: 1, yearCreation: fakeYearCreation, name: `${(fakeYearCurrent - fakeYearCreation) + 1}° ano` },
+        { id: 2, yearCreation: fakeYearCreation, name: `${(fakeYearCurrent - fakeYearCreation) + 1}° ano` }];
+
+      jest.useFakeTimers().setSystemTime(new Date(fakeYearCurrent, 1, 1).getTime());
+      jest.spyOn(fakeTeamRepository, 'findAllByCourse').mockResolvedValue(fakeTeams as never);
+
+      const teams = await teamService.getTeamsByCourse(fakeCourse.id);
+
+      expect(fakeTeamRepository.findAllByCourse).toHaveBeenCalledWith(fakeCourse.id, fakeYearCurrent);
+      expect(teams).toEqual(fakeTeams);
+    })
   })
   describe('#indexById', () => {
     it.todo('should find by id team')
