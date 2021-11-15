@@ -1,4 +1,6 @@
 import { getRepository, Repository } from "typeorm";
+import { LevelCourseEnum } from "../enum/LevelCourseEnum";
+import { TypeCourseEnum } from "../enum/TypeCourseEnum";
 import ICourseRepository from "../interfaces/ICourseRepository";
 import Courses from "../models/Courses";
 
@@ -19,6 +21,10 @@ export default class CourseRepository implements ICourseRepository {
 
   async findAll(): Promise<Courses[]> {
     return await this.ormRepository.find();
+  }
+
+  async findByNameAndLevel(name: TypeCourseEnum, level: LevelCourseEnum): Promise<Courses | undefined> {
+    return await this.ormRepository.findOne({ where: { name, level } });
   }
 
 

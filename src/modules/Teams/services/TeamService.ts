@@ -27,11 +27,9 @@ class TeamService {
   ) { }
 
   async addStudentToTeam(idStudent: string, yearCreation: number, courseName: TypeCourseEnum, level: LevelCourseEnum): Promise<Teams> {
-    const courseRepository = getRepository(Courses);
-    const studentRepository = getRepository(Students);
     const courseService = container.resolve(CourseService);
 
-    let course = await courseRepository.findOne({ where: { name: courseName, level} });
+    let course = await this.courseRepository.findByNameAndLevel(courseName, level);
     if (!course) {
       course = await courseService.create({ name: courseName, level });
     }
@@ -42,12 +40,12 @@ class TeamService {
       team = await this.create({ id_course: course.id as number, yearCreation });
     }
 
-    const student = await studentRepository.findOne({ where: { id: idStudent } });
+    const student = await this.studentRepository.findById(idStudent);
     if (!student) {
       throw new AppError('Aluno não encontrado', 404);
     }
     student.id_team = team.id;
-    await studentRepository.update({ id: student.id }, student);
+    await this.studentRepository.update(student.id as string, student);
     return team;
   }
 
