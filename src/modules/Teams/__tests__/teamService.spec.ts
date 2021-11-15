@@ -217,7 +217,7 @@ describe('TeamService', () => {
       }
     })
     it('should find by id team', async () => {
-      const fakeTeam = { id: 1, yearCreation: 2021}
+      const fakeTeam = { id: 1, yearCreation: 2021 }
       const fakeYearCurrent = 2022;
 
       jest.useFakeTimers().setSystemTime(new Date(fakeYearCurrent, 1, 1).getTime());
@@ -225,12 +225,22 @@ describe('TeamService', () => {
       const team = await teamService.indexById(fakeTeam.id);
 
       expect(fakeTeamRepository.findById).toHaveBeenCalledWith(fakeTeam.id);
-      expect(team).toEqual({...fakeTeam, name: `${(fakeYearCurrent - fakeTeam.yearCreation) + 1}° ano`});
+      expect(team).toEqual({ ...fakeTeam, name: `${(fakeYearCurrent - fakeTeam.yearCreation) + 1}° ano` });
     })
   })
   describe('#delete', () => {
-    it.todo('should delete team')
-    it.todo('should return team deleted')
+    it('should delete team', async () => {
+      const fakeTeam = { id: 1 }
+
+      jest.spyOn(teamService, 'indexById').mockResolvedValue(fakeTeam as never);
+      jest.spyOn(fakeTeamRepository, 'delete').mockImplementation();
+
+      const team = await teamService.delete(fakeTeam.id);
+
+      expect(teamService.indexById).toHaveBeenCalledWith(fakeTeam.id);
+      expect(fakeTeamRepository.delete).toHaveBeenCalledWith(fakeTeam.id);
+      expect(team).toEqual(fakeTeam);
+    })
   })
   describe('#update', () => {
     it.todo('should update team')

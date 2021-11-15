@@ -105,13 +105,8 @@ class TeamService {
   }
 
   async delete(id: number): Promise<Teams> {
-    const teamRepository = getRepository(Teams);
-
-    const team = await teamRepository.findOne({ where: { id } });
-    if (!team) {
-      throw new AppError('Turma não encontrada', 404);
-    }
-    await teamRepository.delete({ id });
+    const team = await this.indexById(id);
+    await this.teamRepository.delete(id);
 
     return team
   }
