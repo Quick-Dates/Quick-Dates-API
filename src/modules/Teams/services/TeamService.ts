@@ -1,18 +1,29 @@
-import { container } from 'tsyringe';
+import { container, inject, injectable } from 'tsyringe';
 import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 import Students from '../../Students/models/Students';
+import StudentsRepository from '../../Students/repositories/StudentsRepository';
 import { LevelCourseEnum } from '../enum/LevelCourseEnum';
 import { TypeCourseEnum } from '../enum/TypeCourseEnum';
 import { ITeam } from '../interfaces/ITeam';
 import Courses from '../models/Courses';
 import Teams from '../models/Teams';
+import CourseRepository from '../repositories/CourseRepository';
+import TeamRepository from '../repositories/TeamRepository';
 import CourseService from './CourseService';
 
+@injectable()
 class TeamService {
+  constructor(
+    @inject('TeamRepository')
+    private teamRepository: TeamRepository,
+    @inject('CourseRepository')
+    private courseRepository: CourseRepository,
+    @inject('StudentRepository')
+    private studentRepository: StudentsRepository,
+  ) { }
 
   async addStudentToTeam(idStudent: string, yearCreation: number, courseName: TypeCourseEnum, level: LevelCourseEnum): Promise<Teams> {
-    const teamRepository = getRepository(Teams);
     const courseRepository = getRepository(Courses);
     const studentRepository = getRepository(Students);
     const courseService = container.resolve(CourseService);
@@ -22,7 +33,8 @@ class TeamService {
       course = await courseService.create({ name: courseName, level });
     }
 
-    let team = await teamRepository.findOne({ where: { yearCreation, id_course: course.id } });
+    let team = await this.teamRepository.findByYearCretionAndIdCourse(yearCreation, course.id as number );
+
     if (!team) {
       team = await this.create({ id_course: course.id as number, yearCreation });
     }

@@ -5,6 +5,7 @@ import StudentService from "../../modules/Students/services/StudentService"
 import TeacherRepository from "../../modules/Teachers/repositories/TeacherRepository"
 import TeacherService from "../../modules/Teachers/services/TeacherService"
 import CourseRepository from "../../modules/Teams/repositories/CourseRepository"
+import TeamRepository from "../../modules/Teams/repositories/TeamRepository"
 import TeamService from "../../modules/Teams/services/TeamService"
 import NodeMailerService from "../services/NodeMailerService"
 
@@ -32,6 +33,10 @@ export default () => {
   container.registerSingleton(
     'CourseRepository',
     CourseRepository
+  )
+  container.registerSingleton(
+    'TeamRepository',
+    TeamRepository
   )
 
 }

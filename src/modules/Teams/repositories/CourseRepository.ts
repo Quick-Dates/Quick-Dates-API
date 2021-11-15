@@ -13,7 +13,7 @@ export default class CourseRepository implements ICourseRepository {
     return courseCreated;
   }
 
-  async findById(id: string): Promise<Courses | undefined> {
+  async findById(id: number): Promise<Courses | undefined> {
     return await this.ormRepository.findOne({ where: { id } });
   }
 
