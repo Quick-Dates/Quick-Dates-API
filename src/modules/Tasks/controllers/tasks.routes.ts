@@ -20,7 +20,7 @@ tasksRouter.post('/team/:id', teacher, async (request, response) => {
   const { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title } = request.body;
 
   const taskService = new TaskService();
-  const teamService = new TeamService();
+  const teamService = container.resolve(TeamService);
   const statusTaskService = new StatusTaskService();
 
 
