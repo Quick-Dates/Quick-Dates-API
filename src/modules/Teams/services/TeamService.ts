@@ -72,15 +72,9 @@ class TeamService {
   }
 
   async index(): Promise<Teams[]> {
-    const teamRepository = getRepository(Teams);
-
     const yearCurrent = new Date().getFullYear();
 
-    const teams: Teams[] = await teamRepository.createQueryBuilder()
-      .select("teams")
-      .from(Teams, "teams")
-      .where("teams.yearCreation <= :yearCurrent AND teams.yearCreation => :yearCurrent - 3", { yearCurrent })
-      .execute();
+    const teams: Teams[] = await this.teamRepository.findAll(yearCurrent);
 
     return teams
   }

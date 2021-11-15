@@ -173,7 +173,18 @@ describe('TeamService', () => {
     })
   })
   describe('#index', () => {
-    it.todo('should list teams')
+    it('should list teams', async () => {
+      const fakeYearCreation = 2022;
+      const fakeTeams = [{ id: 1 }, { id: 2 }];
+
+      jest.useFakeTimers().setSystemTime(new Date(fakeYearCreation, 1, 1).getTime());
+      jest.spyOn(fakeTeamRepository, 'findAll').mockResolvedValue(fakeTeams as never);
+
+      const teams = await teamService.index();
+
+      expect(fakeTeamRepository.findAll).toHaveBeenCalledWith(fakeYearCreation);
+      expect(teams).toEqual(fakeTeams);
+    })
   })
   describe('#getTeamsByCourse', () => {
     it.todo('should list teams of course')
