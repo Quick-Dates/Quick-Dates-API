@@ -111,17 +111,12 @@ class TeamService {
     return team
   }
 
-  async update(id: number, teamData: ITeam): Promise<Teams | undefined> {
-    const teamRepository = getRepository(Teams);
+  async update(id: number, teamData: ITeam): Promise<ITeam | undefined> {
+    const team = await this.indexById(id);
 
-    const team = await teamRepository.findOne({ where: { id } });
-    if (!team) {
-      throw new AppError('Turma não encontrada', 404);
-    }
+    await this.teamRepository.update(team.id as number, teamData as Teams);
 
-    await teamRepository.update({ id }, teamData);
-
-    return team
+    return teamData
   }
 
   indexStudentsByTeam(id: number): Promise<Students[]> {
