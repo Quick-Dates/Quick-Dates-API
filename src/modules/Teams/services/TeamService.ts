@@ -1,3 +1,4 @@
+import { container } from 'tsyringe';
 import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 import Students from '../../Students/models/Students';
@@ -14,7 +15,7 @@ class TeamService {
     const teamRepository = getRepository(Teams);
     const courseRepository = getRepository(Courses);
     const studentRepository = getRepository(Students);
-    const courseService = new CourseService();
+    const courseService = container.resolve(CourseService);
 
     let course = await courseRepository.findOne({ where: { name: courseName, level} });
     if (!course) {
@@ -23,7 +24,7 @@ class TeamService {
 
     let team = await teamRepository.findOne({ where: { yearCreation, id_course: course.id } });
     if (!team) {
-      team = await this.create({ id_course: course.id, yearCreation });
+      team = await this.create({ id_course: course.id as number, yearCreation });
     }
 
     const student = await studentRepository.findOne({ where: { id: idStudent } });

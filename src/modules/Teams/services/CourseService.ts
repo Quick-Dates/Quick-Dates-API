@@ -1,15 +1,14 @@
 import { inject, injectable } from 'tsyringe';
-import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 import { ICourse } from '../interfaces/ICourse';
+import ICourseRepository from '../interfaces/ICourseRepository';
 import Courses from '../models/Courses';
-import CourseRepository from '../repositories/CourseRepository';
 
 @injectable()
 class CourseService {
   constructor(
     @inject('CourseRepository')
-    private courseRepository: CourseRepository,
+    private courseRepository: ICourseRepository,
   ) {}
 
   async create({name, level}: ICourse): Promise<Courses> {
