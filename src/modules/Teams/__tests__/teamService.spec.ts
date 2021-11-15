@@ -1,5 +1,6 @@
 import "reflect-metadata"
 import { container } from "tsyringe";
+import AppError from "../../../shared/errors/AppError";
 import FakeStudentsRepository from "../../Students/__tests__/fakes/FakeStudentsRepository";
 import { LevelCourseEnum } from "../enum/LevelCourseEnum";
 import { TypeCourseEnum } from "../enum/TypeCourseEnum";
@@ -27,7 +28,7 @@ describe('TeamService', () => {
       jest.spyOn(container, 'resolve').mockReturnValue(courseService as never);
       jest.spyOn(courseService, 'create').mockResolvedValue({} as never);
       jest.spyOn(fakeCourseRepository, 'findByNameAndLevel').mockResolvedValue({} as never);
-      jest.spyOn(teamService, 'create').mockImplementation();
+      jest.spyOn(teamService, 'create').mockResolvedValue({} as never);
       jest.spyOn(fakeTeamRepository, 'findByYearCretionAndIdCourse').mockResolvedValue({} as never);
       jest.spyOn(fakeStudentsRepository, 'findById').mockResolvedValue({} as never);
       jest.spyOn(fakeStudentsRepository, 'update').mockImplementation();
@@ -47,10 +48,70 @@ describe('TeamService', () => {
       expect(fakeCourseRepository.findByNameAndLevel).toHaveBeenCalledWith(params.courseName, params.levelCourse);
       expect(courseService.create).toHaveBeenCalledWith({name: params.courseName, level: params.levelCourse});
     })
-    it.todo('should create team if not found')
-    it.todo('should throw error if student not found')
-    it.todo('should update id_team in student')
-    it.todo('should return team if all succelly')
+    it('should create team if not found', async() => {
+
+      const fakeCourse = {
+        id: 1
+      }
+      jest.spyOn(fakeCourseRepository, 'findByNameAndLevel').mockResolvedValue(fakeCourse as never);
+      jest.spyOn(fakeTeamRepository, 'findByYearCretionAndIdCourse').mockResolvedValue(undefined as never);
+
+      const params = {
+        idStudent: 'idStudent',
+        yearCreation: 2021,
+        courseName: TypeCourseEnum.Informatica,
+        levelCourse: LevelCourseEnum.EnsinoMedioIntegrado
+      }
+
+      await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
+
+      expect(fakeTeamRepository.findByYearCretionAndIdCourse).toHaveBeenCalledWith(params.yearCreation, fakeCourse.id);
+      expect(teamService.create).toHaveBeenCalledWith({yearCreation: params.yearCreation, id_course: fakeCourse.id});
+    })
+    it('should throw error if student not found', async() => {
+      try {
+        jest.spyOn(fakeStudentsRepository, 'findById').mockResolvedValue(undefined as never);
+        const params = {
+          idStudent: 'idStudent',
+          yearCreation: 2021,
+          courseName: TypeCourseEnum.Informatica,
+          levelCourse: LevelCourseEnum.EnsinoMedioIntegrado
+        }
+
+        await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
+        expect(true).toBe(false);
+
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError);
+        expect(error.message).toBe('Aluno não encontrado');
+        expect(error.statusCode).toBe(404);
+      }
+
+    })
+    it('should update id_team in student', async() => {
+      const fakeTeam = {
+        id: 1
+      }
+      const fakeStudent = {
+        id: 'idStudent',
+      }
+
+      jest.spyOn(fakeTeamRepository, 'findByYearCretionAndIdCourse').mockResolvedValue(fakeTeam as never);
+      jest.spyOn(fakeStudentsRepository, 'findById').mockResolvedValue(fakeStudent as never);
+
+      const params = {
+        idStudent: 'idStudent',
+        yearCreation: 2021,
+        courseName: TypeCourseEnum.Informatica,
+        levelCourse: LevelCourseEnum.EnsinoMedioIntegrado
+      }
+
+      const team = await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
+
+      expect(fakeStudentsRepository.update).toHaveBeenCalledWith(params.idStudent, {id_team: fakeTeam.id, id: fakeStudent.id});
+      expect(fakeStudentsRepository.findById).toHaveBeenCalledWith(params.idStudent);
+      expect(team).toEqual(fakeTeam);
+    })
   })
   describe('#create', () => {
     it.todo('should throw error if course not found')
