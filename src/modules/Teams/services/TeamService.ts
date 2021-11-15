@@ -50,10 +50,7 @@ class TeamService {
   }
 
   async create({ id_course, yearCreation }: ITeam): Promise<Teams> {
-    const teamRepository = getRepository(Teams);
-    const courseRepository = getRepository(Courses);
-
-    const course = await courseRepository.findOne({ where: { id: id_course } });
+    const course = await this.courseRepository.findById(id_course);
     if (!course) {
       throw new AppError('Curso não existe', 404);
     }
@@ -62,16 +59,14 @@ class TeamService {
       throw new AppError('Ano de criação não pode ser maior que o ano atual', 400);
     }
     if (yearCreation < yearCurrent - 3) {
-      throw new AppError('Ano de criação não pode ser menor que 3 anos', 400);
+      throw new AppError('Ano de criação não pode ser maior que 3 anos', 400);
     }
 
-    const team = teamRepository.create({
+    const team = await this.teamRepository.create({
       yearCreation,
       course,
       id_course
     });
-
-    await teamRepository.save(team)
 
     return team
   }

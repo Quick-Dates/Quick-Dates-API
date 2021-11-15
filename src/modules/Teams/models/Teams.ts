@@ -6,7 +6,7 @@ import Courses from "./Courses";
 @Entity('teams')
 class Teams {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   yearCreation: number;
@@ -21,10 +21,10 @@ class Teams {
   course: Courses;
 
   @OneToMany(() => Students, (students) => students.team)
-  students: Students[];
+  students?: Students[];
 
   @OneToMany(() => Tasks, (tasks) => tasks.team, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
-  tasks: Tasks[];
+  tasks?: Tasks[];
 }
 
 export default Teams;

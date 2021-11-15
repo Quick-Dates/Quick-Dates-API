@@ -33,7 +33,7 @@ describe('TeamService', () => {
       jest.spyOn(fakeStudentsRepository, 'findById').mockResolvedValue({} as never);
       jest.spyOn(fakeStudentsRepository, 'update').mockImplementation();
     })
-    it('should create course if not found', async() => {
+    it('should create course if not found', async () => {
       jest.spyOn(fakeCourseRepository, 'findByNameAndLevel').mockResolvedValue(undefined as never);
 
       const params = {
@@ -46,9 +46,9 @@ describe('TeamService', () => {
       await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
 
       expect(fakeCourseRepository.findByNameAndLevel).toHaveBeenCalledWith(params.courseName, params.levelCourse);
-      expect(courseService.create).toHaveBeenCalledWith({name: params.courseName, level: params.levelCourse});
+      expect(courseService.create).toHaveBeenCalledWith({ name: params.courseName, level: params.levelCourse });
     })
-    it('should create team if not found', async() => {
+    it('should create team if not found', async () => {
 
       const fakeCourse = {
         id: 1
@@ -66,9 +66,9 @@ describe('TeamService', () => {
       await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
 
       expect(fakeTeamRepository.findByYearCretionAndIdCourse).toHaveBeenCalledWith(params.yearCreation, fakeCourse.id);
-      expect(teamService.create).toHaveBeenCalledWith({yearCreation: params.yearCreation, id_course: fakeCourse.id});
+      expect(teamService.create).toHaveBeenCalledWith({ yearCreation: params.yearCreation, id_course: fakeCourse.id });
     })
-    it('should throw error if student not found', async() => {
+    it('should throw error if student not found', async () => {
       try {
         jest.spyOn(fakeStudentsRepository, 'findById').mockResolvedValue(undefined as never);
         const params = {
@@ -88,7 +88,7 @@ describe('TeamService', () => {
       }
 
     })
-    it('should update id_team in student', async() => {
+    it('should update id_team in student', async () => {
       const fakeTeam = {
         id: 1
       }
@@ -108,17 +108,69 @@ describe('TeamService', () => {
 
       const team = await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
 
-      expect(fakeStudentsRepository.update).toHaveBeenCalledWith(params.idStudent, {id_team: fakeTeam.id, id: fakeStudent.id});
+      expect(fakeStudentsRepository.update).toHaveBeenCalledWith(params.idStudent, { id_team: fakeTeam.id, id: fakeStudent.id });
       expect(fakeStudentsRepository.findById).toHaveBeenCalledWith(params.idStudent);
       expect(team).toEqual(fakeTeam);
     })
   })
   describe('#create', () => {
-    it.todo('should throw error if course not found')
-    it.todo('should throw error if yearCreation > yearCurrent')
-    it.todo('should throw error if yearCreation < yearCurrent - 3')
-    it.todo('should create team')
-    it.todo('should return team if all succelly')
+    it('should throw error if course not found', async () => {
+      try {
+        jest.spyOn(fakeCourseRepository, 'findById').mockResolvedValue(undefined as never);
+        const params = { yearCreation: 2021, id_course: 'id_course' }
+        await teamService.create(params as never);
+        expect(true).toBe(false);
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError);
+        expect(error.message).toBe('Curso não existe');
+        expect(error.statusCode).toBe(404);
+      }
+    })
+    it('should throw error if yearCreation > yearCurrent', async () => {
+      try {
+        jest.spyOn(fakeCourseRepository, 'findById').mockResolvedValue({ yearCreation: 2021 } as never);
+        jest.useFakeTimers().setSystemTime(new Date(2020, 1, 1).getTime());
+
+        const params = { yearCreation: 2021, id_course: 'id_course' }
+        await teamService.create(params as never);
+
+        expect(true).toBe(false);
+
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError);
+        expect(error.message).toBe('Ano de criação não pode ser maior que o ano atual');
+        expect(error.statusCode).toBe(400);
+      }
+    })
+    it('should throw error if yearCreation < yearCurrent - 3', async () => {
+      try {
+        jest.spyOn(fakeCourseRepository, 'findById').mockResolvedValue({ yearCreation: 2021 } as never);
+        jest.useFakeTimers().setSystemTime(new Date(2025, 1, 1).getTime());
+
+        const params = { yearCreation: 2021, id_course: 'id_course' }
+        await teamService.create(params as never);
+
+        expect(true).toBe(false);
+
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError);
+        expect(error.message).toBe('Ano de criação não pode ser maior que 3 anos');
+        expect(error.statusCode).toBe(400);
+      }
+    })
+    it('should create team', async () => {
+      const fakeCourse = { yearCreation: 2021 }
+      const fakeTeam = { id: 11 }
+      jest.spyOn(fakeCourseRepository, 'findById').mockResolvedValue(fakeCourse as never);
+      jest.useFakeTimers().setSystemTime(new Date(2021, 1, 1).getTime());
+      jest.spyOn(fakeTeamRepository, 'create').mockResolvedValue(fakeTeam as never);
+
+      const params = { yearCreation: 2021, id_course: 'id_course' }
+      const team = await teamService.create(params as never);
+
+      expect(fakeTeamRepository.create).toHaveBeenCalledWith({...params, course: fakeCourse } as never);
+      expect(team).toEqual(fakeTeam);
+    })
   })
   describe('#index', () => {
     it.todo('should list teams')
