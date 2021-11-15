@@ -168,7 +168,7 @@ describe('TeamService', () => {
       const params = { yearCreation: 2021, id_course: 'id_course' }
       const team = await teamService.create(params as never);
 
-      expect(fakeTeamRepository.create).toHaveBeenCalledWith({...params, course: fakeCourse } as never);
+      expect(fakeTeamRepository.create).toHaveBeenCalledWith({ ...params, course: fakeCourse } as never);
       expect(team).toEqual(fakeTeam);
     })
   })
@@ -187,7 +187,7 @@ describe('TeamService', () => {
     })
   })
   describe('#getTeamsByCourse', () => {
-    it('should list teams of course', async() => {
+    it('should list teams of course', async () => {
       const fakeCourse = { id: 1 }
       const fakeYearCurrent = 2022;
       const fakeYearCreation = 2021;
@@ -205,9 +205,28 @@ describe('TeamService', () => {
     })
   })
   describe('#indexById', () => {
-    it.todo('should find by id team')
-    it.todo('should throw error if tean not found')
-    it.todo('should format name of team')
+    it('should throw error if team not found', async () => {
+      try {
+        const fakeTeam = { id: 1 }
+        await teamService.indexById(fakeTeam.id);
+        expect(true).toBe(false);
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError);
+        expect(error.message).toBe('Turma não encontrada');
+        expect(error.statusCode).toBe(404);
+      }
+    })
+    it('should find by id team', async () => {
+      const fakeTeam = { id: 1, yearCreation: 2021}
+      const fakeYearCurrent = 2022;
+
+      jest.useFakeTimers().setSystemTime(new Date(fakeYearCurrent, 1, 1).getTime());
+      jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(fakeTeam as never);
+      const team = await teamService.indexById(fakeTeam.id);
+
+      expect(fakeTeamRepository.findById).toHaveBeenCalledWith(fakeTeam.id);
+      expect(team).toEqual({...fakeTeam, name: `${(fakeYearCurrent - fakeTeam.yearCreation) + 1}° ano`});
+    })
   })
   describe('#delete', () => {
     it.todo('should delete team')

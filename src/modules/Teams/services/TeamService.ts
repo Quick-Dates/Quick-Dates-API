@@ -93,13 +93,12 @@ class TeamService {
   }
 
   async indexById(id: number): Promise<Teams> {
-    const teamRepository = getRepository(Teams);
-
-    const team = await teamRepository.findOne({ where: { id } });
+    const team = await this.teamRepository.findById(id);
     if (!team) {
       throw new AppError('Turma não encontrada', 404);
     }
     const yearCurrent = new Date().getFullYear();
+
     team.name = `${(yearCurrent - team.yearCreation) + 1}° ano`
 
     return team
