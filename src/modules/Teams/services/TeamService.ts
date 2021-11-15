@@ -102,7 +102,6 @@ class TeamService {
   async indexById(id: number): Promise<Teams> {
     const teamRepository = getRepository(Teams);
 
-
     const team = await teamRepository.findOne({ where: { id } });
     if (!team) {
       throw new AppError('Turma não encontrada', 404);
