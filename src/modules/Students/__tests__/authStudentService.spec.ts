@@ -8,8 +8,12 @@ import { ProfileEnum } from '../../../shared/enum/ProfileEnum';
 import NodeMailerService from '../../../shared/services/NodeMailerService';
 import TeamService from '../../Teams/services/TeamService';
 import { container } from 'tsyringe';
+import FakeTeamRepository from '../../Teams/__tests__/fakes/FakeTeamRepository';
+import FakeCourseRepository from '../../Teams/__tests__/fakes/FakeCourseRepository';
 
 let fakeStudentsRepository: FakeStudentsRepository;
+let fakeTeamRepository: FakeTeamRepository;
+let fakeCourseRepository: FakeCourseRepository;
 let studentService: StudentService;
 let authStudentService: AuthService;
 let nodeMailerService: NodeMailerService;
@@ -30,8 +34,10 @@ const dataFake: any = {
 describe('AuthService', () => {
   beforeEach(() => {
     fakeStudentsRepository = new FakeStudentsRepository();
+    fakeTeamRepository = new FakeTeamRepository();
+    fakeCourseRepository = new FakeCourseRepository();
     nodeMailerService = new NodeMailerService();
-    teamService = new TeamService();
+    teamService = new TeamService(fakeTeamRepository, fakeCourseRepository, fakeStudentsRepository);
     studentService = new StudentService(fakeStudentsRepository, nodeMailerService, teamService)
     authStudentService = new AuthService(fakeStudentsRepository);
 

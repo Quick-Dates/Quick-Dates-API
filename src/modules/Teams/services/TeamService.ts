@@ -1,11 +1,14 @@
 import { container, inject, injectable } from 'tsyringe';
 import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
+import IStudentRepository from '../../Students/interfaces/IStudentRepository';
 import Students from '../../Students/models/Students';
 import StudentsRepository from '../../Students/repositories/StudentsRepository';
 import { LevelCourseEnum } from '../enum/LevelCourseEnum';
 import { TypeCourseEnum } from '../enum/TypeCourseEnum';
+import ICourseRepository from '../interfaces/ICourseRepository';
 import { ITeam } from '../interfaces/ITeam';
+import ITeamRepository from '../interfaces/ITeamRepository';
 import Courses from '../models/Courses';
 import Teams from '../models/Teams';
 import CourseRepository from '../repositories/CourseRepository';
@@ -16,11 +19,11 @@ import CourseService from './CourseService';
 class TeamService {
   constructor(
     @inject('TeamRepository')
-    private teamRepository: TeamRepository,
+    private teamRepository: ITeamRepository,
     @inject('CourseRepository')
-    private courseRepository: CourseRepository,
+    private courseRepository: ICourseRepository,
     @inject('StudentRepository')
-    private studentRepository: StudentsRepository,
+    private studentRepository: IStudentRepository,
   ) { }
 
   async addStudentToTeam(idStudent: string, yearCreation: number, courseName: TypeCourseEnum, level: LevelCourseEnum): Promise<Teams> {

@@ -9,12 +9,19 @@ import FakeTeachersRepository from "./fakes/FakeTeachersRepository";
 import bcryptjs from "bcryptjs";
 import { ProfileEnum } from "../../../shared/enum/ProfileEnum";
 import jsonwebtoken from 'jsonwebtoken';
+import FakeTeamRepository from "../../Teams/__tests__/fakes/FakeTeamRepository";
+import FakeCourseRepository from "../../Teams/__tests__/fakes/FakeCourseRepository";
+import FakeStudentsRepository from "../../Students/__tests__/fakes/FakeStudentsRepository";
 
 let fakeTeacherRepository: FakeTeachersRepository;
+let fakeStudentsRepository: FakeStudentsRepository;
+let fakeTeamRepository: FakeTeamRepository;
+let fakeCourseRepository: FakeCourseRepository;
 let teacherService: TeacherService;
 let authTeacherService: AuthService;
 let nodeMailerService: NodeMailerService;
 let teamService: TeamService;
+
 const dataFake: any = {
   dataTeacher: {
     tipo_vinculo: 'Servidor',
@@ -31,8 +38,11 @@ const dataFake: any = {
 describe('AuthService of Teacher', () => {
   beforeEach(() => {
     fakeTeacherRepository = new FakeTeachersRepository();
+    fakeStudentsRepository = new FakeStudentsRepository();
+    fakeTeamRepository = new FakeTeamRepository();
+    fakeCourseRepository = new FakeCourseRepository();
     nodeMailerService = new NodeMailerService();
-    teamService = new TeamService();
+    teamService = new TeamService(fakeTeamRepository, fakeCourseRepository, fakeStudentsRepository);
     teacherService = new TeacherService(fakeTeacherRepository, nodeMailerService)
     authTeacherService = new AuthService(fakeTeacherRepository);
 

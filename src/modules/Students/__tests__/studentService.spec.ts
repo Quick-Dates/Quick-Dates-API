@@ -6,9 +6,14 @@ import bcryptjs from 'bcryptjs';
 import NodeMailerService from '../../../shared/services/NodeMailerService';
 import TeamService from '../../Teams/services/TeamService';
 import { container } from 'tsyringe';
+import FakeTeamRepository from "../../Teams/__tests__/fakes/FakeTeamRepository";
+import CourseRepository from "../../Teams/repositories/CourseRepository";
+import FakeCourseRepository from "../../Teams/__tests__/fakes/FakeCourseRepository";
 
 
 let fakeStudentsRepository: FakeStudentsRepository;
+let fakeTeamRepository: FakeTeamRepository;
+let fakeCourseRepository: FakeCourseRepository;
 let studentService: StudentService;
 let nodeMailerService: NodeMailerService;
 let teamService: TeamService;
@@ -16,8 +21,10 @@ let teamService: TeamService;
 describe('StudentService', () => {
   beforeEach(() => {
     fakeStudentsRepository = new FakeStudentsRepository();
+    fakeTeamRepository = new FakeTeamRepository();
+    fakeCourseRepository = new FakeCourseRepository();
     nodeMailerService = new NodeMailerService();
-    teamService = new TeamService();
+    teamService = new TeamService(fakeTeamRepository, fakeCourseRepository, fakeStudentsRepository);
     studentService = new StudentService(fakeStudentsRepository, nodeMailerService, teamService)
     jest.spyOn(container, 'resolve').mockReturnValue(studentService);
     jest.spyOn(fakeStudentsRepository, 'update').mockImplementation();
