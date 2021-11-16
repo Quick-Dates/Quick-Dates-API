@@ -44,7 +44,7 @@ export default class NodeMailerService {
     })
   }
 
-  private async sendEmail({ toEmail, subject, header, content }: IOptionsSendEmail) {
+ async sendEmail({ toEmail, subject, header, content }: IOptionsSendEmail) {
     await transporter.sendMail({
       from: `Quick Dates <${process.env.EMAIL}>`,
       to: toEmail,
@@ -54,7 +54,7 @@ export default class NodeMailerService {
     })
   }
 
-  private htmlToSend(header: string, content: string) {
+ htmlToSend(header: string, content: string) {
     const filePath = path.join(__dirname, '../../views/template/email.html');
     const source = fs.readFileSync(filePath, 'utf-8').toString();
     const template = handlebars.compile(source);

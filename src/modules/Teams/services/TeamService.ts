@@ -1,18 +1,13 @@
 import { container, inject, injectable } from 'tsyringe';
-import { getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 import IStudentRepository from '../../Students/interfaces/IStudentRepository';
 import Students from '../../Students/models/Students';
-import StudentsRepository from '../../Students/repositories/StudentsRepository';
 import { LevelCourseEnum } from '../enum/LevelCourseEnum';
 import { TypeCourseEnum } from '../enum/TypeCourseEnum';
 import ICourseRepository from '../interfaces/ICourseRepository';
 import { ITeam } from '../interfaces/ITeam';
 import ITeamRepository from '../interfaces/ITeamRepository';
-import Courses from '../models/Courses';
 import Teams from '../models/Teams';
-import CourseRepository from '../repositories/CourseRepository';
-import TeamRepository from '../repositories/TeamRepository';
 import CourseService from './CourseService';
 
 @injectable()
