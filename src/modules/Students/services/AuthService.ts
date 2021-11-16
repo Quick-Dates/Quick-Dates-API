@@ -52,7 +52,7 @@ class AuthService {
     }
 
     if (student) {
-      const course = this.thirdWordInUpperCase(dataStudent?.vinculo?.curso);
+      const course = this.thirdWordInUpperCase(dataStudent.vinculo.curso);
 
       const token = this.generateToken({
         tokenSuap,

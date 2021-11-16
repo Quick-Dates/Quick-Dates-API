@@ -29,6 +29,7 @@ module.exports = {
     'src/tools',
     'src/services',
     'src/middlewares',
+    'fakes'
   ],
 
 
