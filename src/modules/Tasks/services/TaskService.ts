@@ -1,6 +1,5 @@
 import { Between, Connection, getRepository } from "typeorm";
 import AppError from "../../../shared/errors/AppError";
-import NodeMailerService from "../../../shared/services/NodeMailerService";
 import Students from "../../Students/models/Students";
 import Teachers from "../../Teachers/models/Teachers";
 import Teams from "../../Teams/models/Teams";
@@ -154,7 +153,7 @@ class TaskService {
     const taskRepository = getRepository(Tasks);
     const teamRepository = getRepository(Teams);
 
-    const team = await teamRepository.findOne({ where: { id: student.team.id } });
+    const team = await teamRepository.findOne({ where: { id: student?.team?.id } });
 
     if (!team) {
       throw new AppError("Turma não encontrada", 404);

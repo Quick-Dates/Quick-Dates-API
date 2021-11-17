@@ -2,6 +2,8 @@ import { container } from "tsyringe"
 import IStudentRepository from "../../modules/Students/interfaces/IStudentRepository"
 import StudentsRepository from "../../modules/Students/repositories/StudentsRepository"
 import StudentService from "../../modules/Students/services/StudentService"
+import StatusTaskRepository from "../../modules/Tasks/repositories/StatusTaskRepository"
+import TaskRepository from "../../modules/Tasks/repositories/TaskRepository"
 import TeacherRepository from "../../modules/Teachers/repositories/TeacherRepository"
 import TeacherService from "../../modules/Teachers/services/TeacherService"
 import CourseRepository from "../../modules/Teams/repositories/CourseRepository"
@@ -37,6 +39,14 @@ export default () => {
   container.registerSingleton(
     'TeamRepository',
     TeamRepository
+  )
+  container.registerSingleton(
+    'StatusTaskRepository',
+    StatusTaskRepository
+  )
+  container.registerSingleton(
+    'TaskRepository',
+    TaskRepository
   )
 
 }
