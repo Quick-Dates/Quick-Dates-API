@@ -22,7 +22,6 @@ export default () => {
     NodeMailerService
   )
 
-
   container.registerSingleton(
     'TeamService',
     TeamService

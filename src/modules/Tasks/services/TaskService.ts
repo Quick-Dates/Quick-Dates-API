@@ -1,15 +1,36 @@
+import { inject, injectable } from "tsyringe";
 import { Between, Connection, getRepository } from "typeorm";
 import AppError from "../../../shared/errors/AppError";
+import IStudentRepository from "../../Students/interfaces/IStudentRepository";
 import Students from "../../Students/models/Students";
+import ITeacherRepository from "../../Teachers/interfaces/ITeacherRepository";
 import Teachers from "../../Teachers/models/Teachers";
+import ITeamRepository from "../../Teams/interfaces/ITeamRepository";
 import Teams from "../../Teams/models/Teams";
 import { SituationTaskEnum } from "../enuns/SituationTaskEnum";
 import { IStatisticsTaskWeek } from "../interfaces/IStatisticsTaskWeek";
+import { IStatusTaskRepository } from "../interfaces/IStatusTaskRepository";
 import { ITask } from "../interfaces/ITask";
+import { ITaskRepository } from "../interfaces/ITaskRepository";
 import Tasks from "../models/Tasks";
 import StatusTaskService from "./StatusTaskService";
 
+@injectable()
 class TaskService {
+  constructor(
+    @inject('StatusTaskRepository')
+    private statusTaskRepository: IStatusTaskRepository,
+    @inject('StudentRepository')
+    private studentRepository: IStudentRepository,
+    @inject('TeacherRepository')
+    private teacherRepository: ITeacherRepository,
+    @inject('TaskRepository')
+    private taskRepository: ITaskRepository,
+    @inject('TeamRepository')
+    private teamRepository: ITeamRepository,
+  ) {
+
+  }
   async create(idTeam: number, { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title, id_teacher }: ITask)
     : Promise<{ task: Tasks, teacher: Teachers }> {
     const taskRepository = getRepository(Tasks);

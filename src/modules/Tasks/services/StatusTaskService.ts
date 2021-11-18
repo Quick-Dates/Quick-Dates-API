@@ -1,13 +1,28 @@
+import { inject, injectable } from "tsyringe";
 import { getRepository } from "typeorm";
 import AppError from "../../../shared/errors/AppError";
 import NodeMailerService from "../../../shared/services/NodeMailerService";
+import IStudentRepository from "../../Students/interfaces/IStudentRepository";
 import Students from "../../Students/models/Students";
 import Teachers from "../../Teachers/models/Teachers";
 import { SituationTaskEnum } from "../enuns/SituationTaskEnum";
+import { IStatusTaskRepository } from "../interfaces/IStatusTaskRepository";
+import { ITaskRepository } from "../interfaces/ITaskRepository";
 import StatusTasks from "../models/StatusTasks";
 import Tasks from "../models/Tasks";
 
+@injectable()
 class StatusTaskService {
+  constructor(
+    @inject('StatusTaskRepository')
+    private statusTaskRepository: IStatusTaskRepository,
+    @inject('StudentRepository')
+    private studentRepository: IStudentRepository,
+    @inject('TaskRepository')
+    private taskRepository: ITaskRepository,
+  ) {
+
+  }
   async create({ id_student, id_task }: any): Promise<StatusTasks> {
     const statusTaskRepository = getRepository(StatusTasks);
 
