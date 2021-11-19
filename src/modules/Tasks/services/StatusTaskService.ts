@@ -6,6 +6,7 @@ import IStudentRepository from "../../Students/interfaces/IStudentRepository";
 import Students from "../../Students/models/Students";
 import Teachers from "../../Teachers/models/Teachers";
 import { SituationTaskEnum } from "../enuns/SituationTaskEnum";
+import { IParamsCreateStatusTask } from "../interfaces/IParams";
 import { IStatusTaskRepository } from "../interfaces/IStatusTaskRepository";
 import { ITaskRepository } from "../interfaces/ITaskRepository";
 import StatusTasks from "../models/StatusTasks";
@@ -23,16 +24,13 @@ class StatusTaskService {
   ) {
 
   }
-  async create({ id_student, id_task }: any): Promise<StatusTasks> {
-    const statusTaskRepository = getRepository(StatusTasks);
-
-    const statusTask = statusTaskRepository.create({
+  async create({ id_student, id_task }: IParamsCreateStatusTask): Promise<StatusTasks> {
+    const statusTask = await this.statusTaskRepository.create({
       id_student,
       id_task,
       situation: SituationTaskEnum.EM_ANDAMENTO,
     });
 
-    await statusTaskRepository.save(statusTask);
     return statusTask;
   }
 
@@ -58,7 +56,7 @@ class StatusTaskService {
   async createTaskByStudents(students: Students[], task: Tasks, teacher: Teachers) {
     students.forEach(async student => {
       await this.create({
-        id_student: student.id,
+        id_student: student.id as string,
         id_task: task.id
       });
       setTimeout(async () => {

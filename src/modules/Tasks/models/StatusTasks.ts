@@ -6,7 +6,7 @@ import Tasks from "./Tasks";
 @Entity('status_tasks')
 class StatusTasks {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column({
     type: 'enum',
@@ -22,11 +22,11 @@ class StatusTasks {
 
   @ManyToOne(() => Students, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   @JoinColumn({name: 'id_student', referencedColumnName: 'id'})
-  student: Students;
+  student?: Students;
 
   @ManyToOne(() => Tasks, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   @JoinColumn({name: 'id_task', referencedColumnName: 'id'})
-  task: Tasks;
+  task?: Tasks;
 }
 
 export default StatusTasks;
