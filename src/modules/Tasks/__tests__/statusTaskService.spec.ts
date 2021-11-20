@@ -35,7 +35,22 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#createTasksByStudent', () => {
-    it.todo('should create status tasks in one student')
+    it('should create status tasks in one student', async() => {
+      const fakeTasks = [{id: 1, title: 'teste tarefa'}, {id: 2, title: 'teste tarefa 2'} ]
+      const params = {
+        idStudent: '54', tasks:  fakeTasks
+      }
+
+      jest.spyOn(fakeStatusTaskRepository, 'create').mockResolvedValue(fakeTasks[0] as any)
+      const statusTaskCreated = await statusTaskService.createTasksByStudent(params.idStudent, params.tasks as any)
+
+      expect(fakeStatusTaskRepository.create).toHaveBeenCalledTimes(2)
+      fakeTasks.forEach((task, index) => {
+        expect(fakeStatusTaskRepository.create).toHaveBeenNthCalledWith(index + 1, { id_student: params.idStudent, id_task: task.id, situation: SituationTaskEnum.EM_ANDAMENTO })
+      })
+      expect(statusTaskCreated).toEqual([fakeTasks[0], fakeTasks[0]])
+
+    })
   })
   describe('#createTaskByStudents', () => {
     it.todo('should create status task in students')

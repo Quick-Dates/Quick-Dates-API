@@ -34,18 +34,15 @@ class StatusTaskService {
     return statusTask;
   }
 
-  async createTasks(idStudent: string, tasks: Tasks[]): Promise<StatusTasks[]> {
-    const statusTaskRepository = getRepository(StatusTasks);
-
+  async createTasksByStudent(idStudent: string, tasks: Tasks[]): Promise<StatusTasks[]> {
     const statusTasks = Promise.all(tasks.map(async (task: Tasks) => {
-      let statusTask = await statusTaskRepository.findOne({where: {id_student: idStudent, id_task: task.id}});
+      let statusTask = await this.statusTaskRepository.findByIdStudentAndIdTask(idStudent, task.id);
       if(!statusTask) {
-        statusTask = statusTaskRepository.create({
+        statusTask = await this.statusTaskRepository.create({
           id_student: idStudent,
           id_task: task.id,
           situation: SituationTaskEnum.EM_ANDAMENTO,
         });
-        await statusTaskRepository.save(statusTask);
       }
       return statusTask;
     }));
