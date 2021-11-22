@@ -42,14 +42,30 @@ describe('StatusTaskService', () => {
       }
 
       jest.spyOn(fakeStatusTaskRepository, 'create').mockResolvedValue(fakeTasks[0] as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(undefined)
       const statusTaskCreated = await statusTaskService.createTasksByStudent(params.idStudent, params.tasks as any)
 
-      expect(fakeStatusTaskRepository.create).toHaveBeenCalledTimes(2)
+      expect(fakeStatusTaskRepository.findByIdStudentAndIdTask).toHaveBeenCalledTimes(fakeTasks.length)
+      expect(fakeStatusTaskRepository.create).toHaveBeenCalledTimes(fakeTasks.length)
       fakeTasks.forEach((task, index) => {
         expect(fakeStatusTaskRepository.create).toHaveBeenNthCalledWith(index + 1, { id_student: params.idStudent, id_task: task.id, situation: SituationTaskEnum.EM_ANDAMENTO })
+        expect(fakeStatusTaskRepository.findByIdStudentAndIdTask).toHaveBeenNthCalledWith(index + 1, params.idStudent, task.id)
       })
       expect(statusTaskCreated).toEqual([fakeTasks[0], fakeTasks[0]])
+    })
+    it('not should create status tasks if exists', async() => {
+      const fakeTasks = [{id: 1, title: 'teste tarefa'}, {id: 2, title: 'teste tarefa 2'} ]
+      const params = {
+        idStudent: '54', tasks:  fakeTasks
+      }
 
+      jest.spyOn(fakeStatusTaskRepository, 'create').mockResolvedValue(fakeTasks[0] as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(fakeTasks[0] as any)
+      const statusTaskCreated = await statusTaskService.createTasksByStudent(params.idStudent, params.tasks as any)
+
+      expect(fakeStatusTaskRepository.findByIdStudentAndIdTask).toHaveBeenCalledTimes(fakeTasks.length)
+      expect(fakeStatusTaskRepository.create).not.toHaveBeenCalled()
+      expect(statusTaskCreated).toEqual([fakeTasks[0], fakeTasks[0]])
     })
   })
   describe('#createTaskByStudents', () => {

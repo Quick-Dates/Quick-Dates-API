@@ -35,17 +35,26 @@ class StatusTaskService {
   }
 
   async createTasksByStudent(idStudent: string, tasks: Tasks[]): Promise<StatusTasks[]> {
-    const statusTasks = Promise.all(tasks.map(async (task: Tasks) => {
+
+    const createStatusTask = async (task: Tasks) => {
+      return await this.statusTaskRepository.create({
+        id_student: idStudent,
+        id_task: task.id,
+        situation: SituationTaskEnum.EM_ANDAMENTO,
+      });
+    }
+
+    const createStatusTasks = async (task: Tasks) => {
       let statusTask = await this.statusTaskRepository.findByIdStudentAndIdTask(idStudent, task.id);
-      if(!statusTask) {
-        statusTask = await this.statusTaskRepository.create({
-          id_student: idStudent,
-          id_task: task.id,
-          situation: SituationTaskEnum.EM_ANDAMENTO,
-        });
+      if (!statusTask) {
+        statusTask = await createStatusTask(task)
       }
       return statusTask;
-    }));
+    }
+
+    const getTasksCreated = tasks.map(createStatusTasks);
+
+    const statusTasks = await Promise.all(getTasksCreated);
 
     return statusTasks;
   }
