@@ -21,6 +21,8 @@ class StatusTaskService {
     private studentRepository: IStudentRepository,
     @inject('TaskRepository')
     private taskRepository: ITaskRepository,
+    @inject('NodeMailerService')
+    private nodeMailerService: NodeMailerService,
   ) {
 
   }
@@ -60,16 +62,18 @@ class StatusTaskService {
   }
 
   async createTaskByStudents(students: Students[], task: Tasks, teacher: Teachers) {
-    students.forEach(async student => {
+    const createStatusTask = async (student: Students) => {
       await this.create({
         id_student: student.id as string,
         id_task: task.id
       });
-      setTimeout(async () => {
-        const nodeMailerService = new NodeMailerService();
-        await nodeMailerService.sendEmailTaskCreated(student, teacher, task);
-      }, 3000)
-    });
+      sendEmail(student)
+    }
+    const sendEmail = (student: Students) => setTimeout(async () => {
+      await this.nodeMailerService.sendEmailTaskCreated(student, teacher, task);
+    }, 3000)
+
+    students.forEach(createStatusTask);
   }
 
   async indexTasksByStudent(id_student: string) {

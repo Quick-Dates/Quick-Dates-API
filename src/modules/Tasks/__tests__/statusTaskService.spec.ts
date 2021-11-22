@@ -1,4 +1,6 @@
 import "reflect-metadata"
+import teacher from "../../../shared/middlewares/teacher"
+import NodeMailerService from "../../../shared/services/NodeMailerService"
 import FakeStudentsRepository from "../../Students/__tests__/fakes/FakeStudentsRepository"
 import { SituationTaskEnum } from "../enuns/SituationTaskEnum"
 import StatusTaskService from "../services/StatusTaskService"
@@ -9,16 +11,19 @@ let fakeStatusTaskRepository: FakeStatusTaskRepository
 let fakeStudentRepository: FakeStudentsRepository
 let fakeTaskRepository: FakeTaskRepository
 let statusTaskService: StatusTaskService
+let nodeMailerService: NodeMailerService
 
 describe('StatusTaskService', () => {
   beforeEach(() => {
     fakeStatusTaskRepository = new FakeStatusTaskRepository()
     fakeStudentRepository = new FakeStudentsRepository()
     fakeTaskRepository = new FakeTaskRepository()
+    nodeMailerService = new NodeMailerService()
     statusTaskService = new StatusTaskService(
       fakeStatusTaskRepository,
       fakeStudentRepository,
-      fakeTaskRepository
+      fakeTaskRepository,
+      nodeMailerService
     )
   })
 
@@ -69,8 +74,42 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#createTaskByStudents', () => {
-    it.todo('should create status task in students')
-    it.todo('should send email after create status task in student after and 3secs')
+    it('should create status task in students', async() => {
+      const fakeStudents = [{id: 1, name: 'teste student'}, {id: 2, name: 'teste student 2'} ] as any
+      const fakeTask = {id: 1, title: 'teste tarefa'} as any
+      const fakeTeacher = {id: 1, title: 'teste teacher'} as any
+
+      jest.spyOn(statusTaskService,  'create').mockImplementation()
+      jest.useFakeTimers()
+      await statusTaskService.createTaskByStudents(fakeStudents, fakeTask, fakeTeacher)
+
+      expect(statusTaskService.create).toHaveBeenCalledTimes(fakeStudents.length)
+      fakeStudents.forEach((student: any, index: number) => {
+        expect(statusTaskService.create).toHaveBeenNthCalledWith(index + 1, {
+          id_student: student.id as string,
+          id_task: fakeTask.id
+        })
+      })
+    })
+    it('should send email after create status task in student after and 3secs', async () => {
+      const fakeStudents = [{id: 1, name: 'teste student'}, {id: 2, name: 'teste student 2'} ] as any
+      const fakeTask = {id: 1, title: 'teste tarefa'} as any
+      const fakeTeacher = {id: 1, title: 'teste teacher'} as any
+
+      jest.useFakeTimers()
+      jest.spyOn(statusTaskService,  'create').mockImplementation()
+      jest.spyOn(nodeMailerService,  'sendEmailTaskCreated').mockImplementation()
+      await statusTaskService.createTaskByStudents(fakeStudents, fakeTask, fakeTeacher)
+
+      expect(nodeMailerService.sendEmailTaskCreated).not.toHaveBeenCalled()
+
+      jest.advanceTimersByTime(3000)
+
+      expect(nodeMailerService.sendEmailTaskCreated).toHaveBeenCalledTimes(fakeStudents.length)
+      fakeStudents.forEach((student: any, index: number) => {
+        expect(nodeMailerService.sendEmailTaskCreated).toHaveBeenNthCalledWith(index + 1, student, fakeTeacher, fakeTask)
+      })
+    })
   })
   describe('#indexTasksByStudent', () => {
     it.todo('should throw error if student not found')
