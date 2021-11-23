@@ -40,7 +40,7 @@ class StatusTaskService {
     const createStatusTasks = async (task: Tasks) => {
       let statusTask = await this.statusTaskRepository.findByIdStudentAndIdTask(idStudent, task.id);
       if (!statusTask) {
-        statusTask = await this.create({id_student: idStudent, id_task: task.id});
+        statusTask = await this.create({ id_student: idStudent, id_task: task.id });
       }
       return statusTask;
     }
@@ -68,36 +68,42 @@ class StatusTaskService {
   }
 
   async indexTasksByStudent(id_student: string) {
-    const statusTaskRepository = getRepository(StatusTasks);
-    const studentRepository = getRepository(Students);
-    const taskRepository = getRepository(Tasks);
-
-    const student = await studentRepository.findOne({ where: { id: id_student } });
+    const student = await this.studentRepository.findById(id_student);
 
     if (!student) {
       throw new AppError("Aluno não encontrado", 404);
     }
 
-    let statusTasks: any = await statusTaskRepository.find({
-      where: { id_student },
-    });
+    let statusTasks: any = await this.statusTaskRepository.findAllByIdStudent(id_student);
 
-    statusTasks = await Promise.all(statusTasks.map(async (statusTask: any) => {
-      const task = await taskRepository.findOne({ where: { id: statusTask.id_task } });
+    const findByIdTask = async (statusTask: StatusTasks) => {
+      const task = await this.taskRepository.findById(statusTask.id_task);
       if (!task) {
         throw new AppError("Tarefa não encontrada", 404);
       }
-      if (statusTask.situation === SituationTaskEnum.EM_ANDAMENTO) {
+      return task;
+    };
+
+    const updateTaskSituation = async (statusTask: any, task: any) => {
+      const isProgress = statusTask.situation === SituationTaskEnum.EM_ANDAMENTO;
+      if (isProgress) {
         const finalDateTime = new Date(`${task.finalDate} ${task.finalTime}`);
         const currentDateTime = new Date();
         if (currentDateTime > finalDateTime) {
           statusTask.situation = SituationTaskEnum.ATRASADA;
-          await statusTaskRepository.update(statusTask.id, statusTask);
+          await this.statusTaskRepository.update(statusTask.id, statusTask);
         }
       }
+    }
+
+    const indexTasks = async (statusTask: any) => {
+      const task = await findByIdTask(statusTask);
+      updateTaskSituation(statusTask, task);
       delete task.id_teacher;
       return { ...task };
-    }))
+    }
+
+    statusTasks = await Promise.all(statusTasks.map(indexTasks))
 
     return statusTasks;
   }

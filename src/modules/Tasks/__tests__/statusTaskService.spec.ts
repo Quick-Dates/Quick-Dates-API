@@ -1,4 +1,5 @@
 import "reflect-metadata"
+import AppError from "../../../shared/errors/AppError"
 import teacher from "../../../shared/middlewares/teacher"
 import NodeMailerService from "../../../shared/services/NodeMailerService"
 import FakeStudentsRepository from "../../Students/__tests__/fakes/FakeStudentsRepository"
@@ -40,10 +41,10 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#createTasksByStudent', () => {
-    it('should create status tasks in one student', async() => {
-      const fakeTasks = [{id: 1, title: 'teste tarefa'}, {id: 2, title: 'teste tarefa 2'} ]
+    it('should create status tasks in one student', async () => {
+      const fakeTasks = [{ id: 1, title: 'teste tarefa' }, { id: 2, title: 'teste tarefa 2' }]
       const params = {
-        idStudent: '54', tasks:  fakeTasks
+        idStudent: '54', tasks: fakeTasks
       }
 
       jest.spyOn(fakeStatusTaskRepository, 'create').mockResolvedValue(fakeTasks[0] as any)
@@ -58,10 +59,10 @@ describe('StatusTaskService', () => {
       })
       expect(statusTaskCreated).toEqual([fakeTasks[0], fakeTasks[0]])
     })
-    it('not should create status tasks if exists', async() => {
-      const fakeTasks = [{id: 1, title: 'teste tarefa'}, {id: 2, title: 'teste tarefa 2'} ]
+    it('not should create status tasks if exists', async () => {
+      const fakeTasks = [{ id: 1, title: 'teste tarefa' }, { id: 2, title: 'teste tarefa 2' }]
       const params = {
-        idStudent: '54', tasks:  fakeTasks
+        idStudent: '54', tasks: fakeTasks
       }
 
       jest.spyOn(fakeStatusTaskRepository, 'create').mockResolvedValue(fakeTasks[0] as any)
@@ -74,12 +75,12 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#createTaskByStudents', () => {
-    it('should create status task in students', async() => {
-      const fakeStudents = [{id: 1, name: 'teste student'}, {id: 2, name: 'teste student 2'} ] as any
-      const fakeTask = {id: 1, title: 'teste tarefa'} as any
-      const fakeTeacher = {id: 1, title: 'teste teacher'} as any
+    it('should create status task in students', async () => {
+      const fakeStudents = [{ id: 1, name: 'teste student' }, { id: 2, name: 'teste student 2' }] as any
+      const fakeTask = { id: 1, title: 'teste tarefa' } as any
+      const fakeTeacher = { id: 1, title: 'teste teacher' } as any
 
-      jest.spyOn(statusTaskService,  'create').mockImplementation()
+      jest.spyOn(statusTaskService, 'create').mockImplementation()
       jest.useFakeTimers()
       await statusTaskService.createTaskByStudents(fakeStudents, fakeTask, fakeTeacher)
 
@@ -92,13 +93,13 @@ describe('StatusTaskService', () => {
       })
     })
     it('should send email after create status task in student after and 3secs', async () => {
-      const fakeStudents = [{id: 1, name: 'teste student'}, {id: 2, name: 'teste student 2'} ] as any
-      const fakeTask = {id: 1, title: 'teste tarefa'} as any
-      const fakeTeacher = {id: 1, title: 'teste teacher'} as any
+      const fakeStudents = [{ id: 1, name: 'teste student' }, { id: 2, name: 'teste student 2' }] as any
+      const fakeTask = { id: 1, title: 'teste tarefa' } as any
+      const fakeTeacher = { id: 1, title: 'teste teacher' } as any
 
       jest.useFakeTimers()
-      jest.spyOn(statusTaskService,  'create').mockImplementation()
-      jest.spyOn(nodeMailerService,  'sendEmailTaskCreated').mockImplementation()
+      jest.spyOn(statusTaskService, 'create').mockImplementation()
+      jest.spyOn(nodeMailerService, 'sendEmailTaskCreated').mockImplementation()
       await statusTaskService.createTaskByStudents(fakeStudents, fakeTask, fakeTeacher)
 
       expect(nodeMailerService.sendEmailTaskCreated).not.toHaveBeenCalled()
@@ -112,10 +113,86 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#indexTasksByStudent', () => {
-    it.todo('should throw error if student not found')
-    it.todo('should throw error if task not found')
-    it.todo('should update situation to "ATRASADA" if situation equal EM_ANDAMENTO and currentDateTime > finalDateTime')
-    it.todo('should list all tasks by student')
+    it('should throw error if student not found', async () => {
+      try {
+        const idStudent = '54'
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(undefined)
+
+        await statusTaskService.indexTasksByStudent(idStudent)
+
+        expect(true).toBe(false)
+
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Aluno não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if task not found', async () => {
+      try {
+        const idStudent = '54'
+        const fakeStatusTasks = [{ id: 1, id_student: '54', id_task: '1' }, { id: 2, id_student: '54', id_task: '1' }]
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+        jest.spyOn(fakeStatusTaskRepository, 'findAllByIdStudent').mockResolvedValue(fakeStatusTasks as any)
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined as any)
+
+        await statusTaskService.indexTasksByStudent(idStudent)
+
+        expect(true).toBe(false)
+
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should update situation to "ATRASADA" if situation equal EM_ANDAMENTO and currentDateTime > finalDateTime', async () => {
+      const idStudent = '54';
+      const fakeStatusTasks = [
+        { id: 1, id_student: '54', id_task: 1, situation: SituationTaskEnum.EM_ANDAMENTO },
+        { id: 2, id_student: '54', id_task: '1', situation: SituationTaskEnum.EM_ANDAMENTO },
+        { id: 3, id_student: '54', id_task: '1', situation: SituationTaskEnum.CONCLUIDA },
+      ]
+      const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findAllByIdStudent').mockResolvedValue(fakeStatusTasks as any)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
+
+      jest.useFakeTimers().setSystemTime(new Date(2021, 1, 1).getTime());
+      await statusTaskService.indexTasksByStudent(idStudent)
+
+      fakeStatusTasks.forEach((statusTask: any, index) => {
+        if(statusTask.situation === SituationTaskEnum.EM_ANDAMENTO) {
+          expect(fakeStatusTaskRepository.update).toHaveBeenNthCalledWith(index + 1, statusTask.id, { ...statusTask, situation: SituationTaskEnum.ATRASADA })
+        }
+      })
+
+
+    })
+    it('should list all tasks by student', async () => {
+      const idStudent = '54';
+      const fakeStatusTasks = [
+        { id: 1, id_student: '54', id_task: 1, situation: SituationTaskEnum.CONCLUIDA },
+        { id: 2, id_student: '54', id_task: '1', situation: SituationTaskEnum.CONCLUIDA },
+        { id: 3, id_student: '54', id_task: '1', situation: SituationTaskEnum.CONCLUIDA },
+      ]
+      const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findAllByIdStudent').mockResolvedValue(fakeStatusTasks as any)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
+
+      const tasks = await statusTaskService.indexTasksByStudent(idStudent)
+
+      expect(fakeStudentRepository.findById).toHaveBeenCalledWith(idStudent)
+      expect(fakeStatusTaskRepository.findAllByIdStudent).toHaveBeenCalledWith(idStudent)
+
+      fakeStatusTasks.forEach((statusTask: any, index) => {
+        expect(fakeTaskRepository.findById).toHaveBeenNthCalledWith(index + 1, statusTask.id_task)
+      })
+      expect(tasks).toEqual([fakeTask, fakeTask, fakeTask])
+    })
   })
   describe('#indexSituation', () => {
     it.todo('should throw error if student not found')
