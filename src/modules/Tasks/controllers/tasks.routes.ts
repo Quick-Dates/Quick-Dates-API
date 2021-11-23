@@ -19,9 +19,9 @@ tasksRouter.post('/team/:id', teacher, async (request, response) => {
   const id_teacher = request.user.id;
   const { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title } = request.body;
 
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
   const teamService = container.resolve(TeamService);
-  const statusTaskService = new StatusTaskService();
+  const statusTaskService = container.resolve(StatusTaskService);
 
 
  const {task, teacher} = await taskService.create(+id, {
@@ -38,7 +38,7 @@ tasksRouter.put('/:id', teacher, async (request, response) => {
   const id_teacher = request.user.id;
   const { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title } = request.body;
 
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
 
   await taskService.update(+id, id_teacher, {
     description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title
@@ -52,7 +52,7 @@ tasksRouter.patch('/:id/situation', student, async (request, response) => {
   const id_student = request.user.id;
   const { completed } = request.body;
 
-  const statusTaskService = new StatusTaskService();
+  const statusTaskService = container.resolve(StatusTaskService);
 
   await statusTaskService.updateSituation(+id, id_student, completed);
 
@@ -63,7 +63,7 @@ tasksRouter.delete('/:id', teacher, async (request, response) => {
   const { id } = request.params;
   const id_teacher = request.user.id;
 
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
 
   await taskService.delete(+id, id_teacher);
 
@@ -72,7 +72,7 @@ tasksRouter.delete('/:id', teacher, async (request, response) => {
 
 tasksRouter.get('/teacher', teacher, async (request, response) => {
   const id_teacher = request.user.id;
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
 
   const tasks = await taskService.indexByTeacher(id_teacher);
   return response.json(tasks);
@@ -80,7 +80,7 @@ tasksRouter.get('/teacher', teacher, async (request, response) => {
 
 tasksRouter.get('/student', student, async (request, response) => {
   const idStudent = request.user.id;
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
   const studentService = container.resolve(StudentService);
 
   const student = await studentService.indexById(idStudent);
@@ -91,7 +91,7 @@ tasksRouter.get('/student', student, async (request, response) => {
 tasksRouter.get('/:id/teacher', teacher, async (request, response) => {
   const id = +request.params.id;
   const idTeacher = request.user.id;
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
 
   const tasks = await taskService.indexByIdWithTeacher(id, idTeacher);
   return response.json(tasks);
@@ -100,7 +100,7 @@ tasksRouter.get('/:id/teacher', teacher, async (request, response) => {
 tasksRouter.get('/:id/student', student, async (request, response) => {
   const id = +request.params.id;
   const idStudent = request.user.id;
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
 
   const tasks = await taskService.indexByIdWithStudent(id, idStudent);
   return response.json(tasks);
@@ -108,7 +108,7 @@ tasksRouter.get('/:id/student', student, async (request, response) => {
 
 tasksRouter.get('/statistics-week', student, async (request, response) => {
   const idStudent = request.user.id;
-  const taskService = new TaskService();
+  const taskService = container.resolve(TaskService);
   const studentService = container.resolve(StudentService);
 
   const student = await studentService.indexById(idStudent);
