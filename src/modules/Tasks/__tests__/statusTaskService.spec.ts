@@ -195,11 +195,82 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#indexSituation', () => {
-    it.todo('should throw error if student not found')
-    it.todo('should throw error if task not found')
-    it.todo('should throw error if statusTask not found')
-    it.todo('should update situation to "ATRASADA" if situation equal EM_ANDAMENTO and currentDateTime > finalDateTime')
-    it.todo('shoud return situation by status_task')
+    it('should throw error if student not found', async() => {
+      try {
+        const idTask = 1
+        const idStudent = '54'
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(undefined)
+        await statusTaskService.indexSituation(idTask, idStudent )
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Aluno não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if task not found', async() => {
+      try {
+        const idTask = 1
+        const idStudent = '54'
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined)
+        await statusTaskService.indexSituation(idTask, idStudent )
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if statusTask not found', async () => {
+      try {
+        const idTask = 1
+        const idStudent = '54'
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue({} as any)
+        jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(undefined)
+        await statusTaskService.indexSituation(idTask, idStudent )
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa do aluno não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should update situation to "ATRASADA" if situation equal EM_ANDAMENTO and currentDateTime > finalDateTime', async ()=> {
+      const idTask = 1
+      const idStudent = '54'
+      const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
+      const fakeStatusTask = { id: 1, situation: SituationTaskEnum.EM_ANDAMENTO }
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(fakeStatusTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
+      jest.useFakeTimers().setSystemTime(new Date(2021, 1, 1).getTime());
+
+      const situation = await statusTaskService.indexSituation(idTask, idStudent)
+
+      expect(fakeStatusTaskRepository.update).toHaveBeenCalledWith(fakeStatusTask.id, {...fakeStatusTask, situation: SituationTaskEnum.ATRASADA})
+      expect(situation).toEqual(SituationTaskEnum.ATRASADA)
+    })
+    it('shoud return situation by status_task', async() => {
+      const idTask = 1
+      const idStudent = '54'
+      const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
+      const fakeStatusTask = { id: 1, situation: SituationTaskEnum.EM_ANDAMENTO }
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(fakeStatusTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
+      jest.useFakeTimers().setSystemTime(new Date(2020, 1, 1).getTime());
+
+      const situation = await statusTaskService.indexSituation(idTask, idStudent)
+
+      expect(situation).toEqual(fakeStatusTask.situation)
+    })
   })
   describe('#updateSituation', () => {
     it.todo('should throw error if student not found')

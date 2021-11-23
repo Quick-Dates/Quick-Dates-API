@@ -109,25 +109,19 @@ class StatusTaskService {
   }
 
   async indexSituation(id_task: number, id_student: string): Promise<StatusTasks> {
-    const statusTaskRepository = getRepository(StatusTasks);
-    const studentRepository = getRepository(Students);
-    const taskRepository = getRepository(Tasks);
-
-    const student = await studentRepository.findOne({ where: { id: id_student } });
+    const student = await this.studentRepository.findById(id_student);
 
     if (!student) {
       throw new AppError("Aluno não encontrado", 404);
     }
 
-    const task = await taskRepository.findOne({ where: { id: id_task } });
+    const task = await this.taskRepository.findById(id_task);
 
     if (!task) {
       throw new AppError("Tarefa não encontrada", 404);
     }
 
-    let statusTask: any = await statusTaskRepository.findOne({
-      where: { id_student, id_task },
-    });
+    let statusTask: any = await this.statusTaskRepository.findByIdStudentAndIdTask(id_student, id_task);
 
     if (!statusTask) {
       throw new AppError("Tarefa do aluno não encontrado", 404);
@@ -135,9 +129,10 @@ class StatusTaskService {
 
     const finalDateTime = new Date(`${task.finalDate} ${task.finalTime}`);
     const currentDateTime = new Date();
-    if (currentDateTime > finalDateTime && statusTask.situation === SituationTaskEnum.EM_ANDAMENTO) {
+    const isAtrasada = currentDateTime > finalDateTime && statusTask.situation === SituationTaskEnum.EM_ANDAMENTO;
+    if (isAtrasada) {
       statusTask.situation = SituationTaskEnum.ATRASADA;
-      await statusTaskRepository.update(statusTask.id, statusTask);
+      await this.statusTaskRepository.update(statusTask.id, statusTask);
     }
 
     return statusTask.situation;
