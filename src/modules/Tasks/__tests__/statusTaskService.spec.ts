@@ -163,7 +163,7 @@ describe('StatusTaskService', () => {
       await statusTaskService.indexTasksByStudent(idStudent)
 
       fakeStatusTasks.forEach((statusTask: any, index) => {
-        if(statusTask.situation === SituationTaskEnum.EM_ANDAMENTO) {
+        if (statusTask.situation === SituationTaskEnum.EM_ANDAMENTO) {
           expect(fakeStatusTaskRepository.update).toHaveBeenNthCalledWith(index + 1, statusTask.id, { ...statusTask, situation: SituationTaskEnum.ATRASADA })
         }
       })
@@ -195,12 +195,12 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#indexSituation', () => {
-    it('should throw error if student not found', async() => {
+    it('should throw error if student not found', async () => {
       try {
         const idTask = 1
         const idStudent = '54'
         jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(undefined)
-        await statusTaskService.indexSituation(idTask, idStudent )
+        await statusTaskService.indexSituation(idTask, idStudent)
 
         expect(true).toBe(false)
       } catch (error: any) {
@@ -209,13 +209,13 @@ describe('StatusTaskService', () => {
         expect(error.statusCode).toBe(404)
       }
     })
-    it('should throw error if task not found', async() => {
+    it('should throw error if task not found', async () => {
       try {
         const idTask = 1
         const idStudent = '54'
         jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
         jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined)
-        await statusTaskService.indexSituation(idTask, idStudent )
+        await statusTaskService.indexSituation(idTask, idStudent)
 
         expect(true).toBe(false)
       } catch (error: any) {
@@ -231,7 +231,7 @@ describe('StatusTaskService', () => {
         jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
         jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue({} as any)
         jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(undefined)
-        await statusTaskService.indexSituation(idTask, idStudent )
+        await statusTaskService.indexSituation(idTask, idStudent)
 
         expect(true).toBe(false)
       } catch (error: any) {
@@ -240,7 +240,7 @@ describe('StatusTaskService', () => {
         expect(error.statusCode).toBe(404)
       }
     })
-    it('should update situation to "ATRASADA" if situation equal EM_ANDAMENTO and currentDateTime > finalDateTime', async ()=> {
+    it('should update situation to "ATRASADA" if situation equal EM_ANDAMENTO and currentDateTime > finalDateTime', async () => {
       const idTask = 1
       const idStudent = '54'
       const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
@@ -253,10 +253,10 @@ describe('StatusTaskService', () => {
 
       const situation = await statusTaskService.indexSituation(idTask, idStudent)
 
-      expect(fakeStatusTaskRepository.update).toHaveBeenCalledWith(fakeStatusTask.id, {...fakeStatusTask, situation: SituationTaskEnum.ATRASADA})
+      expect(fakeStatusTaskRepository.update).toHaveBeenCalledWith(fakeStatusTask.id, { ...fakeStatusTask, situation: SituationTaskEnum.ATRASADA })
       expect(situation).toEqual(SituationTaskEnum.ATRASADA)
     })
-    it('shoud return situation by status_task', async() => {
+    it('shoud return situation by status_task', async () => {
       const idTask = 1
       const idStudent = '54'
       const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
@@ -265,7 +265,7 @@ describe('StatusTaskService', () => {
       jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
       jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(fakeStatusTask as any)
       jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
-      jest.useFakeTimers().setSystemTime(new Date(2020, 1, 1).getTime());
+      jest.useFakeTimers().setSystemTime(new Date(2019, 1, 1).getTime());
 
       const situation = await statusTaskService.indexSituation(idTask, idStudent)
 
@@ -273,12 +273,100 @@ describe('StatusTaskService', () => {
     })
   })
   describe('#updateSituation', () => {
-    it.todo('should throw error if student not found')
-    it.todo('should throw error if task not found')
-    it.todo('should throw error if statusTask not found')
-    it.todo('should update situation to "CONCLUIDA" if completed')
-    it.todo('should update situation to "ATRASADA" if not completed and currentDateTime > finalDateTime')
-    it.todo('should update situation to "EM_ANDAMENTO" if not completed and not situation "ATRASADA"')
-    it.todo('shoud return status_task')
+    it('should throw error if student not found', async () => {
+      try {
+        const idTask = 1
+        const idStudent = '54'
+        const completed = true;
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(undefined)
+        await statusTaskService.updateSituation(idTask, idStudent, completed)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Aluno não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if task not found', async () => {
+      try {
+        const idTask = 1
+        const idStudent = '54'
+        const completed = true;
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined)
+        await statusTaskService.updateSituation(idTask, idStudent, completed)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if statusTask not found', async () => {
+      try {
+        const idTask = 1
+        const idStudent = '54'
+        const completed = true;
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue({} as any)
+        jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(undefined)
+        await statusTaskService.updateSituation(idTask, idStudent, completed)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa do aluno não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should update situation to "CONCLUIDA" if completed', async () => {
+      const idTask = 1
+      const idStudent = '54'
+      const completed = true;
+      const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
+      const fakeStatusTask = { id: 1, situation: SituationTaskEnum.EM_ANDAMENTO }
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(fakeStatusTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
+      const statusTask = await statusTaskService.updateSituation(idTask, idStudent, completed)
+
+      expect(fakeStatusTaskRepository.update).toHaveBeenCalledWith(fakeStatusTask.id, {...fakeStatusTask ,situation: SituationTaskEnum.CONCLUIDA })
+      expect(statusTask).toEqual({...fakeStatusTask, situation: SituationTaskEnum.CONCLUIDA })
+    })
+    it('should update situation to "ATRASADA" if not completed and currentDateTime > finalDateTime', async() => {
+      const idTask = 1
+      const idStudent = '54'
+      const completed = false;
+      const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
+      const fakeStatusTask = { id: 1, situation: SituationTaskEnum.EM_ANDAMENTO }
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(fakeStatusTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
+      jest.useFakeTimers().setSystemTime(new Date(2021, 1, 1).getTime());
+      const statusTask = await statusTaskService.updateSituation(idTask, idStudent, completed)
+
+      expect(fakeStatusTaskRepository.update).toHaveBeenCalledWith(fakeStatusTask.id, {...fakeStatusTask ,situation: SituationTaskEnum.ATRASADA })
+      expect(statusTask).toEqual({...fakeStatusTask, situation: SituationTaskEnum.ATRASADA })
+    })
+    it('should update situation to "EM_ANDAMENTO" if not completed and not situation "ATRASADA"', async() => {
+      const idTask = 1
+      const idStudent = '54'
+      const completed = false;
+      const fakeTask = { id: 1, title: 'teste tarefa', finalDate: '2020-01-01', finalTime: '10:00' }
+      const fakeStatusTask = { id: 1, situation: SituationTaskEnum.EM_ANDAMENTO }
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue({} as any)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'findByIdStudentAndIdTask').mockResolvedValue(fakeStatusTask as any)
+      jest.spyOn(fakeStatusTaskRepository, 'update').mockImplementation()
+      jest.useFakeTimers().setSystemTime(new Date(2019, 1, 1).getTime());
+      const statusTask = await statusTaskService.updateSituation(idTask, idStudent, completed)
+
+      expect(fakeStatusTaskRepository.update).toHaveBeenCalledWith(fakeStatusTask.id, {...fakeStatusTask ,situation: SituationTaskEnum.EM_ANDAMENTO })
+      expect(statusTask).toEqual({...fakeStatusTask, situation: SituationTaskEnum.EM_ANDAMENTO })
+    })
   })
 })
