@@ -240,16 +240,13 @@ class TaskService {
   }
 
   async indexByIdWithTeacher(idTask: number, idTeacher: string): Promise<Tasks> {
-    const teacherRepository = getRepository(Teachers);
-    const taskRepository = getRepository(Tasks);
-
-    const teacher = await teacherRepository.findOne({ where: { id: idTeacher } });
+    const teacher = await this.teacherRepository.findById(idTeacher);
 
     if (!teacher) {
       throw new AppError("Professor não encontrado", 404);
     }
 
-    let task = await taskRepository.findOne({ where: { id: idTask, id_teacher: idTeacher }, join: { alias: "task", leftJoinAndSelect: { team: "task.team", course: "team.course" } } });
+    let task = await this.taskRepository.findByIdAndIdTeacher(idTask, idTeacher);
 
     if (!task) {
       throw new AppError("Tarefa não encontrada", 404);

@@ -1,5 +1,6 @@
 import "reflect-metadata"
 import { container } from "tsyringe"
+import { teamCoursesPath } from "../../../shared/docs/paths/teams-path"
 import AppError from "../../../shared/errors/AppError"
 import teacher from "../../../shared/middlewares/teacher"
 import NodeMailerService from "../../../shared/services/NodeMailerService"
@@ -560,12 +561,12 @@ describe('Task Service', () => {
     })
   })
   describe('#indexByIdWithStudent', () => {
-    it('should throw error if student not found', async() => {
+    it('should throw error if student not found', async () => {
       try {
         const fakeStudent = { id: '1', name: 'opa' } as any
         const fakeTask = { id: 1, name: 'op' } as any
         jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(undefined)
-        await taskService.indexByIdWithStudent(fakeTask.id,  fakeStudent.id)
+        await taskService.indexByIdWithStudent(fakeTask.id, fakeStudent.id)
 
         expect(true).toBe(false)
       } catch (error: any) {
@@ -574,13 +575,13 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(404)
       }
     })
-    it('should throw error if task not found', async() => {
+    it('should throw error if task not found', async () => {
       try {
         const fakeStudent = { id: '1', name: 'opa' } as any
         const fakeTask = { id: 1, name: 'op' } as any
         jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(fakeStudent)
         jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined)
-        await taskService.indexByIdWithStudent(fakeTask.id,  fakeStudent.id)
+        await taskService.indexByIdWithStudent(fakeTask.id, fakeStudent.id)
 
         expect(true).toBe(false)
       } catch (error: any) {
@@ -589,14 +590,14 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(404)
       }
     })
-    it('should return task by id with student', async() => {
+    it('should return task by id with student', async () => {
       const fakeStudent = { id: '1', name: 'opa' } as any
       const fakeTask = { id: 1, name: 'op' } as any
       jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(fakeStudent)
       jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
       jest.spyOn(container, 'resolve').mockReturnValue(statusTaskService)
       jest.spyOn(statusTaskService, 'indexSituation').mockResolvedValue(SituationTaskEnum.CONCLUIDA as any)
-      const task = await taskService.indexByIdWithStudent(fakeTask.id,  fakeStudent.id)
+      const task = await taskService.indexByIdWithStudent(fakeTask.id, fakeStudent.id)
 
       expect(task).toEqual({ ...fakeTask, situation: SituationTaskEnum.CONCLUIDA })
       expect(fakeTaskRepository.findById).toHaveBeenCalledWith(fakeTask.id)
@@ -605,9 +606,65 @@ describe('Task Service', () => {
     })
   })
   describe('#indexByIdWithTeacher', () => {
-    it.todo('should throw error if teacher not found')
-    it.todo('should throw error if task not found')
-    it.todo('should throw error if id teacher wrong')
-    it.todo('should return task by id with teacher')
+    it('should throw error if teacher not found', async () => {
+      try {
+        const fakeTeacher = { id: '1', name: 'opa' } as any
+        const fakeTask = { id: 1, name: 'op' } as any
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.indexByIdWithTeacher(fakeTask.id, fakeTeacher.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Professor não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if task not found', async () => {
+      try {
+        const fakeTeacher = { id: '1', name: 'opa' } as any
+        const fakeTask = { id: 1, name: 'op' } as any
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+        jest.spyOn(fakeTaskRepository, 'findByIdAndIdTeacher').mockResolvedValue(undefined)
+        await taskService.indexByIdWithTeacher(fakeTask.id, fakeTeacher.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if id teacher wrong', async () => {
+      try {
+        const fakeTeacher = { id: '1', name: 'opa' } as any
+        const fakeTask = { id: 1, name: 'op', id_teacher: '2' } as any
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+        jest.spyOn(fakeTaskRepository, 'findByIdAndIdTeacher').mockResolvedValue(fakeTask)
+
+        await taskService.indexByIdWithTeacher(fakeTask.id, fakeTeacher.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Você não tem permissão para visualizar essa tarefa')
+        expect(error.statusCode).toBe(401)
+      }
+    })
+    it('should return task by id with teacher', async () => {
+      const fakeTeacher = { id: '1', name: 'opa' } as any
+      const fakeTask = { id: 1, name: 'op', id_teacher: '1', team: {yearCreation: 2020} } as any
+      const fakeYearCurrent = 2021
+      jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+      jest.spyOn(fakeTaskRepository, 'findByIdAndIdTeacher').mockResolvedValue(fakeTask)
+      jest.useFakeTimers().setSystemTime(new Date(fakeYearCurrent, 1, 1).getTime());
+
+      const task = await taskService.indexByIdWithTeacher(fakeTask.id, fakeTeacher.id)
+
+      expect(task).toEqual({...fakeTask, team: {...fakeTask.team,
+        name: `${(fakeYearCurrent - fakeTask.team.yearCreation) + 1}° ano`}})
+      expect(fakeTaskRepository.findByIdAndIdTeacher).toHaveBeenCalledWith(fakeTask.id, fakeTeacher.id)
+      expect(fakeTeacherRepository.findById).toHaveBeenCalledWith(fakeTeacher.id)
+    })
   })
 })
