@@ -9,7 +9,7 @@ export default class StudentsRepository implements IStudentRepository {
   }
 
   async findById(id: string): Promise<Students | undefined> {
-    return await this.ormRepository.findOne({ where: { id } });
+    return await this.ormRepository.findOne({ where: { id }, join: { alias: "task", leftJoinAndSelect: { team: "task.team", course: "team.course" } } });
   }
 
   async findBySuapId(suapId: number): Promise<Students | undefined> {

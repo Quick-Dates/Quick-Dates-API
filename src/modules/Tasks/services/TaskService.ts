@@ -205,9 +205,7 @@ class TaskService {
   }
 
   async indexTasksByStudent(idStudent: string): Promise<Tasks[]> {
-    const studentRepository = getRepository(Students);
-
-    const student = await studentRepository.findOne({ where: { id: idStudent }, join: { alias: "task", leftJoinAndSelect: { team: "task.team", course: "team.course" } } });
+    const student = await this.studentRepository.findById(idStudent);
 
     if (!student) {
       throw new AppError("Aluno não encontrado", 404);

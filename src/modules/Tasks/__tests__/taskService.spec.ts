@@ -1,10 +1,13 @@
 import "reflect-metadata"
+import { container } from "tsyringe"
 import AppError from "../../../shared/errors/AppError"
 import teacher from "../../../shared/middlewares/teacher"
+import NodeMailerService from "../../../shared/services/NodeMailerService"
 import FakeStudentsRepository from "../../Students/__tests__/fakes/FakeStudentsRepository"
 import FakeTeachersRepository from "../../Teachers/__tests__/fakes/FakeTeachersRepository"
 import FakeTeamRepository from "../../Teams/__tests__/fakes/FakeTeamRepository"
 import { SituationTaskEnum } from "../enuns/SituationTaskEnum"
+import StatusTaskService from "../services/StatusTaskService"
 import TaskService from "../services/TaskService"
 import FakeStatusTaskRepository from "./fakes/FakeStatusTaskRepository"
 import FakeTaskRepository from "./fakes/FakeTaskRepository"
@@ -15,6 +18,9 @@ let fakeTeacherRepository: FakeTeachersRepository
 let fakeTaskRepository: FakeTaskRepository
 let fakeTeamRepository: FakeTeamRepository
 let taskService: TaskService
+let statusTaskService: StatusTaskService
+let nodeMailerService: NodeMailerService
+
 describe('Task Service', () => {
   beforeEach(() => {
     fakeStatusTaskRepository = new FakeStatusTaskRepository()
@@ -22,12 +28,19 @@ describe('Task Service', () => {
     fakeTeacherRepository = new FakeTeachersRepository()
     fakeTaskRepository = new FakeTaskRepository()
     fakeTeamRepository = new FakeTeamRepository()
+    nodeMailerService = new NodeMailerService()
     taskService = new TaskService(
       fakeStatusTaskRepository,
       fakeStudentRepository,
       fakeTeacherRepository,
       fakeTaskRepository,
       fakeTeamRepository
+    )
+    statusTaskService = new StatusTaskService(
+      fakeStatusTaskRepository,
+      fakeStudentRepository,
+      fakeTaskRepository,
+      nodeMailerService
     )
   })
   describe('#create', () => {
@@ -454,7 +467,7 @@ describe('Task Service', () => {
     it('should return tasks by week with situation', async () => {
       const fakeTeam = { id: 2, name: 'opa' } as any
       const fakeStudent = { id: '1', name: 'opa', team: fakeTeam } as any
-      const fakeTasks = [{ id: 2, title: 'sd', statusTasks: [{id_student: fakeStudent.id, situation: 'EM_ANDAMENTO'}] }] as any
+      const fakeTasks = [{ id: 2, title: 'sd', statusTasks: [{ id_student: fakeStudent.id, situation: 'EM_ANDAMENTO' }] }] as any
 
       const fakeDateNow = new Date(2021, 1, 1)
       jest.useFakeTimers().setSystemTime(fakeDateNow.getTime())
@@ -463,11 +476,11 @@ describe('Task Service', () => {
       jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(fakeTeam)
       jest.spyOn(fakeTaskRepository, 'findAllTaskByWeek').mockResolvedValue(fakeTasks)
 
-      const tasks =  await taskService.indexTasksWeek(fakeStudent)
+      const tasks = await taskService.indexTasksWeek(fakeStudent)
 
       expect(fakeTaskRepository.findAllTaskByWeek).toHaveBeenCalledWith(fakeTeam.id,
         fakeDateNow.toLocaleDateString(), fakeDateFinal.toLocaleDateString())
-      expect(tasks).toEqual([{...fakeTasks[0], situation: 'EM_ANDAMENTO'}])
+      expect(tasks).toEqual([{ ...fakeTasks[0], situation: 'EM_ANDAMENTO' }])
       expect(fakeTeamRepository.findById).toHaveBeenCalledWith(fakeStudent.team.id)
     })
   })
@@ -490,7 +503,7 @@ describe('Task Service', () => {
     })
   })
   describe('#indexByTeam', () => {
-    it('should throw error if team not found', async() => {
+    it('should throw error if team not found', async () => {
       try {
         const fakeTeam = { id: '1', name: 'opa' } as any
         jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(undefined)
@@ -503,7 +516,7 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(404)
       }
     })
-    it('should return tasks by team', async() => {
+    it('should return tasks by team', async () => {
       const fakeTeam = { id: '1', name: 'opa' } as any
       const fakeTasks = [{ id: '1', name: 'opa' }] as any
 
@@ -518,8 +531,33 @@ describe('Task Service', () => {
     })
   })
   describe('#indexTasksByStudent', () => {
-    it.todo('should throw error if student not found')
-    it.todo('should return tasks by student')
+    it('should throw error if student not found', async () => {
+      try {
+        const fakeStudent = { id: '1', name: 'opa' } as any
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.indexTasksByStudent(fakeStudent.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Aluno não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should return tasks by student', async () => {
+      const fakeStudent = { id: '1', name: 'opa' } as any
+      const fakeTasks = [{ id: '1', name: 'opa' }] as any
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(fakeStudent)
+      jest.spyOn(container, 'resolve').mockReturnValue(statusTaskService)
+      jest.spyOn(statusTaskService, 'indexTasksByStudent').mockResolvedValue(fakeTasks)
+
+      const tasks = await taskService.indexTasksByStudent(fakeStudent.id)
+
+      expect(tasks).toEqual(fakeTasks)
+      expect(statusTaskService.indexTasksByStudent).toHaveBeenCalledWith(fakeStudent.id)
+      expect(container.resolve).toHaveBeenCalledWith(StatusTaskService)
+      expect(fakeStudentRepository.findById).toHaveBeenCalledWith(fakeStudent.id)
+    })
   })
   describe('#indexByIdWithStudent', () => {
     it.todo('should throw error if student not found')
