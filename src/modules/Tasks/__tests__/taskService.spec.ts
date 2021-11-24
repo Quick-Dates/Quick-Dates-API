@@ -1,5 +1,6 @@
 import "reflect-metadata"
 import AppError from "../../../shared/errors/AppError"
+import teacher from "../../../shared/middlewares/teacher"
 import FakeStudentsRepository from "../../Students/__tests__/fakes/FakeStudentsRepository"
 import FakeTeachersRepository from "../../Teachers/__tests__/fakes/FakeTeachersRepository"
 import FakeTeamRepository from "../../Teams/__tests__/fakes/FakeTeamRepository"
@@ -350,10 +351,63 @@ describe('Task Service', () => {
     })
   })
   describe('#delete', () => {
-    it.todo('should throw error if task not found')
-    it.todo('should throw error if teacher not found')
-    it.todo('should throw error if teacher id is incorrect')
-    it.todo('should delete task')
+    it('should throw error if task not found', async () => {
+      try {
+        const idTask = 2
+        const idTeacher = '1'
+
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.delete(idTask, idTeacher)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if teacher not found', async () => {
+      try {
+        const idTask = 2
+        const fakeTeacher = { id: '1', name: 'opa' } as any
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTeacher)
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.delete(idTask, fakeTeacher.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Professor não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if teacher id is incorrect', async () => {
+      try {
+        const fakeTask = { id: 10, id_teacher: '2' } as any
+        const fakeTeacher = { id: '1', name: 'opa' } as any
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+        await taskService.delete(fakeTask.id, fakeTeacher.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Você não tem permissão para deletar essa tarefa')
+        expect(error.statusCode).toBe(401)
+      }
+    })
+    it('should delete task', async() => {
+      const fakeTask = { id: 10, id_teacher: '1' } as any
+      const fakeTeacher = { id: '1', name: 'opa' } as any
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+      jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+      jest.spyOn(fakeTaskRepository, 'delete').mockImplementation()
+      await taskService.delete(fakeTask.id, fakeTeacher.id)
+
+      expect(fakeTaskRepository.findById).toHaveBeenCalledWith(fakeTask.id)
+      expect(fakeTeacherRepository.findById).toHaveBeenCalledWith(fakeTeacher.id)
+      expect(fakeTaskRepository.delete).toHaveBeenCalledWith(fakeTask.id)
+    })
   })
   describe('#indexByTeacher', () => {
     it.todo('should throw error if teacher not found')
