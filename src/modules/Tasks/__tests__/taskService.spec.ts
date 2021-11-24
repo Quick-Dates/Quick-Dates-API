@@ -186,9 +186,25 @@ describe('Task Service', () => {
     })
   })
   describe('#validateDates', () => {
-    it.todo('should return false if finalDateTime < startDateTime')
-    it.todo('should return false if startDateTime < currentDateTime')
-    it.todo('should return true if everything is correct')
+    it('should return false if finalDateTime < startDateTime', () => {
+      const result = taskService.validateDates('2020-01-01', '00:00', '2021-01-01', '00:00')
+
+      expect(result).toBe(false)
+    })
+    it('should return false if startDateTime < currentDateTime', () => {
+      jest.useFakeTimers().setSystemTime(new Date(2021, 1, 1).getTime());
+
+      const result = taskService.validateDates('2020-01-01', '00:00', '2020-01-01', '01:00')
+
+      expect(result).toBe(false)
+    })
+    it('should return true if everything is correct', () => {
+      jest.useFakeTimers().setSystemTime(new Date(2019, 1, 1).getTime());
+
+      const result = taskService.validateDates('2020-01-01', '00:00', '2020-01-01', '01:00')
+
+      expect(result).toBe(true)
+    })
   })
   describe('#indexByFinalDate', () => {
     it.todo('should get task by finalDate ')
