@@ -183,13 +183,11 @@ class TaskService {
     const length = Tasks.length;
     const completed = Tasks.filter(task => task.situation === SituationTaskEnum.CONCLUIDA).length
     const inProgress = Tasks.filter(task => task.situation === SituationTaskEnum.EM_ANDAMENTO).length
-    const late = Tasks.filter(task => task.situation === SituationTaskEnum.ATRASADA).length
     const successPercentage = (completed / length) * 100
     return {
       length: length,
       completed,
       inProgress,
-      late,
       successPercentage
     }
   }

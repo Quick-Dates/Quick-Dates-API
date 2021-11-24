@@ -4,6 +4,7 @@ import teacher from "../../../shared/middlewares/teacher"
 import FakeStudentsRepository from "../../Students/__tests__/fakes/FakeStudentsRepository"
 import FakeTeachersRepository from "../../Teachers/__tests__/fakes/FakeTeachersRepository"
 import FakeTeamRepository from "../../Teams/__tests__/fakes/FakeTeamRepository"
+import { SituationTaskEnum } from "../enuns/SituationTaskEnum"
 import TaskService from "../services/TaskService"
 import FakeStatusTaskRepository from "./fakes/FakeStatusTaskRepository"
 import FakeTaskRepository from "./fakes/FakeTaskRepository"
@@ -471,7 +472,22 @@ describe('Task Service', () => {
     })
   })
   describe('#statisticsWeekTasks', () => {
-    it.todo('should return statiscs by week')
+    it('should return statiscs by week', () => {
+      const fakeTasks = [
+        { id: 2, title: 'sd', situation: SituationTaskEnum.CONCLUIDA },
+        { id: 2, title: 'sd', situation: SituationTaskEnum.EM_ANDAMENTO },
+        { id: 2, title: 'sd', situation: SituationTaskEnum.ATRASADA },
+      ] as any
+
+      const statistics = taskService.statisticsWeekTasks(fakeTasks)
+
+      expect(statistics).toEqual({
+        length: fakeTasks.length,
+        completed: 1,
+        inProgress: 1,
+        successPercentage: (1 / fakeTasks.length) * 100
+      })
+    })
   })
   describe('#indexByTeam', () => {
     it.todo('should throw error if team not found')
