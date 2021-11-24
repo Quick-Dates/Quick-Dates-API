@@ -218,16 +218,13 @@ class TaskService {
   }
 
   async indexByIdWithStudent(idTask: number, idStudent: string): Promise<Tasks> {
-    const studentRepository = getRepository(Students);
-    const taskRepository = getRepository(Tasks);
-
-    const student = await studentRepository.findOne({ where: { id: idStudent } });
+    const student = await this.studentRepository.findById(idStudent);
 
     if (!student) {
       throw new AppError("Aluno não encontrado", 404);
     }
 
-    let task = await taskRepository.findOne({ where: { id: idTask } });
+    let task = await this.taskRepository.findById(idTask);
 
     if (!task) {
       throw new AppError("Tarefa não encontrada", 404);

@@ -560,9 +560,49 @@ describe('Task Service', () => {
     })
   })
   describe('#indexByIdWithStudent', () => {
-    it.todo('should throw error if student not found')
-    it.todo('should throw error if task not found')
-    it.todo('should return task by id with student')
+    it('should throw error if student not found', async() => {
+      try {
+        const fakeStudent = { id: '1', name: 'opa' } as any
+        const fakeTask = { id: 1, name: 'op' } as any
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.indexByIdWithStudent(fakeTask.id,  fakeStudent.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Aluno não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if task not found', async() => {
+      try {
+        const fakeStudent = { id: '1', name: 'opa' } as any
+        const fakeTask = { id: 1, name: 'op' } as any
+        jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(fakeStudent)
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.indexByIdWithStudent(fakeTask.id,  fakeStudent.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should return task by id with student', async() => {
+      const fakeStudent = { id: '1', name: 'opa' } as any
+      const fakeTask = { id: 1, name: 'op' } as any
+      jest.spyOn(fakeStudentRepository, 'findById').mockResolvedValue(fakeStudent)
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+      jest.spyOn(container, 'resolve').mockReturnValue(statusTaskService)
+      jest.spyOn(statusTaskService, 'indexSituation').mockResolvedValue(SituationTaskEnum.CONCLUIDA as any)
+      const task = await taskService.indexByIdWithStudent(fakeTask.id,  fakeStudent.id)
+
+      expect(task).toEqual({ ...fakeTask, situation: SituationTaskEnum.CONCLUIDA })
+      expect(fakeTaskRepository.findById).toHaveBeenCalledWith(fakeTask.id)
+      expect(fakeStudentRepository.findById).toHaveBeenCalledWith(fakeStudent.id)
+      expect(container.resolve).toHaveBeenCalledWith(StatusTaskService)
+    })
   })
   describe('#indexByIdWithTeacher', () => {
     it.todo('should throw error if teacher not found')
