@@ -38,9 +38,9 @@ class StatusTaskService {
 
   async createTasksByStudent(idStudent: string, tasks: Tasks[]): Promise<StatusTasks[]> {
     const createStatusTasks = async (task: Tasks) => {
-      let statusTask = await this.statusTaskRepository.findByIdStudentAndIdTask(idStudent, task.id);
+      let statusTask = await this.statusTaskRepository.findByIdStudentAndIdTask(idStudent, task.id as number);
       if (!statusTask) {
-        statusTask = await this.create({ id_student: idStudent, id_task: task.id });
+        statusTask = await this.create({ id_student: idStudent, id_task: task.id as number });
       }
       return statusTask;
     }
@@ -56,7 +56,7 @@ class StatusTaskService {
     const createStatusTask = async (student: Students) => {
       await this.create({
         id_student: student.id as string,
-        id_task: task.id
+        id_task: task.id as number
       });
       sendEmail(student)
     }

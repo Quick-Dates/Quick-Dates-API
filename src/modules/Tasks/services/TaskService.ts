@@ -33,17 +33,13 @@ class TaskService {
   }
   async create(idTeam: number, { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title, id_teacher }: ITask)
     : Promise<{ task: Tasks, teacher: Teachers }> {
-    const taskRepository = getRepository(Tasks);
-    const teacherRepository = getRepository(Teachers);
-    const teamRepository = getRepository(Teams);
-
-    const teacher = await teacherRepository.findOne({ where: { id: id_teacher } });
+    const teacher = await this.teacherRepository.findById(id_teacher);
 
     if (!teacher) {
       throw new AppError('Professor não encontrado', 404);
     }
 
-    const team = await teamRepository.findOne({ where: { id: idTeam } });
+    const team = await this.teamRepository.findById(idTeam);
 
     if (!team) {
       throw new AppError('Turma não encontrada', 404);
@@ -62,7 +58,7 @@ class TaskService {
       throw new AppError("Já existe duas atividades avaliativas para essa data", 400);
     }
 
-    const task = taskRepository.create({
+    const task = await this.taskRepository.create({
       description,
       finalDate,
       finalTime,
@@ -73,15 +69,14 @@ class TaskService {
       title,
       teacher: teacher,
       id_teacher: teacher.id,
-      id_team: team.id
+      id_team: team.id as number
     });
 
 
-    await taskRepository.save(task);
     return { task, teacher };
   }
 
-  private validateDates(startDate: string, startTime: string, finalDate: string, finalTime: string): boolean {
+  validateDates(startDate: string, startTime: string, finalDate: string, finalTime: string): boolean {
     const startDateTime = new Date(`${startDate} ${startTime}`);
     const finalDateTime = new Date(`${finalDate} ${finalTime}`);
     if (finalDateTime < startDateTime) {
@@ -93,7 +88,7 @@ class TaskService {
     return true;
   }
 
-  private async indexByFinalDate(finalDate: string, id_team: number) {
+  async indexByFinalDate(finalDate: string, id_team: number) {
     const taskRepository = getRepository(Tasks);
     return await taskRepository.find({
       where: {
@@ -302,7 +297,10 @@ class TaskService {
 
     const yearCurrent = new Date().getFullYear();
 
-    task.team.name = `${(yearCurrent - task.team.yearCreation) + 1}° ano`;
+    if(task.team) {
+      task.team.name = `${(yearCurrent - task.team.yearCreation) + 1}° ano`;
+    }
+
 
     return task;
   }

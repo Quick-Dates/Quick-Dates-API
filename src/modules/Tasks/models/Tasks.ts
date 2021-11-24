@@ -7,7 +7,7 @@ import StatusTasks from "./StatusTasks";
 @Entity('tasks')
 class Tasks {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
   title: string;
@@ -47,7 +47,7 @@ class Tasks {
 
   @ManyToOne(() => Teams)
   @JoinColumn({name: 'id_team', referencedColumnName: 'id'})
-  team: Teams;
+  team?: Teams;
 
   @OneToMany(() => StatusTasks, (statusTask) => statusTask.task, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
   statusTasks?: StatusTasks[];
