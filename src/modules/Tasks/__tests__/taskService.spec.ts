@@ -490,8 +490,32 @@ describe('Task Service', () => {
     })
   })
   describe('#indexByTeam', () => {
-    it.todo('should throw error if team not found')
-    it.todo('should return tasks by team')
+    it('should throw error if team not found', async() => {
+      try {
+        const fakeTeam = { id: '1', name: 'opa' } as any
+        jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.indexByTeam(fakeTeam.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Turma não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should return tasks by team', async() => {
+      const fakeTeam = { id: '1', name: 'opa' } as any
+      const fakeTasks = [{ id: '1', name: 'opa' }] as any
+
+      jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(fakeTeam)
+      jest.spyOn(fakeTaskRepository, 'findAllByTeam').mockResolvedValue(fakeTasks)
+      const tasks = await taskService.indexByTeam(fakeTeam.id)
+
+      expect(tasks).toEqual(fakeTasks)
+      expect(fakeTaskRepository.findAllByTeam).toHaveBeenCalledWith(fakeTeam.id)
+      expect(fakeTeamRepository.findById).toHaveBeenCalledWith(fakeTeam.id)
+
+    })
   })
   describe('#indexTasksByStudent', () => {
     it.todo('should throw error if student not found')

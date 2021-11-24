@@ -193,16 +193,13 @@ class TaskService {
   }
 
   async indexByTeam(idTeam: number): Promise<Tasks[]> {
-    const taskRepository = getRepository(Tasks);
-    const teamRepository = getRepository(Teams);
-
-    const team = await teamRepository.findOne({ where: { id: idTeam } });
+    const team = await this.teamRepository.findById(idTeam);
 
     if (!team) {
       throw new AppError("Turma não encontrada", 404);
     }
 
-    const tasks = await taskRepository.find({ where: { id_team: team.id } });
+    const tasks = await this.taskRepository.findAllByTeam(team.id as number);
 
     return tasks;
   }
