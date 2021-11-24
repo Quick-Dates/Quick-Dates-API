@@ -1,4 +1,4 @@
-import { inject, injectable } from "tsyringe";
+import { container, inject, injectable } from "tsyringe";
 import { Between, Connection, getRepository } from "typeorm";
 import AppError from "../../../shared/errors/AppError";
 import IStudentRepository from "../../Students/interfaces/IStudentRepository";
@@ -34,7 +34,6 @@ class TaskService {
   async create(idTeam: number, { description, finalDate, finalTime, maximumScore, startDate, startTime, subject, title, id_teacher }: ITask)
     : Promise<{ task: Tasks, teacher: Teachers }> {
     const taskRepository = getRepository(Tasks);
-    const studentRepository = getRepository(Students);
     const teacherRepository = getRepository(Teachers);
     const teamRepository = getRepository(Teams);
 
@@ -223,6 +222,7 @@ class TaskService {
       successPercentage
     }
   }
+
   async indexByTeam(idTeam: number): Promise<Tasks[]> {
     const taskRepository = getRepository(Tasks);
     const teamRepository = getRepository(Teams);
@@ -247,7 +247,7 @@ class TaskService {
       throw new AppError("Aluno não encontrado", 404);
     }
 
-    const statusTaskService = new StatusTaskService();
+    const statusTaskService = container.resolve(StatusTaskService);
     const tasks = await statusTaskService.indexTasksByStudent(idStudent) as any;
 
     return tasks;
@@ -269,7 +269,7 @@ class TaskService {
       throw new AppError("Tarefa não encontrada", 404);
     }
 
-    const statusTaskService = new StatusTaskService();
+    const statusTaskService = container.resolve(StatusTaskService);
 
     task.situation = await statusTaskService.indexSituation(idTask, idStudent) as any;
 
