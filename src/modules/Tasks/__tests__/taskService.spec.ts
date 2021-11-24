@@ -223,7 +223,8 @@ describe('Task Service', () => {
   })
   describe('#validateDates', () => {
     it('should return false if finalDateTime < startDateTime', () => {
-      const result = taskService.validateDates('2020-01-01', '00:00', '2021-01-01', '00:00')
+      jest.useFakeTimers().setSystemTime(new Date(2019, 1, 1).getTime());
+      const result = taskService.validateDates('2021-01-01', '00:00', '2020-01-01', '00:00')
 
       expect(result).toBe(false)
     })
