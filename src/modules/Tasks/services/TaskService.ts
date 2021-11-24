@@ -152,10 +152,7 @@ class TaskService {
   }
 
   async indexTasksWeek(student: Students): Promise<Tasks[]> {
-    const taskRepository = getRepository(Tasks);
-    const teamRepository = getRepository(Teams);
-
-    const team = await teamRepository.findOne({ where: { id: student?.team?.id } });
+    const team = await this.teamRepository.findById(student?.team?.id as number);
 
     if (!team) {
       throw new AppError("Turma não encontrada", 404);
@@ -167,15 +164,7 @@ class TaskService {
     const finalDateCurrentWeek = new Date(new Date().setDate(new Date().getDate() + 7))
       .toLocaleDateString()
 
-    const tasks = await taskRepository.find(
-      {
-        relations: ["statusTasks"],
-        where:
-        {
-          id_team: team.id,
-          finalDate: Between(startDateCurrentWeek, finalDateCurrentWeek),
-        }
-      });
+    const tasks = await this.taskRepository.findAllTaskByWeek(team.id as number, startDateCurrentWeek, finalDateCurrentWeek);
 
       tasks.forEach(task => {
         task.statusTasks?.forEach(statusTask => {

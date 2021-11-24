@@ -425,7 +425,7 @@ describe('Task Service', () => {
     })
     it('should get tasks by teacher', async () => {
       const fakeTeacher = { id: '1', name: 'opa' } as any
-      const fakeTasks = [{id: 2, title: 'sd'}] as any
+      const fakeTasks = [{ id: 2, title: 'sd' }] as any
       jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
       jest.spyOn(fakeTaskRepository, 'findAllByTeacher').mockResolvedValue(fakeTasks)
 
@@ -437,8 +437,38 @@ describe('Task Service', () => {
     })
   })
   describe('#indexTasksWeek', () => {
-    it.todo('should throw error if team not found')
-    it.todo('should return tasks by week with situation')
+    it('should throw error if team not found', async () => {
+      try {
+        const fakeTeam = { id: '1', name: 'opa' } as any
+        jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.indexTasksWeek(fakeTeam.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Turma não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should return tasks by week with situation', async () => {
+      const fakeTeam = { id: 2, name: 'opa' } as any
+      const fakeStudent = { id: '1', name: 'opa', team: fakeTeam } as any
+      const fakeTasks = [{ id: 2, title: 'sd', statusTasks: [{id_student: fakeStudent.id, situation: 'EM_ANDAMENTO'}] }] as any
+
+      const fakeDateNow = new Date(2021, 1, 1)
+      jest.useFakeTimers().setSystemTime(fakeDateNow.getTime())
+
+      const fakeDateFinal = new Date(new Date().setDate(new Date().getDate() + 7))
+      jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(fakeTeam)
+      jest.spyOn(fakeTaskRepository, 'findAllTaskByWeek').mockResolvedValue(fakeTasks)
+
+      const tasks =  await taskService.indexTasksWeek(fakeStudent)
+
+      expect(fakeTaskRepository.findAllTaskByWeek).toHaveBeenCalledWith(fakeTeam.id,
+        fakeDateNow.toLocaleDateString(), fakeDateFinal.toLocaleDateString())
+      expect(tasks).toEqual([{...fakeTasks[0], situation: 'EM_ANDAMENTO'}])
+      expect(fakeTeamRepository.findById).toHaveBeenCalledWith(fakeStudent.team.id)
+    })
   })
   describe('#statisticsWeekTasks', () => {
     it.todo('should return statiscs by week')
