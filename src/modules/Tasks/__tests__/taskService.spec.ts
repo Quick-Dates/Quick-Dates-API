@@ -29,7 +29,7 @@ describe('Task Service', () => {
     )
   })
   describe('#create', () => {
-    it('should throw error if teacher not found', async() => {
+    it('should throw error if teacher not found', async () => {
       try {
         const idTeam = 1
         const fakeTask = {} as any;
@@ -61,10 +61,10 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(404)
       }
     })
-    it('should throw error if score negative', async() => {
+    it('should throw error if score negative', async () => {
       try {
         const idTeam = 1
-        const fakeTask = {maximumScore: -1} as any;
+        const fakeTask = { maximumScore: -1 } as any;
         const fakeTeacher = {} as any;
         const fakeTeam = {} as any;
 
@@ -79,10 +79,10 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(400)
       }
     })
-    it('should throw error if score > 10', async() => {
+    it('should throw error if score > 10', async () => {
       try {
         const idTeam = 1
-        const fakeTask = {maximumScore: 11} as any;
+        const fakeTask = { maximumScore: 11 } as any;
         const fakeTeacher = {} as any;
         const fakeTeam = {} as any;
 
@@ -97,10 +97,10 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(400)
       }
     })
-    it('should throw error if date wrong', async() => {
+    it('should throw error if date wrong', async () => {
       try {
         const idTeam = 1
-        const fakeTask = {maximumScore: 9} as any;
+        const fakeTask = { maximumScore: 9 } as any;
         const fakeTeacher = {} as any;
         const fakeTeam = {} as any;
 
@@ -116,10 +116,10 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(400)
       }
     })
-    it('should throw error if have there are two tasks in the same day', async() => {
+    it('should throw error if have there are two tasks in the same day', async () => {
       try {
         const idTeam = 1
-        const fakeTask = {maximumScore: 9} as any;
+        const fakeTask = { maximumScore: 9 } as any;
         const fakeTeacher = {} as any;
         const fakeTeam = {} as any;
 
@@ -136,10 +136,10 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(400)
       }
     })
-    it('should throw error if have more than two tasks in the same day', async() => {
+    it('should throw error if have more than two tasks in the same day', async () => {
       try {
         const idTeam = 1
-        const fakeTask = {maximumScore: 9} as any;
+        const fakeTask = { maximumScore: 9 } as any;
         const fakeTeacher = {} as any;
         const fakeTeam = {} as any;
 
@@ -156,13 +156,15 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(400)
       }
     })
-    it('should create task', async() => {
+    it('should create task', async () => {
       const idTeam = 1
-      const fakeTask = {maximumScore: 9, id_teacher: '2', startDate: 'sdf', startTime: 'sdd', finalDate: 'gdhfdf',
-      finalTime: 'af', description: 'sddsdfsf', title: 'asdhfd'} as any;
-      const fakeTeacher = {id: '2'} as any;
-      const fakeTeam = {id: 1} as any;
-      const fakeTaskCreated = {id: 1} as any;
+      const fakeTask = {
+        maximumScore: 9, id_teacher: '2', startDate: 'sdf', startTime: 'sdd', finalDate: 'gdhfdf',
+        finalTime: 'af', description: 'sddsdfsf', title: 'asdhfd'
+      } as any;
+      const fakeTeacher = { id: '2' } as any;
+      const fakeTeam = { id: 1 } as any;
+      const fakeTaskCreated = { id: 1 } as any;
 
       jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
       jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(fakeTeam)
@@ -207,7 +209,16 @@ describe('Task Service', () => {
     })
   })
   describe('#indexByFinalDate', () => {
-    it.todo('should get task by finalDate ')
+    it('should get task by finalDate', async () => {
+      const finalDate = '2020-01-01'
+      const idTeam = 1
+      const fakeTasks = [{ id: 1 }] as any
+      jest.spyOn(fakeTaskRepository, 'findAllByFinalDateAndIdTeam').mockResolvedValue(fakeTasks)
+      const tasks = await taskService.indexByFinalDate(finalDate, idTeam)
+
+      expect(fakeTaskRepository.findAllByFinalDateAndIdTeam).toHaveBeenCalledWith(finalDate, idTeam)
+      expect(tasks).toEqual(fakeTasks)
+    })
   })
   describe('#update', () => {
     it.todo('should throw error if task not found')

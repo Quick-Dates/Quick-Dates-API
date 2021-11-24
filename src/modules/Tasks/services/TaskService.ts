@@ -79,23 +79,18 @@ class TaskService {
   validateDates(startDate: string, startTime: string, finalDate: string, finalTime: string): boolean {
     const startDateTime = new Date(`${startDate} ${startTime}`);
     const finalDateTime = new Date(`${finalDate} ${finalTime}`);
+    const currentDateTime = new Date();
     if (finalDateTime < startDateTime) {
       return false;
     }
-    if (startDateTime < new Date()) {
+    if (startDateTime < currentDateTime) {
       return false;
     }
     return true;
   }
 
   async indexByFinalDate(finalDate: string, id_team: number) {
-    const taskRepository = getRepository(Tasks);
-    return await taskRepository.find({
-      where: {
-        finalDate,
-        id_team
-      }
-    })
+    return await this.taskRepository.findAllByFinalDateAndIdTeam(finalDate, id_team);
   }
 
   async update(id: number, id_teacher: string, taskData: Tasks): Promise<Tasks> {
