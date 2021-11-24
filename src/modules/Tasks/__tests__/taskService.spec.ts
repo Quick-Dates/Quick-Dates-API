@@ -79,6 +79,24 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(400)
       }
     })
+    it('should throw error if score = 0', async () => {
+      try {
+        const idTeam = 1
+        const fakeTask = { maximumScore: 0 } as any;
+        const fakeTeacher = {} as any;
+        const fakeTeam = {} as any;
+
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+        jest.spyOn(fakeTeamRepository, 'findById').mockResolvedValue(fakeTeam)
+        await taskService.create(idTeam, fakeTask)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Pontuação máxima inválida')
+        expect(error.statusCode).toBe(400)
+      }
+    })
     it('should throw error if score > 10', async () => {
       try {
         const idTeam = 1
@@ -221,11 +239,115 @@ describe('Task Service', () => {
     })
   })
   describe('#update', () => {
-    it.todo('should throw error if task not found')
-    it.todo('should throw error if teacher not found')
-    it.todo('should throw error if teacher id is incorrect')
-    it.todo('should throw error if score wrong')
-    it.todo('should update task')
+    it('should throw error if task not found', async () => {
+      try {
+        const idTeacher = '2'
+        const fakeTask = { id: 1 } as any;
+
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.update(fakeTask.id, idTeacher, fakeTask)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Tarefa não encontrada')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if teacher not found', async () => {
+      try {
+        const idTeacher = '2'
+        const fakeTask = { id: 1 } as any;
+
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.update(fakeTask.id, idTeacher, fakeTask)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Professor não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should throw error if teacher id is incorrect', async () => {
+      try {
+        const fakeTacher = { id: '2', name: 'sf' } as any;
+        const fakeTask = { id: 1, id_teacher: '3' } as any;
+
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTacher)
+        await taskService.update(fakeTask.id, fakeTacher.id, fakeTask)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Você não tem permissão para alterar essa tarefa')
+        expect(error.statusCode).toBe(401)
+      }
+    })
+    it('should throw error if score negative', async () => {
+      try {
+        const fakeTacher = { id: '2', name: 'sf' } as any;
+        const fakeTask = { id: 1, id_teacher: '2', maximumScore: -2 } as any;
+
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTacher)
+        await taskService.update(fakeTask.id, fakeTacher.id, fakeTask)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Pontuação máxima inválida')
+        expect(error.statusCode).toBe(400)
+      }
+    })
+    it('should throw error if score = 0', async () => {
+      try {
+        const fakeTacher = { id: '2', name: 'sf' } as any;
+        const fakeTask = { id: 1, id_teacher: '2', maximumScore: 0 } as any;
+
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTacher)
+        await taskService.update(fakeTask.id, fakeTacher.id, fakeTask)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Pontuação máxima inválida')
+        expect(error.statusCode).toBe(400)
+      }
+    })
+    it('should throw error if score > 10', async () => {
+      try {
+        const fakeTacher = { id: '2', name: 'sf' } as any;
+        const fakeTask = { id: 1, id_teacher: '2', maximumScore: 12 } as any;
+
+        jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTacher)
+        await taskService.update(fakeTask.id, fakeTacher.id, fakeTask)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Pontuação máxima inválida')
+        expect(error.statusCode).toBe(400)
+      }
+    })
+    it('should update task', async () => {
+      const fakeTeacher = { id: '2', name: 'sf' } as any;
+      const fakeTask = { id: 1, id_teacher: '2', maximumScore: 10 } as any;
+
+      jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
+      jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+      jest.spyOn(fakeTaskRepository, 'update').mockImplementation()
+      const task = await taskService.update(fakeTask.id, fakeTeacher.id, fakeTask)
+
+      expect(fakeTaskRepository.findById).toHaveBeenCalledWith(fakeTask.id)
+      expect(fakeTeacherRepository.findById).toHaveBeenCalledWith(fakeTeacher.id)
+      expect(fakeTaskRepository.update).toHaveBeenCalledWith(fakeTask.id, fakeTask)
+      expect(task).toEqual(fakeTask)
+    })
   })
   describe('#delete', () => {
     it.todo('should throw error if task not found')

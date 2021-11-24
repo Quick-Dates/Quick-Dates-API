@@ -45,7 +45,7 @@ class TaskService {
       throw new AppError('Turma não encontrada', 404);
     }
 
-    if (maximumScore < 0 || maximumScore > 10) {
+    if (maximumScore <= 0 || maximumScore > 10) {
       throw new AppError("Pontuação máxima inválida", 400);
     }
 
@@ -94,16 +94,13 @@ class TaskService {
   }
 
   async update(id: number, id_teacher: string, taskData: Tasks): Promise<Tasks> {
-    const taskRepository = getRepository(Tasks);
-    const teacherRepository = getRepository(Teachers);
-
-    const task = await taskRepository.findOne({ where: { id } });
+    const task = await this.taskRepository.findById(id);
 
     if (!task) {
       throw new AppError("Tarefa não encontrada", 404);
     }
 
-    const teacher = await teacherRepository.findOne({ where: { id: id_teacher } });
+    const teacher = await this.teacherRepository.findById(id_teacher);
     if (!teacher) {
       throw new AppError("Professor não encontrado", 404);
     }
@@ -112,11 +109,11 @@ class TaskService {
       throw new AppError("Você não tem permissão para alterar essa tarefa", 401);
     }
 
-    if (taskData.maximumScore < 0 || taskData.maximumScore > 10) {
+    if (taskData.maximumScore <= 0 || taskData.maximumScore > 10) {
       throw new AppError("Pontuação máxima inválida", 400);
     }
 
-    await taskRepository.update(id, taskData);
+    await this.taskRepository.update(id, taskData);
     return taskData
   }
 
