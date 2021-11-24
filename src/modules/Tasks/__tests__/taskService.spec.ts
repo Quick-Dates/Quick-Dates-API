@@ -396,7 +396,7 @@ describe('Task Service', () => {
         expect(error.statusCode).toBe(401)
       }
     })
-    it('should delete task', async() => {
+    it('should delete task', async () => {
       const fakeTask = { id: 10, id_teacher: '1' } as any
       const fakeTeacher = { id: '1', name: 'opa' } as any
       jest.spyOn(fakeTaskRepository, 'findById').mockResolvedValue(fakeTask)
@@ -410,8 +410,31 @@ describe('Task Service', () => {
     })
   })
   describe('#indexByTeacher', () => {
-    it.todo('should throw error if teacher not found')
-    it.todo('should get tasks by teacher')
+    it('should throw error if teacher not found', async () => {
+      try {
+        const fakeTeacher = { id: '1', name: 'opa' } as any
+        jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(undefined)
+        await taskService.indexByTeacher(fakeTeacher.id)
+
+        expect(true).toBe(false)
+      } catch (error: any) {
+        expect(error).toBeInstanceOf(AppError)
+        expect(error.message).toBe('Professor não encontrado')
+        expect(error.statusCode).toBe(404)
+      }
+    })
+    it('should get tasks by teacher', async () => {
+      const fakeTeacher = { id: '1', name: 'opa' } as any
+      const fakeTasks = [{id: 2, title: 'sd'}] as any
+      jest.spyOn(fakeTeacherRepository, 'findById').mockResolvedValue(fakeTeacher)
+      jest.spyOn(fakeTaskRepository, 'findAllByTeacher').mockResolvedValue(fakeTasks)
+
+      const tasks = await taskService.indexByTeacher(fakeTeacher.id)
+
+      expect(tasks).toEqual(fakeTasks)
+      expect(fakeTaskRepository.findAllByTeacher).toHaveBeenCalledWith(fakeTeacher.id)
+      expect(fakeTeacherRepository.findById).toHaveBeenCalledWith(fakeTeacher.id)
+    })
   })
   describe('#indexTasksWeek', () => {
     it.todo('should throw error if team not found')

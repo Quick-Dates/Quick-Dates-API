@@ -140,16 +140,13 @@ class TaskService {
   }
 
   async indexByTeacher(idTeacher: string): Promise<Tasks[]> {
-    const taskRepository = getRepository(Tasks);
-    const teacherRepository = getRepository(Teachers);
-
-    const teacher = await teacherRepository.findOne({ where: { id: idTeacher } });
+    const teacher = await this.teacherRepository.findById(idTeacher);
 
     if (!teacher) {
       throw new AppError("Professor não encontrado", 404);
     }
 
-    const tasks = await taskRepository.find({ where: { id_teacher: teacher.id }, join: { alias: "task", leftJoinAndSelect: { team: "task.team", course: "team.course" } } });
+    const tasks = await this.taskRepository.findAllByTeacher(teacher.id as string);
 
     return tasks;
   }
