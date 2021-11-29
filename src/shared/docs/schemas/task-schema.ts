@@ -124,9 +124,6 @@ export const taskResponseStatisticsSchema = {
     inProgress: {
       type: 'integer',
     },
-    late: {
-      type: 'integer',
-    },
     successPercentage: {
       type: 'integer',
     },
