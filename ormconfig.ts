@@ -8,5 +8,9 @@ module.exports = {
     "migrationsDir": "./src/shared/database/migrations"
   },
   "logging": false,
-  "extra": {}
+  "extra": process.env.NODE_ENV === 'production' ? {
+    "ssl": {
+        "rejectUnauthorized": false
+    }
+    } : {}
 }
