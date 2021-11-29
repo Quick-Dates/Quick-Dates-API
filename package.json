@@ -13,9 +13,8 @@
     "test": "cross-env NODE_ENV=test jest",
     "test:unit": "yarn test --passWithNoTests --silent --noStackTrace --runInBand --watch",
     "test:cov": "yarn test --coverage",
-    "build": "yarn prestart",
-    "typescript:deploy":"tsc --skipLibCheck --noEmitOnError",
-    "prestart": "yarn typescript:deploy && npx typeorm migration:run"
+    "build": "yarn typescript:deploy && npx typeorm migration:run",
+    "typescript:deploy":"tsc --skipLibCheck --noEmitOnError"
   },
   "dependencies": {
     "axios": "^0.21.4",
