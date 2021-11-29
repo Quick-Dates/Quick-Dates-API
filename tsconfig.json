@@ -69,5 +69,6 @@
     "./coverage/**/*",
     "./jest.config.js",
     "./ormconfig.ts",
+    "./dist/**/*"
   ]
 }
