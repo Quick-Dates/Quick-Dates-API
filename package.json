@@ -6,7 +6,7 @@
   "scripts": {
     "dev:server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "start": "node dist/server.js",
-    "typeorm": "cross-env NODE_ENV=production ts-node ./node_modules/typeorm/cli.js -f ./src/shared/database/ormconfig.ts",
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
     "migration:generate": "yarn typeorm migration:create -n",
     "migration:execute": "yarn typeorm migration:run",
     "migration:unmake": "yarn typeorm migration:revert",
@@ -14,8 +14,8 @@
     "test:unit": "yarn test --passWithNoTests --silent --noStackTrace --runInBand --watch",
     "test:cov": "yarn test --coverage",
     "build": "yarn prestart",
-    "typescript:deploy":"tsc --skipLibCheck",
-    "prestart": "yarn typescript:deploy && yarn migration:execute"
+    "typescript:deploy":"tsc --skipLibCheck --noEmitOnError",
+    "prestart": "yarn typescript:deploy && npx typeorm migration:run"
   },
   "dependencies": {
     "axios": "^0.21.4",

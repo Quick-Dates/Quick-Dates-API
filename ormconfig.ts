@@ -1,4 +1,4 @@
-console.log(process.env.NODE_ENV);
+process.env.NODE_ENV = 'production';
 module.exports = {
   "type": "postgres",
   "url": process.env.DATABASE_URL,
@@ -8,9 +8,5 @@ module.exports = {
     "migrationsDir": "./src/shared/database/migrations"
   },
   "logging": false,
-  "extra": process.env.NODE_ENV === 'production' ? {
-    "ssl": {
-        "rejectUnauthorized": false
-    }
-    } : {}
+  "extra": {}
 }
