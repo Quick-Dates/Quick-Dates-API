@@ -65,7 +65,7 @@ describe('TeamService', () => {
 
       await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
 
-      expect(fakeTeamRepository.findByYearCretionAndIdCourse).toHaveBeenCalledWith(params.yearCreation, fakeCourse.id);
+      expect(fakeTeamRepository.findByYearCretionAndIdCourse).toHaveBeenCalledWith(fakeCourse.id, params.yearCreation);
       expect(teamService.create).toHaveBeenCalledWith({ yearCreation: params.yearCreation, id_course: fakeCourse.id });
     })
     it('should throw error if student not found', async () => {
@@ -103,12 +103,13 @@ describe('TeamService', () => {
         idStudent: 'idStudent',
         yearCreation: 2021,
         courseName: TypeCourseEnum.Informatica,
-        levelCourse: LevelCourseEnum.EnsinoMedioIntegrado
+        level: LevelCourseEnum.EnsinoMedioIntegrado
       }
 
       const team = await teamService.addStudentToTeam(...Object.values(params) as [string, number, TypeCourseEnum, LevelCourseEnum]);
 
-      expect(fakeStudentsRepository.update).toHaveBeenCalledWith(params.idStudent, { id_team: fakeTeam.id, id: fakeStudent.id });
+      expect(fakeStudentsRepository.update).toHaveBeenCalledWith(params.idStudent, { id_team: fakeTeam.id, id: fakeStudent.id,
+        team: fakeTeam });
       expect(fakeStudentsRepository.findById).toHaveBeenCalledWith(params.idStudent);
       expect(team).toEqual(fakeTeam);
     })
