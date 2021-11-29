@@ -4,13 +4,18 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn prestart",
     "dev:server": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
-    "prestart": "npx typeorm migration:run ",
     "start": "node dist/server.js",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "test": "cross-env NODE_ENV=test jest --passWithNoTests --silent --noStackTrace --runInBand --watch",
-    "test:cov": "cross-env NODE_ENV=test jest --coverage"
+    "typeorm": "cross-env NODE_ENV=production ts-node ./node_modules/typeorm/cli.js -f ./src/shared/database/ormconfig.ts",
+    "migration:generate": "yarn typeorm migration:create -n",
+    "migration:execute": "yarn typeorm migration:run",
+    "migration:unmake": "yarn typeorm migration:revert",
+    "test": "cross-env NODE_ENV=test jest",
+    "test:unit": "yarn test --passWithNoTests --silent --noStackTrace --runInBand --watch",
+    "test:cov": "yarn test --coverage",
+    "build": "yarn prestart",
+    "typescript:deploy":"tsc --skipLibCheck",
+    "prestart": "yarn typescript:deploy && yarn migration:execute"
   },
   "dependencies": {
     "axios": "^0.21.4",
@@ -27,6 +32,7 @@
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "^4.1.6",
+    "ts-node": "10.2.1",
     "tsyringe": "^4.6.0",
     "typeorm": "^0.2.37"
   },
@@ -40,6 +46,7 @@
     "@types/jsonwebtoken": "^8.5.5",
     "@types/multer": "^1.4.7",
     "@types/nodemailer": "^6.4.4",
+    "@types/qs": "^6.9.7",
     "@types/supertest": "^2.0.11",
     "@types/swagger-ui-express": "^4.1.3",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
@@ -57,7 +64,6 @@
     "prettier": "^2.4.1",
     "supertest": "^6.1.6",
     "ts-jest": "^27.0.5",
-    "ts-node": "10.2.1",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.3"
   }

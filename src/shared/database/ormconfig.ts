@@ -1,3 +1,4 @@
+console.log(process.env.NODE_ENV);
 module.exports = {
   "type": "postgres",
   "url": process.env.DATABASE_URL,
@@ -12,5 +13,4 @@ module.exports = {
         "rejectUnauthorized": false
     }
     } : {}
-
 }
