@@ -15,12 +15,12 @@ teamsRouter.put('/student/:id', student, async (request, response) => {
   const { id } = request.params;
   const { yearCreation, courseName, level } = request.body;
   const teamService = container.resolve(TeamService);
-  const taskService = new TaskService();
-  const statusTaskService = new StatusTaskService();
+  const taskService = container.resolve(TaskService);
+  const statusTaskService = container.resolve(StatusTaskService);
   const team = await teamService.addStudentToTeam(id, yearCreation, courseName, level);
   setTimeout(async () => {
     const tasks = await taskService.indexByTeam(team.id as number);
-    await statusTaskService.createTasks(id, tasks);
+    await statusTaskService.createTasksByStudent(id, tasks);
   }, 1000);
   return response.json(team);
 });

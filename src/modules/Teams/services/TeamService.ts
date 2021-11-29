@@ -29,7 +29,7 @@ class TeamService {
       course = await courseService.create({ name: courseName, level });
     }
 
-    let team = await this.teamRepository.findByYearCretionAndIdCourse(yearCreation, course.id as number );
+    let team = await this.teamRepository.findByYearCretionAndIdCourse(course.id as number, yearCreation);
 
     if (!team) {
       team = await this.create({ id_course: course.id as number, yearCreation });
@@ -39,7 +39,8 @@ class TeamService {
     if (!student) {
       throw new AppError('Aluno não encontrado', 404);
     }
-    student.id_team = team.id;
+    student.id_team = team.id as number;
+    student.team = team;
     await this.studentRepository.update(student.id as string, student);
     return team;
   }
@@ -61,7 +62,7 @@ class TeamService {
       yearCreation,
       course,
       id_course
-    });
+    } as any);
 
     return team
   }

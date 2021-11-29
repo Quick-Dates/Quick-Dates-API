@@ -17,13 +17,13 @@ export default class StudentsRepository implements IStudentRepository {
   }
 
   async update(id: string, student: Students): Promise<void> {
-    await this.ormRepository.update(id, student);
+    await this.ormRepository.save(student);
   }
 
   async create(student: Students): Promise<Students> {
     const studentCreated = this.ormRepository.create(student);
-    await this.ormRepository.save(studentCreated)
-    return studentCreated;
+    const studentSaved = await this.ormRepository.save(studentCreated)
+    return studentSaved;
   }
 
   async findAllByTeamId(teamId: number): Promise< Students[]> {

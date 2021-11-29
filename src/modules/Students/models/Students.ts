@@ -48,7 +48,7 @@ class Students {
   @Column()
   id_team?: number;
 
-  @ManyToOne(() => Teams)
+  @ManyToOne(() => Teams, {onUpdate: 'CASCADE', onDelete: 'SET NULL'})
   @JoinColumn({name: 'id_team', referencedColumnName: 'id'})
   team?: Teams;
 

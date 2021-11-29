@@ -11,8 +11,8 @@ export default class TeamRepository implements ITeamRepository {
 
   async create(team: Teams): Promise<Teams> {
     const teamCreated = this.ormRepository.create(team);
-    await this.ormRepository.save(team);
-    return teamCreated;
+    const teamSaved = await this.ormRepository.save(teamCreated);
+    return teamSaved;
   }
   async delete(id: number): Promise<void> {
     await this.ormRepository.delete(id);
@@ -42,8 +42,9 @@ export default class TeamRepository implements ITeamRepository {
   }
 
   async findByYearCretionAndIdCourse(id_course: number, yearCreation: number): Promise<Teams | undefined> {
-    return await this.ormRepository.findOne({ where: { id_course, yearCreation } });
+    return await this.ormRepository.findOne({ where: { id_course: id_course, yearCreation: yearCreation } });
   }
+
   async update(id: number, team: Teams): Promise<Teams> {
     await this.ormRepository.update({ id }, team);
     return team;
