@@ -40,9 +40,14 @@ $ cd Quick-Dates-API && yarn install
 ### Arquivo de configuracao
 $ criar arquivo .env, como base o arquivo .env.example
 
-### Executar Aplicação
-$ yarn dev:server
+### Banco de dados, rodar as migrations
+$ npm run migration:execute
 
+### Executar Aplicação
+$ npm run test
+
+### Executar Testes Automatizados
+$ yarn dev:server
 <a href="https://www.notion.so/Ambiente-Back-end-20fdcf2697fc4066b96ab5ced3b581ed"> 
   Deu probrema? clique aqui para acessar o passo a passo mais detalhado
 </a>
