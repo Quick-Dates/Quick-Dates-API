@@ -44,10 +44,11 @@ $ criar arquivo .env, como base o arquivo .env.example
 $ npm run migration:execute
 
 ### Executar Aplicação
-$ npm run test
+$ yarn dev:server
 
 ### Executar Testes Automatizados
-$ yarn dev:server
+$ npm run test
+
 <a href="https://www.notion.so/Ambiente-Back-end-20fdcf2697fc4066b96ab5ced3b581ed"> 
   Deu probrema? clique aqui para acessar o passo a passo mais detalhado
 </a>
