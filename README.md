@@ -37,6 +37,9 @@ $ git clone https://github.com/Quick-Dates/Quick-Dates-API.git
 ### Instalar Dependencias
 $ cd Quick-Dates-API && yarn install
 
+### Arquivo de configuracao
+$ criar arquivo .env, como base o arquivo .env.example
+
 ### Executar Aplicação
 $ yarn dev:server
 
