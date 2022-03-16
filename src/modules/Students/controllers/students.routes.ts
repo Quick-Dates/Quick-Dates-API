@@ -14,7 +14,9 @@ studentsRouter.post('/signin', async (request, response) => {
     const suapService = new SuapService();
     const authService = container.resolve(AuthService);
 
+    console.log('suapService.signin')
     const tokenSuap = await suapService.signin({ username, password });
+    console.log('token suap', tokenSuap)
     const dataStudent = await suapService.indexMyData(tokenSuap);
     const token = await authService.execute({ tokenSuap: tokenSuap.token, dataStudent, password });
 

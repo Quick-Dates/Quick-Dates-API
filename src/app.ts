@@ -11,13 +11,13 @@ import setupRoutes from './shared/routes/setup-routes';
 import setupSwagger from './shared/config/setup-swagger';
 import prototypes from './shared/utils/protorypes';
 import setupInjector from './shared/config/setup-injector';
-import timeout from 'connect-timeout';
+// import timeout from 'connect-timeout';
 
 
 createConnection();
 
 const app = express();
-app.use(timeout('10s'))
+// app.use(timeout('10s'))
 setupInjector();
 setupExpress(app);
 setupSwagger(app);

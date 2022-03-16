@@ -4,7 +4,9 @@ import { IResponseMyData, IResponseSignin } from '../../modules/Students/interfa
 
 class SuapService {
   async signin({ username, password }: IParamsSignin): Promise<IResponseSignin> {
+    console.log('signin', username);
     const {data: token} = await apiSuap.post('/autenticacao/token/', { username, password })
+    console.log('signin', token);
     return token;
   }
 
