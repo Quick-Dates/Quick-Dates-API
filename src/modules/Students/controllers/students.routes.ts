@@ -43,7 +43,7 @@ studentsRouter.get('/ranking', ensureAuthenticated, student, async (request, res
   });
 });
 
-studentsRouter.get('/:id', async (request, response) => {
+studentsRouter.get('/:id', ensureAuthenticated, student, async (request, response) => {
   const { id } = request.params;
   const studentService = container.resolve(StudentService);
   const student = await studentService.indexById(id);
